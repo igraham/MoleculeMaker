@@ -3,6 +3,7 @@ package moleculeMaker;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.geom.Arc2D;
@@ -18,17 +19,21 @@ public class DrawArcLine {
 	public DrawArcLine()
 	{
 		JFrame frame = new JFrame();
-		frame.setSize(240,240);
+		frame.setSize(720,240);
+		frame.setLayout(new GridLayout(1,3));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		Point2D p1 = new Point2D.Double(40.0,100.0);
 		Point2D p2 = new Point2D.Double(190.0, 100.0);
 		frame.add(new ArcLine(p1, p2));
+		
 		Point2D p3 = new Point2D.Double(0, 0);
 		Point2D p4 = new Point2D.Double(100, 50);
-		//frame.add(new ArcLine(p3, p4));
-		Point2D p5 = new Point2D.Double(200, 100);
-		Point2D p6 = new Point2D.Double(300, 50);
-		//frame.add(new ArcLine(p5, p6));
+		frame.add(new ArcLine(p3, p4));
+		
+		Point2D p5 = new Point2D.Double(0, 100);
+		Point2D p6 = new Point2D.Double(100, 50);
+		frame.add(new ArcLine(p5, p6));
 		frame.setVisible(true);
 	}
 	

@@ -363,8 +363,8 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 			
 			roundX = getGraphCoordinate(e.getX());
 			roundY = getGraphCoordinate(e.getY());
-			System.out.println("X: "+roundX);
-			System.out.println("Y: "+roundY);
+//			System.out.println("X: "+roundX);
+//			System.out.println("Y: "+roundY);
 			
 			if (drawArrow == true) // if the element is already in the process of being bonded
 			{
