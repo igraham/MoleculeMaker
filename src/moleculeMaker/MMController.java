@@ -61,12 +61,12 @@ public class MMController
 	
 	public void clearElements()
 	{
-		
+		view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.sketch.elist.clearElements();
 	}
 	
 	public void clearBonds()
 	{
-		
+		view.sketch.elist.clearBonds();
 	}
 	
 	public void exportToXML()

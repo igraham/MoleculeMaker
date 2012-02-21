@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 public class ConnectionList 
 {
-	private HashMap<String, Element> map;
+	private HashMap<String, Element> elements;
 	private HashMap<String, Bond> bonds;
 	
 	private Element selected;
@@ -15,9 +15,26 @@ public class ConnectionList
 
 	public ConnectionList()
 	{
-		map = new HashMap<String, Element>();
+		elements = new HashMap<String, Element>();
 		bonds = new HashMap<String, Bond>();
 		selected = null;
+	}
+	
+	public void clearBonds()
+	{
+		selected = null;
+		dragging = null;
+		moving = null;
+		bonds = new HashMap<String, Bond>();
+	}
+	
+	public void clearElements()
+	{
+		selected = null;
+		dragging = null;
+		moving = null;
+		bonds = new HashMap<String, Bond>();
+		elements = new HashMap<String, Element>();
 	}
 	
 	public void addBond(Element e1, Element e2)
@@ -78,25 +95,25 @@ public class ConnectionList
 	 */
 	public void addElement(Element e)
 	{
-		map.put(e.getKey(), e);
+		elements.put(e.getKey(), e);
 	}
 	
 	public void removeElement(Element e)
 	{
 		if (e == null) { return; }
 		
-		map.remove(e.getKey());
+		elements.remove(e.getKey());
 	}
 	
 	public Element[] getCoordinates()
 	{
 		// Return null if there are no elements in map
-		if (map.keySet().size() == 0) { return null; }
+		if (elements.keySet().size() == 0) { return null; }
 		
-		Element[] temp = new Element[map.keySet().size()];
+		Element[] temp = new Element[elements.keySet().size()];
 		
 		int i = 0;
-		for (Element e : map.values())
+		for (Element e : elements.values())
 		{
 			temp[i] = e;
 			i++;
@@ -107,7 +124,7 @@ public class ConnectionList
 
 	public boolean hasElements()
 	{
-		return map.keySet().size() > 0;
+		return elements.keySet().size() > 0;
 	}
 	
 	/**
@@ -131,13 +148,13 @@ public class ConnectionList
 				// ... clear that selected element
 				// (this will be used when the user wishes to no longer select
 				// anything, and clicks an empty area of the grid.
-				map.get(selected.getKey()).setSelected(false);
+				elements.get(selected.getKey()).setSelected(false);
 				selected = null;
 			}
 			return;
 		}
 		
-		if (map.get(e.getKey()) == null) // if the element is not in the map
+		if (elements.get(e.getKey()) == null) // if the element is not in the map
 		{
 			selected = null;
 			return;
@@ -146,11 +163,11 @@ public class ConnectionList
 		if (selected != null) // if there is a previously selected element
 		{
 			// clear its selected state before setting the new element's selected state:
-			map.get(selected.getKey()).setSelected(false); 
+			elements.get(selected.getKey()).setSelected(false); 
 		}
 		
-		selected = map.get(e.getKey()); // set selected to the newest Element selected
-		map.get(selected.getKey()).setSelected(true); // set the internal selection flag to true
+		selected = elements.get(e.getKey()); // set selected to the newest Element selected
+		elements.get(selected.getKey()).setSelected(true); // set the internal selection flag to true
 	}
 	
 	/**
@@ -161,7 +178,7 @@ public class ConnectionList
 		if (selected == null) { return; }
 		
 		removeBonds(selected);
-		map.remove(selected.getKey());
+		elements.remove(selected.getKey());
 		selected = null;
 		
 	}
@@ -194,7 +211,7 @@ public class ConnectionList
 	
 	public String toString()
 	{
-		return "Element List: " + map.toString();
+		return "Element List: " + elements.toString();
 	}
 	
 	public Element getElementAt(int i, int j) {
@@ -204,7 +221,7 @@ public class ConnectionList
 	
 	public Element getElementAt(String key)
 	{
-		return map.get(key);
+		return elements.get(key);
 	}
 	
 	public Element getMoving() {
@@ -225,7 +242,7 @@ public class ConnectionList
 	}
 
 	public HashMap<String, Element> getMap() {
-		return map;
+		return elements;
 	}
 
 	public HashMap<String, Bond> getBondHash() {
