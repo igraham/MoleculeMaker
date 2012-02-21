@@ -1,3 +1,4 @@
+package moleculeMaker;
 
 public class Main
 {

@@ -1,17 +1,19 @@
+package moleculeMaker;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
 
-public class ElementList 
+public class ConnectionList 
 {
 	private HashMap<String, Element> map;
+	private HashMap<String, Bond> bonds;
+	
 	private Element selected;
 	private Element dragging;
 	private Element moving;
-	private HashMap<String, Bond> bonds;
 
-	public ElementList()
+	public ConnectionList()
 	{
 		map = new HashMap<String, Element>();
 		bonds = new HashMap<String, Bond>();
@@ -220,6 +222,15 @@ public class ElementList
 
 	public void setBonds(HashMap<String, Bond> bonds) {
 		this.bonds = bonds;
+	}
+
+	public HashMap<String, Element> getMap() {
+		return map;
+	}
+
+	public HashMap<String, Bond> getBondHash() {
+		// TODO Auto-generated method stub
+		return bonds;
 	}
 	
 }

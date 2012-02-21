@@ -1,3 +1,4 @@
+package moleculeMaker;
 import javax.swing.JOptionPane;
 
 /*

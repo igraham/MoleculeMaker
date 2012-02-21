@@ -1,3 +1,4 @@
+package moleculeMaker;
 
 
 import java.awt.Graphics;
@@ -55,6 +56,7 @@ public class DrawArcLine {
 			double y = Math.abs(p3.getY()-p1.getY());
 			System.out.println(x);
 			System.out.println(y);
+			
 			for(int i = 0; i < 1; i++)
 			{
 				if(y == 0)
@@ -72,6 +74,7 @@ public class DrawArcLine {
 					y = p1.getY() - (0.75*y);
 				}
 			}
+			
 			Point2D p2 = new Point2D.Double(p1.getX()+x/2, y);
 			System.out.println(p2);
 			double a = Math.sqrt(Math.pow(p3.getX() - p1.getX(),2)+Math.pow(p3.getY()-p1.getY(), 2));
