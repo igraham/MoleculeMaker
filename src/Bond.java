@@ -7,9 +7,9 @@ import javax.swing.JButton;
 
 public class Bond //extends JButton //implements ActionListener
 {	
-	private Element bonder; //bonder
-	private Element bondee; //bondee
-	private String bondKey;
+	private Element bonder; //BONDER
+	private Element bondee; //BONDEE
+	private String bondKey; //BONDKEYS
 	
 	public Bond(Element bonder, Element bondee)
 	{
