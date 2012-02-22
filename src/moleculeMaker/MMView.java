@@ -1,9 +1,13 @@
 package moleculeMaker;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -17,13 +21,14 @@ import javax.swing.JPanel;
 
 
 @SuppressWarnings("serial")
-public class MMView extends JFrame
+public class MMView extends JFrame implements ComponentListener
 {
-	final int WINDOW_WIDTH = 400;
+	final int WINDOW_WIDTH = 480;
 	final int WINDOW_HEIGHT = 600;
 	
 	MMController mmc;
-	MoleculeGrid sketch;
+	MoleculeGrid gridA;
+	MoleculeGrid gridB;
 	JMenuBar menuBar;
 	ElementAttributesModifier mod;
 	JPanel center = new JPanel();
@@ -32,6 +37,7 @@ public class MMView extends JFrame
 	public MMView(MMController mmc)
 	{
 		this.mmc = mmc;
+		this.addComponentListener(this);
 		createGUI();
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
@@ -47,16 +53,22 @@ public class MMView extends JFrame
 		createMenuBar();
 		
 		// Graph panel
-		sketch = new MoleculeGrid(mmc);
+		gridA = new MoleculeGrid(mmc);
+		gridB = new MoleculeGrid(mmc);
 		mod = new ElementAttributesModifier(null);
 
-		add(sketch, BorderLayout.CENTER);
+		// Grid's grid layout
+		JPanel gridLayout = new JPanel(new GridLayout(1,2));
+		gridLayout.add(gridA);
+		gridLayout.add(gridB);
+		
+		add(gridLayout, BorderLayout.CENTER);
 		
 		// Set up/add to SOUTH
 		south.add(mod);
 		add(south, BorderLayout.SOUTH);
 		
-		this.setTitle("Molecule Maker Ð By Derek Cannon");
+		this.setTitle("Molecule Maker");
 		this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		this.setVisible(true);
 	}
@@ -118,6 +130,32 @@ public class MMView extends JFrame
 	public void displayElementAttributes(Element e)
 	{	
 		mmc.displayElementAttributes(e); // logic for this belongs in controller
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentResized(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		System.out.println("GridA size: " + gridA.getSize());
+		MoleculeGrid.setGridSpacingX(gridA.getSize().width);
+		repaint();
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

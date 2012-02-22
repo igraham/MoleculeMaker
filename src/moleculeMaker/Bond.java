@@ -33,6 +33,14 @@ public class Bond //extends JButton //implements ActionListener
 //		System.out.println("middleY: " + middleY );
 	}
 	
+	public int getMiddleX() {
+		return middleX;
+	}
+	
+	public int getMiddleY() {
+		return middleY;
+	}
+
 	private void setBonderBondeeAndBondCenter(Element bonder, Element bondee)
 	{
 		yDirection = 1;

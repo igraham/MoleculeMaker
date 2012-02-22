@@ -17,8 +17,9 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 {
 	MMController mmc;
 	ConnectionList elist;
-	public static final int GRID_SPACING = 20;
-	public static final int OBJECT_OFFSET = GRID_SPACING / 4;
+//	public static final int GRID_SPACING = 20;
+	public static int GRID_SPACING = 100; // = 240 / 16;
+	public static int OBJECT_OFFSET = GRID_SPACING / 4;
 	
 	final int LEFT_CLICK = 1;
 	final int RIGHT_CLICK = 3;
@@ -35,7 +36,7 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 	boolean leftPressed = false;
 	boolean rightPressed = false;
 	
-	boolean drawArrow = false; // whether a moving arrow should be drawn (for right-click bond link formation)
+	boolean drawBondLine = false; // whether a moving arrow should be drawn (for right-click bond link formation)
 	
 //	boolean movingElement;
 
@@ -63,6 +64,11 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 	
 	}
 
+	public static void setGridSpacingX(int width)
+	{
+		GRID_SPACING = width / 16;
+	}
+	
 	// Clear screen
 	private void clearScreen(Graphics g)
 	{
@@ -102,14 +108,14 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 			for (Element e: elist.getCoordinates())
 			{
 				g.setColor(e.getColor());
-				g.fillOval(e.getX(), e.getY(), GRID_SPACING / 2, GRID_SPACING / 2);
+				g.fillOval(e.getX() * GRID_SPACING, e.getY() * GRID_SPACING, GRID_SPACING / 2, GRID_SPACING / 2);
 			}
 		}
 	}
 	
 	private void drawArrow(Graphics g)
 	{	
-		if (drawArrow == true)
+		if (drawBondLine == true)
 		{	
 			g.setColor(Color.MAGENTA);
 			
@@ -138,7 +144,13 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 
 	public int getGraphCoordinate(int xPixelCoordinate)
 	{
-		return (int) ((float)(Math.round(xPixelCoordinate / GRID_SPACING)) * GRID_SPACING);
+		System.out.println("\n\n** Grid spacing **");
+		System.out.println("\tActual coordinate: " + xPixelCoordinate);
+		System.out.println("\tGraph coordiante: " + (int) ((float)(Math.round(xPixelCoordinate / GRID_SPACING))));
+		
+		return (int) (float)(Math.round(xPixelCoordinate / GRID_SPACING));
+//		float nearestGridSpace = (float)(Math.round(xPixelCoordinate / GRID_SPACING);
+//		return (int) nearestGridSpace * GRID_SPACING;
 	}
 
 	// ***************** MouseListener *****************
@@ -216,8 +228,8 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 		else if (e.getButton() == RIGHT_CLICK) // On right button release
 		{
 			System.out.println("Right mouse release!");
-			System.out.println("DrawArrow: "+drawArrow);
-			if (drawArrow == true) // If the user releases the button when a bond is being drawn
+			System.out.println("DrawArrow: "+drawBondLine);
+			if (drawBondLine == true) // If the user releases the button when a bond is being drawn
 			{
 				roundX = getGraphCoordinate(e.getX());
 				roundY = getGraphCoordinate(e.getY());
@@ -227,7 +239,7 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 				if (bondee == null) // user didn't let go on element
 				{
 					System.out.println("Bonding failed: No element to bond with at these coordinates!");
-					drawArrow = false;
+					drawBondLine = false;
 				}
 				else
 				{
@@ -247,7 +259,7 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 					
 					System.out.println("Current bonds are " + elist.getBonds());
 					
-					drawArrow = false; // and stop drawing the arrow!
+					drawBondLine = false; // and stop drawing the arrow!
 				}
 				
 				repaint();
@@ -342,18 +354,7 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 	public void mouseDragged(MouseEvent e) {
 		//System.out.println("Mouse Dragged: "+translateButton(e));
 		
-		/*
-		setHighlightedCoordinates(getGraphCoordinate(e.getX()), getGraphCoordinate(e.getY()));
-		
-		if (e.getButton()  == LEFT_CLICK) // Left-click and drag
-		{
-			int roundX = getGraphCoordinate(e.getX());
-			int roundY = getGraphCoordinate(e.getY());	
-			
-			
-			
-		}
-		else */if (rightPressed && !leftPressed) // Right click is for bonding
+		if (rightPressed && !leftPressed) // Right click is for bonding
 		{
 			/* Cases to consider:
 			 * 1. If user is already dragging (this should come first!)
@@ -363,10 +364,11 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 			
 			roundX = getGraphCoordinate(e.getX());
 			roundY = getGraphCoordinate(e.getY());
+			
 //			System.out.println("X: "+roundX);
 //			System.out.println("Y: "+roundY);
 			
-			if (drawArrow == true) // if the element is already in the process of being bonded
+			if (drawBondLine == true) // if the element is already in the process of being bonded
 			{
 				repaint();
 				return; // No need for further steps.
@@ -378,7 +380,7 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 			if (bondStart != null) // if bonding began at element
 			{
 				elist.setSelected(elist.getElementAt(bondStart.getKey())); // keep track of the bonding element
-				drawArrow = true; // indicate that an arrow should start to be drawn
+				drawBondLine = true; // indicate that an arrow should start to be drawn
 			}
 			else // if nothing is being dragged
 			{
@@ -399,7 +401,7 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 			Element currentElement = elist.getSelected();
 			if (currentElement != null)
 			{
-				drawArrow = false;
+				drawBondLine = false;
 				elist.removeSelectedElement();
 				mmc.view.displayElementAttributes(null);
 				
@@ -409,9 +411,9 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 		}
 		else if (e.getKeyCode() == e.VK_ESCAPE) // if user hits ESC
 		{
-			if (drawArrow == true) // and there is a bond being drawn
+			if (drawBondLine == true) // and there is a bond being drawn
 			{
-				drawArrow = false; // cancel that bond
+				drawBondLine = false; // cancel that bond
 				repaint();
 			}
 		}

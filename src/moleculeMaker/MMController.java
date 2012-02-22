@@ -19,15 +19,16 @@ import javax.swing.JOptionPane;
  * 		- Remove bonds (by deleting one of the bond's elements)
  * 		- Element attributes GUI implemented (now displays and saves attributes)
  * 		- Added Menu Bar blueprint (File > Export, Elements > Clear Elements, and Bonds > Clear Bonds)
+ * Version 0.6
+ * 		- Menu Bar now functions
+ * 		- Added two molecules, side by side.
  * 
  * TODO:
  * 		- Arrows
  * 		- Limit grid size
- * 		- Two grids on a window that can interact with each other (drag arrow from one to the other)
  * 		- Electrophile and nucleophile attributes for element attributes
  * 		- XML Export
  * 		- Detailed code comments
- * 		- Fix error in diamond-shaped bond removal (deletes all bonds, not just relative bonds)
  */
 
 public class MMController
@@ -61,12 +62,16 @@ public class MMController
 	
 	public void clearElements()
 	{
-		view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.mmc.view.sketch.elist.clearElements();
+		view.gridA.elist.clearElements();
+		view.gridB.elist.clearElements();
+		view.repaint();
 	}
 	
 	public void clearBonds()
 	{
-		view.sketch.elist.clearBonds();
+		view.gridA.elist.clearBonds();
+		view.gridB.elist.clearBonds();
+		view.repaint();
 	}
 	
 	public void exportToXML()
