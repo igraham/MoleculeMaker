@@ -246,7 +246,6 @@ public class ConnectionList
 	}
 
 	public HashMap<String, Bond> getBondHash() {
-		// TODO Auto-generated method stub
 		return bonds;
 	}
 	
