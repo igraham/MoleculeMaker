@@ -12,60 +12,91 @@ public class Bond //extends JButton //implements ActionListener
 	private String bondKey; //BONDKEYS
 	private int middleX;
 	private int middleY;
-	private int direction; // 0 horizontal or /; 1 vertical or \
+	private int yDirection; // 1 = bondee's Y is greater than bonder's Y; -1 = the opposite
 	
 	public Bond(Element bonder, Element bondee)
 	{
 		System.out.println("Bond being created using: " + bonder + " and " + bondee);
 		
-		if (bonder == null)
+		if (bonder == null) {
 			System.out.println("Bonder is null");
-		if (bondee == null)
+			return;
+		}
+		if (bondee == null) {
 			System.out.println("Bondee is null");
+			return;
+		}
 		
-		// Determine which element the bonder, and which is the bondee
-		// Hint: the bonder has the lowest (X, Y)
-		if(bonder.getX() == bondee.getX()) // if line is vertical
+		setBonderBondeeAndBondCenter(bonder, bondee);
+		
+//		System.out.println("middleX: " + middleX);
+//		System.out.println("middleY: " + middleY );
+	}
+	
+	private void setBonderBondeeAndBondCenter(Element bonder, Element bondee)
+	{
+		yDirection = 1;
+		
+		// Bonder is the point closer to (0,0); the left-most/top-most element
+		// The priority of elements starts with the closest X value, THEN the Y value
+		
+		/*
+		 * Cases to consider:
+		 * 		1. Bond is vertical |
+		 * 		2. Bond is horizontal --
+		 * 		3. Bond has positive slope /
+		 * 		4. Bond has negative slope \
+		 */
+		if(bonder.getY() == bondee.getY()) // If bond is horizontal --
 		{
-			direction = 0;
-//			if(bonder.getY() == bondee.getY()) // if X=X and Y=Y, they're the same! Don't bond!
-			if(bonder.getY() < bondee.getY())
-			{
+			// ...the lesser X value becomes
+			if (bonder.getX() < bondee.getX()) {
 				this.bonder = bonder;
 				this.bondee = bondee;
-			}
-			else
-			{
+			} else {
 				this.bonder = bondee;
 				this.bondee = bonder;
 			}
 		}
-		else if(bonder.getX() < bondee.getX()) // line looks like this: \
+		else if(bonder.getX() == bondee.getX()) // If bond is vertical | 
 		{
-			direction = 1; // line looks like: \
-			this.bonder = bonder;
-			this.bondee = bondee;
+			// ...the lesser Y value becomes the main element.
+			if (bonder.getY() < bondee.getY()) {
+				this.bonder = bonder;
+				this.bondee = bondee;
+			} else {
+				this.bonder = bondee;
+				this.bondee = bonder;
+			}
+		} 
+		// If bond is not horizontal or vertical, then it is diagonal: \ or /
+		// X at this point is either less than or greater than:
+		else {
+			if(bonder.getX() < bondee.getX()) {
+				this.bonder = bonder;
+				this.bondee = bondee;
+			}
+			else {
+				this.bonder = bondee;
+				this.bondee = bonder;
+			}
+			
+			if(this.bonder.getY() < this.bondee.getY()) { // bond looks like this: \
+//				yDirection = 1;
+			}
+			else {
+				yDirection = -1;
+			}
+			
 		}
-		else // line looks like this: /
-		{
-			direction = 0;
-			this.bonder = bondee;
-			this.bondee = bonder;
-		}
-		
-		if(bonder.getY() == bondee.getY())
-		{
-			direction = 1;
-		}
-		
 		
 		bondKey = getBondKey(bonder, bondee);
 		
 		middleX = Math.abs(bonder.getX() - bondee.getX()) / 2;
 		middleY = Math.abs(bonder.getY() - bondee.getY()) / 2;
 		
-		System.out.println("middleX: " + middleX);
-		System.out.println("middleY: " + middleY );
+		if (yDirection == -1)
+			middleY *= -1;
 	}
 	
 	public static String getBondKey(Element bonder, Element bondee)
@@ -87,14 +118,9 @@ public class Bond //extends JButton //implements ActionListener
 		g2d.drawLine(bonder.getX() + offset, bonder.getY() + offset,
 				bondee.getX() + offset, bondee.getY() + offset);
 		
-		if(direction == 0)
-		{
-			g.drawOval(bonder.getX() + middleX, bonder.getY() + middleY, MoleculeGrid.GRID_SPACING/2, MoleculeGrid.GRID_SPACING/2);
-		}
-		else
-		{
-			g.drawOval(bonder.getX() + middleX, bonder.getY() - middleY, MoleculeGrid.GRID_SPACING/2, MoleculeGrid.GRID_SPACING/2);
-		}
+
+		g.drawOval(bonder.getX() + middleX, bonder.getY() + middleY, MoleculeGrid.GRID_SPACING/2, MoleculeGrid.GRID_SPACING/2);
+
 		
 	}
 	
