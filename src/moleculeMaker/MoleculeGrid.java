@@ -21,6 +21,12 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 	public static int GRID_SPACING = 100; // = 240 / 16;
 	public static int OBJECT_OFFSET = GRID_SPACING / 4;
 	
+	public static int GRID_SPACING_X = 100; // = 240 / 16;
+	public static int GRID_SPACING_Y = 100; // = 240 / 16;
+	
+	public static int OBJECT_OFFSET_X = GRID_SPACING / 4;
+	public static int OBJECT_OFFSET_Y = GRID_SPACING / 4;
+	
 	final int LEFT_CLICK = 1;
 	final int RIGHT_CLICK = 3;
 	
@@ -64,10 +70,15 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 	
 	}
 
-	public static void setGridSpacingX(int width)
+	public static void setGridSpacing(int width, int height)
 	{
 		GRID_SPACING = width / 16;
+		GRID_SPACING_X = width / 16;
+		GRID_SPACING_Y = height / 16;
+		OBJECT_OFFSET = GRID_SPACING / 4;
+		OBJECT_OFFSET_Y = GRID_SPACING_Y / 4;
 	}
+	
 	
 	// Clear screen
 	private void clearScreen(Graphics g)
@@ -81,13 +92,13 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 	{	
 
 		// Draw rows
-		for (int rows = 0; rows < this.getHeight() / GRID_SPACING; rows++)
+		for (int rows = 0; rows < this.getHeight() / GRID_SPACING_Y; rows++)
 		{
 			g.setColor(Color.LIGHT_GRAY);
 
-			if (GRID_SPACING * rows == highlightColumn) { g.setColor(Color.BLUE); }
+			if (GRID_SPACING_Y * rows == highlightColumn) { g.setColor(Color.BLUE); }
 
-			g.drawLine(0, (rows * GRID_SPACING) + GRID_SPACING/4, this.getWidth(), (rows * GRID_SPACING) + GRID_SPACING/4);
+			g.drawLine(0, (rows * GRID_SPACING_Y) + GRID_SPACING_Y/4, this.getWidth(), (rows * GRID_SPACING_Y) + GRID_SPACING_Y/4);
 		}
 
 		// Draw columns d
@@ -108,7 +119,7 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 			for (Element e: elist.getCoordinates())
 			{
 				g.setColor(e.getColor());
-				g.fillOval(e.getX() * GRID_SPACING, e.getY() * GRID_SPACING, GRID_SPACING / 2, GRID_SPACING / 2);
+				g.fillOval(e.getX() * GRID_SPACING, e.getY() * GRID_SPACING_Y, GRID_SPACING / 2, GRID_SPACING_Y / 2);
 			}
 		}
 	}
@@ -122,8 +133,9 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 			Graphics2D g2d = (Graphics2D)g;
 			g2d.setStroke(new BasicStroke(3));
 			
-			g2d.drawLine(elist.getSelected().getX() + OBJECT_OFFSET, elist.getSelected().getY() + OBJECT_OFFSET,
-					roundX + OBJECT_OFFSET, roundY + OBJECT_OFFSET);
+			g2d.drawLine(elist.getSelected().getX() * GRID_SPACING + OBJECT_OFFSET,
+					elist.getSelected().getY() * GRID_SPACING_Y + OBJECT_OFFSET_Y,
+					roundX * GRID_SPACING + OBJECT_OFFSET, roundY * GRID_SPACING_Y + OBJECT_OFFSET_Y);
 		}
 	}
 	
@@ -137,20 +149,21 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 		
 		for (int i=0; i < pair.size(); i++)
 		{
-			pair.get(i).draw(g, OBJECT_OFFSET);
+			pair.get(i).draw(g, OBJECT_OFFSET, OBJECT_OFFSET_Y);
 		}
 		
 	}
 
-	public int getGraphCoordinate(int xPixelCoordinate)
+	public int getGraphCoordinateX(int xPixelCoordinate)
 	{
-		System.out.println("\n\n** Grid spacing **");
-		System.out.println("\tActual coordinate: " + xPixelCoordinate);
-		System.out.println("\tGraph coordiante: " + (int) ((float)(Math.round(xPixelCoordinate / GRID_SPACING))));
-		
+		// Round to the nearest X grid space
 		return (int) (float)(Math.round(xPixelCoordinate / GRID_SPACING));
-//		float nearestGridSpace = (float)(Math.round(xPixelCoordinate / GRID_SPACING);
-//		return (int) nearestGridSpace * GRID_SPACING;
+	}
+	
+	public int getGraphCoordinateY(int yPixelCoordinate)
+	{
+		// Round to the nearest Y grid space
+		return (int) (float)(Math.round(yPixelCoordinate / GRID_SPACING_Y));
 	}
 
 	// ***************** MouseListener *****************
@@ -158,8 +171,8 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 	{
 		if (e.getButton() == LEFT_CLICK)
 		{
-			roundX = getGraphCoordinate(e.getX());
-			roundY = getGraphCoordinate(e.getY());	
+			roundX = getGraphCoordinateX(e.getX());
+			roundY = getGraphCoordinateY(e.getY());	
 			
 			Element eJustClicked = elist.getElementAt(roundX, roundY);
 			
@@ -231,8 +244,8 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 			System.out.println("DrawArrow: "+drawBondLine);
 			if (drawBondLine == true) // If the user releases the button when a bond is being drawn
 			{
-				roundX = getGraphCoordinate(e.getX());
-				roundY = getGraphCoordinate(e.getY());
+				roundX = getGraphCoordinateX(e.getX());
+				roundY = getGraphCoordinateY(e.getY());
 				
 				Element bondee = elist.getElementAt(roundX, roundY);
 				
@@ -346,7 +359,7 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		// Redraw highlighted row and column if mouse moves to a new set of coordinates:
-		setHighlightedCoordinates(getGraphCoordinate(e.getX()), getGraphCoordinate(e.getY()));
+		setHighlightedCoordinates(getGraphCoordinateX(e.getX()), getGraphCoordinateY(e.getY()));
 		
 	}
 	
@@ -362,8 +375,8 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 			 * 2. Clicked no empty grid space
 			 */
 			
-			roundX = getGraphCoordinate(e.getX());
-			roundY = getGraphCoordinate(e.getY());
+			roundX = getGraphCoordinateX(e.getX());
+			roundY = getGraphCoordinateY(e.getY());
 			
 //			System.out.println("X: "+roundX);
 //			System.out.println("Y: "+roundY);

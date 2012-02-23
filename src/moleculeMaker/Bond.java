@@ -114,20 +114,26 @@ public class Bond //extends JButton //implements ActionListener
 	
 	public void draw(Graphics g)
 	{
-		draw(g, 0);
+		// Draw with no offset if there isn't one specified.
+		draw(g, 0, 0);
 	}
 	
-	public void draw(Graphics g, int offset)
+	public void draw(Graphics g, int offset, int offset_y)
 	{
 		g.setColor(Color.BLACK);
 		Graphics2D g2d = (Graphics2D)g;
 		g2d.setStroke(new BasicStroke(3));
 		
-		g2d.drawLine(bonder.getX() + offset, bonder.getY() + offset,
-				bondee.getX() + offset, bondee.getY() + offset);
+		g2d.drawLine(bonder.getX() * MoleculeGrid.GRID_SPACING + offset,
+				bonder.getY() * MoleculeGrid.GRID_SPACING_Y + offset_y,
+				bondee.getX() * MoleculeGrid.GRID_SPACING + offset,
+				bondee.getY() * MoleculeGrid.GRID_SPACING_Y + offset_y);
 		
 
-		g.drawOval(bonder.getX() + middleX, bonder.getY() + middleY, MoleculeGrid.GRID_SPACING/2, MoleculeGrid.GRID_SPACING/2);
+		g.drawOval((bonder.getX() + middleX) * MoleculeGrid.GRID_SPACING,
+				(bonder.getY() + middleY) * MoleculeGrid.GRID_SPACING_Y,
+				MoleculeGrid.GRID_SPACING/2,
+				MoleculeGrid.GRID_SPACING_Y/2);
 
 		
 	}
