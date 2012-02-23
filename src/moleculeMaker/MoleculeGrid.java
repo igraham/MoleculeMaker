@@ -73,9 +73,9 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 
 	public static void setGridSpacing(int width, int height)
 	{
-		GRID_SPACING = width / 16;
-		GRID_SPACING_X = width / 16;
-		GRID_SPACING_Y = height / 16;
+		GRID_SPACING = width / 30;
+		GRID_SPACING_X = width / 30;
+		GRID_SPACING_Y = height / 30;
 		OBJECT_OFFSET = GRID_SPACING / 4;
 		OBJECT_OFFSET_Y = GRID_SPACING_Y / 4;
 	}
