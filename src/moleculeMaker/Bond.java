@@ -29,6 +29,10 @@ public class Bond //extends JButton //implements ActionListener
 		
 		setBonderBondeeAndBondCenter(bonder, bondee);
 		
+		// Set first time... it will update in draw()
+		middleX = Math.abs(bonder.getX() * MoleculeGrid.GRID_SPACING + bondee.getX() * MoleculeGrid.GRID_SPACING) / 2;
+		middleY = Math.abs(bonder.getY() * MoleculeGrid.GRID_SPACING_Y + bondee.getY() * MoleculeGrid.GRID_SPACING_Y) / 2;
+		
 //		System.out.println("middleX: " + middleX);
 //		System.out.println("middleY: " + middleY );
 	}
@@ -100,11 +104,9 @@ public class Bond //extends JButton //implements ActionListener
 		
 		bondKey = getBondKey(bonder, bondee);
 		
-		middleX = Math.abs(bonder.getX() - bondee.getX()) / 2;
-		middleY = Math.abs(bonder.getY() - bondee.getY()) / 2;
 		
-		if (yDirection == -1)
-			middleY *= -1;
+//		if (yDirection == -1)
+//			middleY *= -1;
 	}
 	
 	public static String getBondKey(Element bonder, Element bondee)
@@ -120,6 +122,9 @@ public class Bond //extends JButton //implements ActionListener
 	
 	public void draw(Graphics g, int offset, int offset_y)
 	{
+		middleX = Math.abs(bonder.getX() * MoleculeGrid.GRID_SPACING + bondee.getX() * MoleculeGrid.GRID_SPACING) / 2;
+		middleY = Math.abs(bonder.getY() * MoleculeGrid.GRID_SPACING_Y + bondee.getY() * MoleculeGrid.GRID_SPACING_Y) / 2;
+		
 		g.setColor(Color.BLACK);
 		Graphics2D g2d = (Graphics2D)g;
 		g2d.setStroke(new BasicStroke(3));
@@ -129,14 +134,38 @@ public class Bond //extends JButton //implements ActionListener
 				bondee.getX() * MoleculeGrid.GRID_SPACING + offset,
 				bondee.getY() * MoleculeGrid.GRID_SPACING_Y + offset_y);
 		
+		int absBonderX = bonder.getX() * MoleculeGrid.GRID_SPACING + offset;
+		int absBonderY = bonder.getY() * MoleculeGrid.GRID_SPACING_Y + offset_y;
+		int absBondeeX = bondee.getX() * MoleculeGrid.GRID_SPACING + offset;
+		int absBondeeY = bondee.getY() * MoleculeGrid.GRID_SPACING_Y + offset_y;
+		
+//		System.out.println("Absolute coordinates are: (" + absBonderX + "," + absBonderY + ")");
+//		System.out.println("Absolute coordinates are: (" + absBondeeX + "," + absBondeeY + ")");
+//		
+//		System.out.println("X Midpoint is: " + middleX);
+//		System.out.println("Y midpoint is: " + middleY);
+		
+//		g.drawOval((bonder.getX() + middleX) * MoleculeGrid.GRID_SPACING,
+//				(bonder.getY() + middleY) * MoleculeGrid.GRID_SPACING_Y,
+//				MoleculeGrid.GRID_SPACING/2,
+//				MoleculeGrid.GRID_SPACING_Y/2);
 
-		g.drawOval((bonder.getX() + middleX) * MoleculeGrid.GRID_SPACING,
-				(bonder.getY() + middleY) * MoleculeGrid.GRID_SPACING_Y,
-				MoleculeGrid.GRID_SPACING/2,
+		g.drawOval(middleX, middleY, MoleculeGrid.GRID_SPACING/2,
 				MoleculeGrid.GRID_SPACING_Y/2);
-
 		
 	}
+	
+	public boolean contains(double x2, double y2)
+	{
+		double dx = Math.abs(x2-(bonder.getX() + middleX)) * MoleculeGrid.GRID_SPACING;
+		double dy = Math.abs(y2-(bonder.getY() + middleY)) * MoleculeGrid.GRID_SPACING_Y;
+		double distance = Math.sqrt(Math.pow(dx,2)+Math.pow(dy,2));
+		double radius = MoleculeGrid.GRID_SPACING/4;
+		
+		System.out.println();
+		
+		return !(radius > distance);
+	 }
 	
 	public Element getBonder()
 	{

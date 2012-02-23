@@ -3,6 +3,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -116,10 +117,18 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 	{
 		if (elist.hasElements())
 		{
+			// Smallest size is used for radius of circle so elements don't
+						// get "squished in" when one of the axis is smaller than the other:
+						int smallestSize = GRID_SPACING;
+						if (GRID_SPACING > GRID_SPACING_Y) {
+							smallestSize = GRID_SPACING_Y;
+						}
+						
 			for (Element e: elist.getCoordinates())
 			{
+				
 				g.setColor(e.getColor());
-				g.fillOval(e.getX() * GRID_SPACING, e.getY() * GRID_SPACING_Y, GRID_SPACING / 2, GRID_SPACING_Y / 2);
+				g.fillOval(e.getX() * GRID_SPACING + OBJECT_OFFSET/4, e.getY() * GRID_SPACING_Y + OBJECT_OFFSET_Y/4, smallestSize / 2, smallestSize / 2);
 			}
 		}
 	}
@@ -132,6 +141,8 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 			
 			Graphics2D g2d = (Graphics2D)g;
 			g2d.setStroke(new BasicStroke(3));
+			
+			
 			
 			g2d.drawLine(elist.getSelected().getX() * GRID_SPACING + OBJECT_OFFSET,
 					elist.getSelected().getY() * GRID_SPACING_Y + OBJECT_OFFSET_Y,
@@ -175,6 +186,18 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 			roundY = getGraphCoordinateY(e.getY());	
 			
 			Element eJustClicked = elist.getElementAt(roundX, roundY);
+			
+			for(Bond b : elist.getBonds())
+			{
+				if (b.contains(e.getX(), e.getY()))
+				{
+					System.out.println("YES!");
+				}
+				else
+				{
+					System.out.println("NO :(");
+				}
+			}
 			
 			if (eJustClicked != null) // If user clicks on an element (non-empty grid space)
 			{

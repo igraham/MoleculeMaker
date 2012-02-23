@@ -23,7 +23,7 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class MMView extends JFrame implements ComponentListener
 {
-	final int WINDOW_WIDTH = 480;
+	final int WINDOW_WIDTH = 700;
 	final int WINDOW_HEIGHT = 600;
 	
 	MMController mmc;
