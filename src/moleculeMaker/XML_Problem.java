@@ -84,7 +84,7 @@ public class XML_Problem
 		root.appendChild(mol);
 		for(moleculeMaker.Element a : molecule.getMap().values())
 		{
-			org.w3c.dom.Element Element = doc.createElement("org.w3c.dom.Element");
+			org.w3c.dom.Element Element = doc.createElement("Element");
 			mol.appendChild(Element);
 				org.w3c.dom.Element loc = doc.createElement("Location");
 					//X and Y values for the location of the Element are set here. Since an Element

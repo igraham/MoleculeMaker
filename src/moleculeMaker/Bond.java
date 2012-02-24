@@ -13,6 +13,21 @@ public class Bond //extends JButton //implements ActionListener
 	private int middleX;
 	private int middleY;
 	private int yDirection; // 1 = bondee's Y is greater than bonder's Y; -1 = the opposite
+
+	private boolean selected;
+	private boolean dragging;
+	private boolean bonding;
+
+	public Color getColor()
+	{
+		if (bonding)
+			return Color.GREEN;
+		if (selected)
+			return Color.RED;
+		if (dragging)
+			return Color.LIGHT_GRAY;
+		return Color.BLACK;
+	}
 	
 	public Bond(Element bonder, Element bondee)
 	{
@@ -26,6 +41,10 @@ public class Bond //extends JButton //implements ActionListener
 			System.out.println("Bondee is null");
 			return;
 		}
+
+		selected = false;
+		dragging = false;
+		bonding = false;
 		
 		setBonderBondeeAndBondCenter(bonder, bondee);
 		
@@ -125,7 +144,8 @@ public class Bond //extends JButton //implements ActionListener
 		middleX = Math.abs(bonder.getX() * MoleculeGrid.GRID_SPACING + bondee.getX() * MoleculeGrid.GRID_SPACING) / 2;
 		middleY = Math.abs(bonder.getY() * MoleculeGrid.GRID_SPACING_Y + bondee.getY() * MoleculeGrid.GRID_SPACING_Y) / 2;
 		
-		g.setColor(Color.BLACK);
+
+		g.setColor(getColor());
 		Graphics2D g2d = (Graphics2D)g;
 		g2d.setStroke(new BasicStroke(3));
 		
@@ -157,14 +177,18 @@ public class Bond //extends JButton //implements ActionListener
 	
 	public boolean contains(double x2, double y2)
 	{
-		double dx = Math.abs(x2-(bonder.getX() + middleX)) * MoleculeGrid.GRID_SPACING;
-		double dy = Math.abs(y2-(bonder.getY() + middleY)) * MoleculeGrid.GRID_SPACING_Y;
+
+		int absBonderX = bonder.getX() * MoleculeGrid.GRID_SPACING+MoleculeGrid.GRID_SPACING/4;
+		int absBonderY = bonder.getY() * MoleculeGrid.GRID_SPACING_Y+MoleculeGrid.GRID_SPACING/4;
+		int absBondeeX = bondee.getX() * MoleculeGrid.GRID_SPACING +MoleculeGrid.GRID_SPACING/4;
+		int absBondeeY = bondee.getY() * MoleculeGrid.GRID_SPACING_Y+MoleculeGrid.GRID_SPACING/4;
+		int midX = (absBonderX + absBondeeX) /2;
+		int midY = (absBonderY + absBondeeY) /2;
+		double dx = Math.abs(x2-(midX));
+		double dy = Math.abs(y2-(midY));
 		double distance = Math.sqrt(Math.pow(dx,2)+Math.pow(dy,2));
-		double radius = MoleculeGrid.GRID_SPACING/4;
-		
-		System.out.println();
-		
-		return !(radius > distance);
+		double radius = 1.8*MoleculeGrid.GRID_SPACING/4;
+		return radius >= distance;
 	 }
 	
 	public Element getBonder()
@@ -187,5 +211,14 @@ public class Bond //extends JButton //implements ActionListener
 	{
 		return bondKey;
 	}
+	
+	public boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
+
 	
 }

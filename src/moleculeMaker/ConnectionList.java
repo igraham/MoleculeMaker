@@ -9,7 +9,8 @@ public class ConnectionList
 	private HashMap<String, Element> elements;
 	private HashMap<String, Bond> bonds;
 	
-	private Element selected;
+	private Element selectedElement;
+	private Bond selectedBond;
 	private Element dragging;
 	private Element moving;
 
@@ -17,12 +18,14 @@ public class ConnectionList
 	{
 		elements = new HashMap<String, Element>();
 		bonds = new HashMap<String, Bond>();
-		selected = null;
+		selectedElement = null;
+		selectedBond = null;
 	}
 	
 	public void clearBonds()
 	{
-		selected = null;
+		selectedElement = null;
+		selectedBond = null;
 		dragging = null;
 		moving = null;
 		bonds = new HashMap<String, Bond>();
@@ -30,7 +33,8 @@ public class ConnectionList
 	
 	public void clearElements()
 	{
-		selected = null;
+		selectedElement = null;
+		selectedBond = null;
 		dragging = null;
 		moving = null;
 		bonds = new HashMap<String, Bond>();
@@ -143,49 +147,88 @@ public class ConnectionList
 	{
 		if (e == null) // If the incoming element doesn't exist...
 		{
-			if (selected != null) // And there is already a selected element...
+			if (selectedElement != null) // And there is already a selected element...
 			{
 				// ... clear that selected element
 				// (this will be used when the user wishes to no longer select
 				// anything, and clicks an empty area of the grid.
-				elements.get(selected.getKey()).setSelected(false);
-				selected = null;
+				elements.get(selectedElement.getKey()).setSelected(false);
+				selectedElement = null;
 			}
 			return;
 		}
 		
 		if (elements.get(e.getKey()) == null) // if the element is not in the map
 		{
-			selected = null;
+			selectedElement = null;
 			return;
 		}
 		
-		if (selected != null) // if there is a previously selected element
+		if (selectedElement != null) // if there is a previously selected element
 		{
 			// clear its selected state before setting the new element's selected state:
-			elements.get(selected.getKey()).setSelected(false); 
+			elements.get(selectedElement.getKey()).setSelected(false); 
+		}
+		if(selectedBond != null)
+		{
+			bonds.get(selectedBond.getBondKey()).setSelected(false);
+			selectedBond = null;
 		}
 		
-		selected = elements.get(e.getKey()); // set selected to the newest Element selected
-		elements.get(selected.getKey()).setSelected(true); // set the internal selection flag to true
+		selectedElement = elements.get(e.getKey()); // set selected to the newest Element selected
+		elements.get(selectedElement.getKey()).setSelected(true); // set the internal selection flag to true
 	}
+	
+	public void setSelected(Bond b)
+	{
+		if (b == null) // If the incoming element doesn't exist...
+		{
+			if (selectedBond != null) // And there is already a selected element...
+			{
+				// ... clear that selected element
+				// (this will be used when the user wishes to no longer select
+				// anything, and clicks an empty area of the grid.
+				elements.get(selectedBond.getBondKey()).setSelected(false);
+				selectedBond = null;
+			}
+			return;
+		}
+		
+		if (elements.get(b.getBondKey()) == null) // if the element is not in the map
+		{
+			selectedBond = null;
+			return;
+		}
+		if(selectedElement != null)
+		{
+			elements.get(selectedElement.getKey()).setSelected(false);
+			selectedElement = null;
+		}
+		if(selectedBond != null)
+		{
+			bonds.get(selectedBond.getBondKey()).setSelected(false);
+		}
+		selectedBond = bonds.get(b.getBondKey());
+		bonds.get(selectedBond.getBondKey()).setSelected(true);
+	}
+	
 	
 	/**
 	 * Clears the selected element and also removes it from map the elements.
 	 */
 	public void removeSelectedElement()
 	{
-		if (selected == null) { return; }
+		if (selectedElement == null) { return; }
 		
-		removeBonds(selected);
-		elements.remove(selected.getKey());
-		selected = null;
+		removeBonds(selectedElement);
+		elements.remove(selectedElement.getKey());
+		selectedElement = null;
 		
 	}
 	
 	public Element getSelected()
 	{
-		return selected;
+		return selectedElement;
 	}
 	
 	public void setDragging(Element e)
@@ -203,7 +246,7 @@ public class ConnectionList
 		if (e == null)
 			return false;
 		
-		if (selected.getKey().equals(e.getKey()))
+		if (selectedElement.getKey().equals(e.getKey()))
 			return true;
 
 		return false;
