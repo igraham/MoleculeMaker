@@ -119,11 +119,11 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 		if (elist.hasElements())
 		{
 			// Smallest size is used for radius of circle so elements don't
-						// get "squished in" when one of the axis is smaller than the other:
-						int smallestSize = GRID_SPACING;
-						if (GRID_SPACING > GRID_SPACING_Y) {
-							smallestSize = GRID_SPACING_Y;
-						}
+			// get "squished in" when one of the axis is smaller than the other:
+			int smallestSize = GRID_SPACING;
+			if (GRID_SPACING > GRID_SPACING_Y) {
+				smallestSize = GRID_SPACING_Y;
+			}
 						
 			for (Element e: elist.getCoordinates())
 			{

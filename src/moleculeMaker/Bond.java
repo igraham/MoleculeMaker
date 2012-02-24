@@ -41,7 +41,7 @@ public class Bond //extends JButton //implements ActionListener
 			System.out.println("Bondee is null");
 			return;
 		}
-
+		
 		selected = false;
 		dragging = false;
 		bonding = false;
@@ -169,9 +169,13 @@ public class Bond //extends JButton //implements ActionListener
 //				(bonder.getY() + middleY) * MoleculeGrid.GRID_SPACING_Y,
 //				MoleculeGrid.GRID_SPACING/2,
 //				MoleculeGrid.GRID_SPACING_Y/2);
-
-		g.drawOval(middleX, middleY, MoleculeGrid.GRID_SPACING/2,
-				MoleculeGrid.GRID_SPACING_Y/2);
+		int smallestSize = MoleculeGrid.GRID_SPACING;
+		if (MoleculeGrid.GRID_SPACING > MoleculeGrid.GRID_SPACING_Y) {
+			smallestSize = MoleculeGrid.GRID_SPACING_Y;
+		}
+		
+		g.drawOval(middleX, middleY, smallestSize/2,
+				smallestSize/2);
 		
 	}
 	
@@ -187,7 +191,7 @@ public class Bond //extends JButton //implements ActionListener
 		double dx = Math.abs(x2-(midX));
 		double dy = Math.abs(y2-(midY));
 		double distance = Math.sqrt(Math.pow(dx,2)+Math.pow(dy,2));
-		double radius = 1.8*MoleculeGrid.GRID_SPACING/4;
+		double radius = 1.5*MoleculeGrid.GRID_SPACING/4;
 		return radius >= distance;
 	 }
 	
