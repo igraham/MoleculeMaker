@@ -46,6 +46,15 @@ public class MMController
 		System.out.println("Received Click");
 	}
 	
+//	public void displayElementAttributes(Element e)
+//	{	
+//		view.south.removeAll();
+//		view.south.add(new ElementAttributesModifier(e));
+//		
+//		view.validate();
+//		view.repaint();
+//	}
+	
 	public void displayElementAttributes(Element e)
 	{	
 		view.south.removeAll();

@@ -1,24 +1,16 @@
 package moleculeMaker;
-import java.awt.Color;
-import java.util.HashMap;
 
-
-public class Element
-{
-	public enum Type { electrophile, nucleophile }
+public class Element extends MoleculeComponent {
 	
-	private int x;
-	private int y;
+	// Element-only attributes
 	private String name;
-	private int charge;
 	private int electrons;
-	private boolean selected;
-	private boolean dragging;
-	private boolean bonding;
-	private Type type;
+	private int charge;
 	
 	public Element(int x, int y)
 	{
+		super();
+		
 		this.x = x;
 		this.y = y;
 		selected = false;
@@ -28,25 +20,8 @@ public class Element
 		charge = 4;
 	}
 	
-	public Color getColor()
-	{
-		if (bonding)
-			return Color.GREEN;
-		if (selected)
-			return Color.RED;
-		if (dragging)
-			return Color.LIGHT_GRAY;
-		return Color.BLACK;
-	}
-	
-	public boolean isBonding() {
-		return bonding;
-	}
-
-	public void setBonding(boolean bonding) {
-		this.bonding = bonding;
-	}
-	
+	// ================ Getters and Setters Below ================
+	@Override
 	public String getKey()
 	{
 		return x + "," + y;	
@@ -57,20 +32,14 @@ public class Element
 		return "Element at ("+ x + ", " + y + ")";	
 	}
 
+	@Override
 	public int getX() {
 		return x;
 	}
-
-	public void setX(int x) {
-		this.x = x;
-	}
-
+	
+	@Override
 	public int getY() {
 		return y;
-	}
-
-	public void setY(int y) {
-		this.y = y;
 	}
 
 	public String getName() {
@@ -96,30 +65,7 @@ public class Element
 	public void setElectrons(int electrons) {
 		this.electrons = electrons;
 	}
-
-	public boolean isSelected() {
-		return selected;
-	}
-
-	public void setSelected(boolean selected) {
-		this.selected = selected;
-	}
-
-	public boolean isDragging() {
-		return dragging;
-	}
-
-	public void setDragging(boolean dragging) {
-		this.dragging = dragging;
-	}
-
-	public Type getType() {
-		return type;
-	}
-
-	public void setType(Type type) {
-		this.type = type;
-	}
-
+	
+	// ===========================================================
+	
 }
-

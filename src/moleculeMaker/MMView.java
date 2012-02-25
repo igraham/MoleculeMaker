@@ -1,22 +1,14 @@
 package moleculeMaker;
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.awt.event.WindowListener;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 
@@ -27,6 +19,8 @@ public class MMView extends JFrame implements ComponentListener
 	final int WINDOW_HEIGHT = 600;
 	
 	MMController mmc;
+//	MoleculeGrid gridA;
+//	MoleculeGrid gridB;
 	MoleculeGrid gridA;
 	MoleculeGrid gridB;
 	JMenuBar menuBar;
@@ -127,11 +121,17 @@ public class MMView extends JFrame implements ComponentListener
 		});
 	}
 	
+//	public void displayElementAttributes(Element e)
+//	{	
+//		mmc.displayElementAttributes(e); // logic for this belongs in controller
+//	}
+
 	public void displayElementAttributes(Element e)
 	{	
 		mmc.displayElementAttributes(e); // logic for this belongs in controller
 	}
 
+	
 	@Override
 	public void componentHidden(ComponentEvent e) {
 		// TODO Auto-generated method stub

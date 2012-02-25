@@ -12,7 +12,7 @@ import java.awt.geom.Point2D;
 public class Arrow
 {
 	/**
-	 * This is the midddle point of the arrow, which is generated arbitrarily
+	 * This is the middle point of the arrow, which is generated arbitrarily
 	 * using the locations of the reactor and the reactee. In general, the
 	 * middle point will always make the curve go upward. More complicated
 	 * calculations to allow for downward or straight curves will come later.

@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 public class ConnectionList 
 {
-	private HashMap<String, Element> elements;
+	private HashMap<String, Element> element;
 	private HashMap<String, Bond> bonds;
 	
 	private Element selectedElement;
@@ -16,7 +16,7 @@ public class ConnectionList
 
 	public ConnectionList()
 	{
-		elements = new HashMap<String, Element>();
+		element = new HashMap<String, Element>();
 		bonds = new HashMap<String, Bond>();
 		selectedElement = null;
 		selectedBond = null;
@@ -38,37 +38,37 @@ public class ConnectionList
 		dragging = null;
 		moving = null;
 		bonds = new HashMap<String, Bond>();
-		elements = new HashMap<String, Element>();
+		element = new HashMap<String, Element>();
 	}
 	
 	public void addBond(Element e1, Element e2)
 	{
 		if (e1 == null || e2 == null)
 		{
-			System.out.println("*** Bonding failed. Null is not allowed!");
+			System.out.println("*** BondImproveding failed. Null is not allowed!");
 			return;
 		}
 		
 		if (e1.getKey().equals(e2.getKey()))
 		{
-			System.out.println("*** Cannot bond with the same point!");
+			System.out.println("*** Cannot BondImproved with the same point!");
 			return;
 		}
 		
 		
-		String bondKey = Bond.getBondKey(e1, e2);
+		String BondImprovedKey = Bond.getKey(e1, e2);
 		
-		if(!bonds.containsKey(bondKey))
+		if(!bonds.containsKey(BondImprovedKey))
 		{
 			Bond temp = new Bond(e1, e2);
-			System.out.println("Temp bond is: " + temp);
-			System.out.println("\tTemp bond's bonder is: " + temp.getBonder());
-			System.out.println("\tTemp bond's bondee is: " + temp.getBondee());
-			bonds.put(bondKey, temp);
+			System.out.println("Temp BondImproved is: " + temp);
+			System.out.println("\tTemp BondImproved's BondImproveder is: " + temp.getBonder());
+			System.out.println("\tTemp BondImproved's BondImprovedee is: " + temp.getBondee());
+			bonds.put(BondImprovedKey, temp);
 		}
 		else
 		{
-			System.out.println("This bond already exists!");
+			System.out.println("This BondImproved already exists!");
 		}
 		
 	}
@@ -77,8 +77,8 @@ public class ConnectionList
 	{
 		// Kudos to: http://joecode.blogspot.com/2004/10/hash-map-iteration.html
 		// for the nifty iteration technique, and thanks to:
-    	// http://stackoverflow.com/questions/1110404/remove-elements-from-a-hashset-while-iterating
-    	// for pointing out, I needed to use i.remove() instead of bond.remove(key);
+    	// http://stackoverflow.com/questions/1110404/remove-ElementImproveds-from-a-hashset-while-iterating
+    	// for pointing out, I needed to use i.remove() instead of BondImproved.remove(key);
 		
 		String tempKey = e.getKey().replace(" ", "");
 		
@@ -94,30 +94,30 @@ public class ConnectionList
 	}
 	
 	/**
-	 * Add an element to the list
-	 * @param e The element to add to the list
+	 * Add an ElementImproved to the list
+	 * @param e The ElementImproved to add to the list
 	 */
 	public void addElement(Element e)
 	{
-		elements.put(e.getKey(), e);
+		element.put(e.getKey(), e);
 	}
 	
 	public void removeElement(Element e)
 	{
 		if (e == null) { return; }
 		
-		elements.remove(e.getKey());
+		element.remove(e.getKey());
 	}
 	
 	public Element[] getCoordinates()
 	{
-		// Return null if there are no elements in map
-		if (elements.keySet().size() == 0) { return null; }
+		// Return null if there are no ElementImproveds in map
+		if (element.keySet().size() == 0) { return null; }
 		
-		Element[] temp = new Element[elements.keySet().size()];
+		Element[] temp = new Element[element.keySet().size()];
 		
 		int i = 0;
-		for (Element e : elements.values())
+		for (Element e : element.values())
 		{
 			temp[i] = e;
 			i++;
@@ -128,13 +128,13 @@ public class ConnectionList
 
 	public boolean hasElements()
 	{
-		return elements.keySet().size() > 0;
+		return element.keySet().size() > 0;
 	}
 	
 	/**
-	 * Add an element to the list by creating a new element at the specified coordinates
-	 * @param x The X coordinate of the element
-	 * @param y The Y coordinate of the element
+	 * Add an ElementImproved to the list by creating a new ElementImproved at the specified coordinates
+	 * @param x The X coordinate of the ElementImproved
+	 * @param y The Y coordinate of the ElementImproved
 	 */
 	public void addElement(int x, int y)
 	{
@@ -145,83 +145,83 @@ public class ConnectionList
 	
 	public void setSelected(Element e)
 	{
-		if (e == null) // If the incoming element doesn't exist...
+		if (e == null) // If the incoming ElementImproved doesn't exist...
 		{
-			if (selectedElement != null) // And there is already a selected element...
+			if (selectedElement != null) // And there is already a selected ElementImproved...
 			{
-				// ... clear that selected element
+				// ... clear that selected ElementImproved
 				// (this will be used when the user wishes to no longer select
 				// anything, and clicks an empty area of the grid.
-				elements.get(selectedElement.getKey()).setSelected(false);
+				element.get(selectedElement.getKey()).setSelected(false);
 				selectedElement = null;
 			}
 			return;
 		}
 		
-		if (elements.get(e.getKey()) == null) // if the element is not in the map
+		if (element.get(e.getKey()) == null) // if the ElementImproved is not in the map
 		{
 			selectedElement = null;
 			return;
 		}
 		
-		if (selectedElement != null) // if there is a previously selected element
+		if (selectedElement != null) // if there is a previously selected ElementImproved
 		{
-			// clear its selected state before setting the new element's selected state:
-			elements.get(selectedElement.getKey()).setSelected(false); 
+			// clear its selected state before setting the new ElementImproved's selected state:
+			element.get(selectedElement.getKey()).setSelected(false); 
 		}
 		if(selectedBond != null)
 		{
-			bonds.get(selectedBond.getBondKey()).setSelected(false);
+			bonds.get(selectedBond.getKey()).setSelected(false);
 			selectedBond = null;
 		}
 		
-		selectedElement = elements.get(e.getKey()); // set selected to the newest Element selected
-		elements.get(selectedElement.getKey()).setSelected(true); // set the internal selection flag to true
+		selectedElement = element.get(e.getKey()); // set selected to the newest ElementImproved selected
+		element.get(selectedElement.getKey()).setSelected(true); // set the internal selection flag to true
 	}
 	
 	public void setSelected(Bond b)
 	{
-		if (b == null) // If the incoming element doesn't exist...
+		if (b == null) // If the incoming ElementImproved doesn't exist...
 		{
-			if (selectedBond != null) // And there is already a selected element...
+			if (selectedBond != null) // And there is already a selected ElementImproved...
 			{
-				// ... clear that selected element
+				// ... clear that selected ElementImproved
 				// (this will be used when the user wishes to no longer select
 				// anything, and clicks an empty area of the grid.
-				elements.get(selectedBond.getBondKey()).setSelected(false);
+				element.get(selectedBond.getKey()).setSelected(false);
 				selectedBond = null;
 			}
 			return;
 		}
 		
-		if (elements.get(b.getBondKey()) == null) // if the element is not in the map
+		if (element.get(b.getKey()) == null) // if the ElementImproved is not in the map
 		{
 			selectedBond = null;
 			return;
 		}
 		if(selectedElement != null)
 		{
-			elements.get(selectedElement.getKey()).setSelected(false);
+			element.get(selectedElement.getKey()).setSelected(false);
 			selectedElement = null;
 		}
 		if(selectedBond != null)
 		{
-			bonds.get(selectedBond.getBondKey()).setSelected(false);
+			bonds.get(selectedBond.getKey()).setSelected(false);
 		}
-		selectedBond = bonds.get(b.getBondKey());
-		bonds.get(selectedBond.getBondKey()).setSelected(true);
+		selectedBond = bonds.get(b.getKey());
+		bonds.get(selectedBond.getKey()).setSelected(true);
 	}
 	
 	
 	/**
-	 * Clears the selected element and also removes it from map the elements.
+	 * Clears the selected ElementImproved and also removes it from map the ElementImproveds.
 	 */
 	public void removeSelectedElement()
 	{
 		if (selectedElement == null) { return; }
 		
 		removeBonds(selectedElement);
-		elements.remove(selectedElement.getKey());
+		element.remove(selectedElement.getKey());
 		selectedElement = null;
 		
 	}
@@ -254,7 +254,7 @@ public class ConnectionList
 	
 	public String toString()
 	{
-		return "Element List: " + elements.toString();
+		return "ElementImproved List: " + element.toString();
 	}
 	
 	public Element getElementAt(int i, int j) {
@@ -264,7 +264,7 @@ public class ConnectionList
 	
 	public Element getElementAt(String key)
 	{
-		return elements.get(key);
+		return element.get(key);
 	}
 	
 	public Element getMoving() {
@@ -280,12 +280,12 @@ public class ConnectionList
 		return new ArrayList<Bond>(bonds.values());
 	}
 
-	public void setBonds(HashMap<String, Bond> bonds) {
-		this.bonds = bonds;
+	public void setBonds(HashMap<String, Bond> BondImproveds) {
+		this.bonds = BondImproveds;
 	}
 
 	public HashMap<String, Element> getMap() {
-		return elements;
+		return element;
 	}
 
 	public HashMap<String, Bond> getBondHash() {
