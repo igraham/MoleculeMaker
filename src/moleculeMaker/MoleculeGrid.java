@@ -4,11 +4,14 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -69,7 +72,7 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 		drawElements(g);
 		drawBondDrag(g);
 		drawBonds(g);
-
+		drawArrow(g);
 	}
 
 	public static void setGridSpacing(int width, int height)
@@ -147,7 +150,52 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 
 			g2d.drawLine(elist.getSelected().getX() * GRID_SPACING + OBJECT_OFFSET,
 					elist.getSelected().getY() * GRID_SPACING_Y + OBJECT_OFFSET_Y,
-					roundX * GRID_SPACING + OBJECT_OFFSET, roundY * GRID_SPACING_Y + OBJECT_OFFSET_Y);
+					roundX * GRID_SPACING + OBJECT_OFFSET, 
+					roundY * GRID_SPACING_Y + OBJECT_OFFSET_Y);
+		}
+	}
+	
+	private void drawArrow(Graphics g)
+	{
+		if(drawCurvedArrow)
+		{
+			g.setColor(Color.MAGENTA);
+			
+			Graphics2D g2d = (Graphics2D)g;
+			g2d.setStroke(new BasicStroke(3));
+
+			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
+					RenderingHints.VALUE_ANTIALIAS_ON);
+			int x1 = elist.getSelected().getX() * GRID_SPACING + OBJECT_OFFSET;
+			int y1 = elist.getSelected().getY() * GRID_SPACING_Y + OBJECT_OFFSET_Y;
+			int x2 = roundX * GRID_SPACING + OBJECT_OFFSET;
+			int y2 = roundY * GRID_SPACING_Y + OBJECT_OFFSET_Y;
+			Point p1 = new Point(x1, y1);
+			Point p3 = new Point(x2, y2);
+			
+			g2d.drawLine(x1, y1, x2, y2);
+			drawBarbs(g2d, p3, p1);
+		}
+	}
+	
+	private void drawBarbs(Graphics2D g2, Point tip, Point tail)
+	{
+		double barbLength = 10;
+		double angle = Math.toRadians(35);
+		double dy = tip.y - tail.y;
+		double dx = tip.x - tail.x;
+		System.out.println("Change in Y: "+dy);
+		System.out.println("Change in X: "+dx);
+		double theta = Math.atan2(dy, dx);
+		System.out.println("Angle of Theta: "+theta);
+		double x, y, rho = theta + angle;
+		for(int i = 0; i < 2; i++)
+		{
+			System.out.println("Value of angle Rho: "+Math.toDegrees(rho));
+			x = tip.x - barbLength * Math.cos(rho);
+			y = tip.y - barbLength * Math.sin(rho);
+			g2.draw(new Line2D.Double(tip.x, tip.y, x, y));
+			rho = theta - angle;
 		}
 	}
 
@@ -220,6 +268,16 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 				{
 					System.out.println("NO :(");
 				}
+			}
+			Object bondee = elist.getElementAt(roundX, roundY);
+			Object bonder = elist.getSelected();
+			if(bonder == null || bondee == null)
+			{
+				drawCurvedArrow = false;
+			}
+			else
+			{
+				//Add an arrow to the connection list here.
 			}
 
 			if (eJustClicked != null) // If user clicks on an element (non-empty grid space)
@@ -414,6 +472,7 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 
 		if(leftPressed && !rightPressed)
 		{
+			drawBondLine = false;
 			roundX = getGraphCoordinateX(e.getX());
 			roundY = getGraphCoordinateY(e.getY());
 
@@ -453,11 +512,11 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 				drawCurvedArrow = true;
 			}
 
-
 		}
 
 		if (rightPressed && !leftPressed) // Right click is for bonding
 		{
+			drawCurvedArrow = false;
 			/* Cases to consider:
 			 * 1. If user is already dragging (this should come first!)
 			 * 1. Clicked on element
