@@ -11,197 +11,48 @@ public class ConnectionList
 	private HashMap<String, Bond> bonds;
 	private HashMap<String, Arrow> arrows;
 	
-<<<<<<< HEAD
 //	private Element selectedElement;
 //	private Bond selectedBond;
 	private MoleculeComponent selected;
 //	private Element dragging;
 //	private Element moving;
-=======
-	private Element selectedElement;
-	private Bond selectedBond;
-	private Arrow selectedArrow;
-	private Element dragging;
-	private Element moving;
->>>>>>> 98a5899f2f1d4eb0edcdf2afc3d59f67cbfb8bb4
 
 	public ConnectionList()
 	{
 		element = new HashMap<String, Element>();
 		bonds = new HashMap<String, Bond>();
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 //		selectedElement = null;
 //		selectedBond = null;
 		selected = null;
-=======
-=======
->>>>>>> 98a5899f2f1d4eb0edcdf2afc3d59f67cbfb8bb4
+
 		arrows = new HashMap<String, Arrow>();
-		selectedElement = null;
-		selectedBond = null;
-		selectedArrow = null;
-<<<<<<< HEAD
->>>>>>> 98a5899f2f1d4eb0edcdf2afc3d59f67cbfb8bb4
-=======
->>>>>>> 98a5899f2f1d4eb0edcdf2afc3d59f67cbfb8bb4
+		
 	}
 	
 	public void clearBonds()
 	{
-<<<<<<< HEAD
 //		selectedElement = null;
 //		selectedBond = null;
 		selected = null;
 //		dragging = null;
 //		moving = null;
-=======
-		selectedElement = null;
-		selectedBond = null;
-		selectedArrow = null;
-		dragging = null;
-		moving = null;
->>>>>>> 98a5899f2f1d4eb0edcdf2afc3d59f67cbfb8bb4
+
 		bonds = new HashMap<String, Bond>();
 	}
 	
 	public void clearElements()
 	{
-<<<<<<< HEAD
 //		selectedElement = null;
 //		selectedBond = null;
 		selected = null;
 //		dragging = null;
 //		moving = null;
-=======
-		selectedElement = null;
-		selectedBond = null;
-		selectedArrow = null;
-		dragging = null;
-		moving = null;
->>>>>>> 98a5899f2f1d4eb0edcdf2afc3d59f67cbfb8bb4
 		bonds = new HashMap<String, Bond>();
 		element = new HashMap<String, Element>();
 	}
 	
-<<<<<<< HEAD
-
 	private void removeBonds(MoleculeComponent selected2)
-=======
-	public void addBond(Element e1, Element e2)
-	{
-		if (e1 == null || e2 == null)
-		{
-			System.out.println("*** Bonding failed. Null is not allowed!");
-			return;
-		}
-		
-		if (e1.getKey().equals(e2.getKey()))
-		{
-			System.out.println("*** Cannot Bond with the same point!");
-			return;
-		}
-		
-		
-		String BondKey = Bond.getKey(e1, e2);
-		
-		if(!bonds.containsKey(BondKey))
-		{
-			Bond temp = new Bond(e1, e2);
-			System.out.println("Temp Bond is: " + temp);
-			System.out.println("\tTemp Bond's Bonder is: " + temp.getBonder());
-			System.out.println("\tTemp Bond's Bondee is: " + temp.getBondee());
-			bonds.put(BondKey, temp);
-		}
-		else
-		{
-			System.out.println("This Bond already exists!");
-<<<<<<< HEAD
-		}
-		
-	}
-	
-	public void addArrow(Object reactor, Object reactee)
-	{
-		if(reactor == null || reactee == null)
-		{
-			System.out.println("One of the connections made by an arrow is null.");
-			return;
-		}
-		Element e = null;
-		Bond b = null;
-		if(reactor.getClass() == Element.class)
-		{
-			e = (Element)reactor;
-			b = (Bond)reactee;
-=======
->>>>>>> 98a5899f2f1d4eb0edcdf2afc3d59f67cbfb8bb4
-		}
-		else if(reactor.getClass() == Bond.class)
-		{
-			b = (Bond)reactor;
-			e = (Element)reactee;
-		}
-		if(e.getKey().equals(b.getKey()))
-		{
-			System.out.println("Trying to connect to the same point, not allowed.");
-			return;
-		}
-		
-		String ArrowKey = Arrow.getArrowKey(e, b);
-		
-		if(!arrows.containsKey(ArrowKey))
-		{
-			Arrow temp = new Arrow(e, b);
-			arrows.put(ArrowKey, temp);
-		}
-		else
-		{
-			System.out.println("This Arrow already exists!");
-		}
-	}
-	
-	public void addArrow(Object reactor, Object reactee)
-	{
-		if(reactor == null || reactee == null)
-		{
-			System.out.println("One of the connections made by an arrow is null.");
-			return;
-		}
-		Element e = null;
-		Bond b = null;
-		if(reactor.getClass() == Element.class)
-		{
-			e = (Element)reactor;
-			b = (Bond)reactee;
-		}
-		else if(reactor.getClass() == Bond.class)
-		{
-			b = (Bond)reactor;
-			e = (Element)reactee;
-		}
-		if(e.getKey().equals(b.getKey()))
-		{
-			System.out.println("Trying to connect to the same point, not allowed.");
-			return;
-		}
-		
-		String ArrowKey = Arrow.getArrowKey(e, b);
-		
-		if(!arrows.containsKey(ArrowKey))
-		{
-			Arrow temp = new Arrow(e, b);
-			arrows.put(ArrowKey, temp);
-		}
-		else
-		{
-			System.out.println("This Arrow already exists!");
-		}
-	}
-	
-	private void removeBonds(Element e)
->>>>>>> 98a5899f2f1d4eb0edcdf2afc3d59f67cbfb8bb4
 	{
 		// Kudos to: http://joecode.blogspot.com/2004/10/hash-map-iteration.html
 		// for the nifty iteration technique, and thanks to:
@@ -222,18 +73,8 @@ public class ConnectionList
 	}
 	
 	/**
-<<<<<<< HEAD
-<<<<<<< HEAD
 	 * Add a MoleculeComponent (element, bond, or arrow) to the list
 	 * @param e The MoleculeComponent to add to the list
-=======
-	 * Add an Element to the list
-	 * @param e The Element to add to the list
->>>>>>> 98a5899f2f1d4eb0edcdf2afc3d59f67cbfb8bb4
-=======
-	 * Add an Element to the list
-	 * @param e The Element to add to the list
->>>>>>> 98a5899f2f1d4eb0edcdf2afc3d59f67cbfb8bb4
 	 */
 	public void add(MoleculeComponent e)
 	{
@@ -343,7 +184,6 @@ public class ConnectionList
 		return element.keySet().size() > 0;
 	}
 	
-<<<<<<< HEAD
 //	/**
 //	 * Add an ElementImproved to the list by creating a new ElementImproved at the specified coordinates
 //	 * @param x The X coordinate of the ElementImproved
@@ -355,107 +195,12 @@ public class ConnectionList
 //		addElement(e);
 //	}
 //	
-=======
-	/**
-	 * Add an Element to the list by creating a new Element at the specified coordinates
-	 * @param x The X coordinate of the Element
-	 * @param y The Y coordinate of the Element
-	 */
-	public void addElement(int x, int y)
-	{
-		Element e = new Element(x, y);
-		addElement(e);
-	}
-	
->>>>>>> 98a5899f2f1d4eb0edcdf2afc3d59f67cbfb8bb4
-	
+
 	public void setSelected(MoleculeComponent e)
 	{
 		if (e == null) // If the incoming Element doesn't exist...
 		{
-<<<<<<< HEAD
-<<<<<<< HEAD
-			if (selected != null) // And there is already a selected ElementImproved...
-=======
-			if (selectedElement != null) // And there is already a selected Element...
->>>>>>> 98a5899f2f1d4eb0edcdf2afc3d59f67cbfb8bb4
-=======
-			if (selectedElement != null) // And there is already a selected Element...
->>>>>>> 98a5899f2f1d4eb0edcdf2afc3d59f67cbfb8bb4
-			{
-				// ... clear that selected Element
-				// (this will be used when the user wishes to no longer select
-				// anything, and clicks an empty area of the grid.
-				element.get(selected.getKey()).setSelected(false);
-				selected = null;
-			}
 			return;
-		}
-		
-		if (element.get(e.getKey()) == null) // if the Element is not in the map
-		{
-			selected = null;
-			return;
-		}
-		
-<<<<<<< HEAD
-<<<<<<< HEAD
-		if (selected != null) // if there is a previously selected ElementImproved
-		{
-			// clear its selected state before setting the new ElementImproved's selected state:
-			element.get(selected.getKey()).setSelected(false); 
-		}
-//		if(selectedBond != null)
-//		{
-//			bonds.get(selectedBond.getKey()).setSelected(false);
-//			selectedBond = null;
-//		}
-		
-		selected = element.get(e.getKey()); // set selected to the newest ElementImproved selected
-		element.get(selected.getKey()).setSelected(true); // set the internal selection flag to true
-	}
-	
-//	public void setSelected(Bond b)
-//	{
-//		if (b == null) // If the incoming ElementImproved doesn't exist...
-//		{
-//			if (selectedBond != null) // And there is already a selected ElementImproved...
-//			{
-//				// ... clear that selected ElementImproved
-//				// (this will be used when the user wishes to no longer select
-//				// anything, and clicks an empty area of the grid.
-//				element.get(selectedBond.getKey()).setSelected(false);
-//				selectedBond = null;
-//			}
-//			return;
-//		}
-//		
-//		if (element.get(b.getKey()) == null) // if the ElementImproved is not in the map
-//		{
-//			selectedBond = null;
-//			return;
-//		}
-//		if(selectedElement != null)
-//		{
-//			element.get(selectedElement.getKey()).setSelected(false);
-//			selectedElement = null;
-//		}
-//		if(selectedBond != null)
-//		{
-//			bonds.get(selectedBond.getKey()).setSelected(false);
-//		}
-//		selectedBond = bonds.get(b.getKey());
-//		bonds.get(selectedBond.getKey()).setSelected(true);
-//	}
-=======
-		if (selectedElement != null) // if there is a previously selected Element
-		{
-=======
-		if (selectedElement != null) // if there is a previously selected Element
-		{
->>>>>>> 98a5899f2f1d4eb0edcdf2afc3d59f67cbfb8bb4
-			// clear its selected state before setting the new Element's selected state:
-			element.get(selectedElement.getKey()).setSelected(false); 
 		}
 		if(selectedBond != null)
 		{
@@ -512,7 +257,10 @@ public class ConnectionList
 	
 	public void setSelected(Arrow a)
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 98a5899f2f1d4eb0edcdf2afc3d59f67cbfb8bb4
 	{
 		if (a == null) // If the incoming Bond doesn't exist...
 		{
