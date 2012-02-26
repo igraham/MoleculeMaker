@@ -40,7 +40,7 @@ public class Arrow extends MoleculeConnectorComponent
 	{
 		// Draw the arrow and the mid-point selection circle
 		super.draw(g, offset, offset_y);
-		
+
 		// Now draw the arrow's head
 		Arrow.drawBarbs(g, connector, connectee);
 	}

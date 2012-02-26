@@ -1,4 +1,5 @@
 package moleculeMaker;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,6 +21,7 @@ public class ConnectionList
 	{
 		element = new HashMap<String, Element>();
 		bonds = new HashMap<String, Bond>();
+
 //		selectedElement = null;
 //		selectedBond = null;
 		selected = null;
@@ -46,12 +48,13 @@ public class ConnectionList
 		element = new HashMap<String, Element>();
 	}
 	
+
 	private void removeBonds(MoleculeComponent selected2)
 	{
 		// Kudos to: http://joecode.blogspot.com/2004/10/hash-map-iteration.html
 		// for the nifty iteration technique, and thanks to:
-    	// http://stackoverflow.com/questions/1110404/remove-ElementImproveds-from-a-hashset-while-iterating
-    	// for pointing out, I needed to use i.remove() instead of BondImproved.remove(key);
+    	// http://stackoverflow.com/questions/1110404/remove-Elements-from-a-hashset-while-iterating
+    	// for pointing out, I needed to use i.remove() instead of Bond.remove(key);
 		
 		String tempKey = selected2.getKey().replace(" ", "");
 		
@@ -158,7 +161,7 @@ public class ConnectionList
 
 	public Element[] getCoordinates()
 	{
-		// Return null if there are no ElementImproveds in map
+		// Return null if there are no Elements in map
 		if (element.keySet().size() == 0) { return null; }
 		
 		Element[] temp = new Element[element.keySet().size()];
@@ -192,11 +195,11 @@ public class ConnectionList
 	
 	public void setSelected(MoleculeComponent e)
 	{
-		if (e == null) // If the incoming ElementImproved doesn't exist...
+		if (e == null) // If the incoming Element doesn't exist...
 		{
 			if (selected != null) // And there is already a selected ElementImproved...
 			{
-				// ... clear that selected ElementImproved
+				// ... clear that selected Element
 				// (this will be used when the user wishes to no longer select
 				// anything, and clicks an empty area of the grid.
 				element.get(selected.getKey()).setSelected(false);
@@ -205,7 +208,7 @@ public class ConnectionList
 			return;
 		}
 		
-		if (element.get(e.getKey()) == null) // if the ElementImproved is not in the map
+		if (element.get(e.getKey()) == null) // if the Element is not in the map
 		{
 			selected = null;
 			return;
@@ -259,9 +262,8 @@ public class ConnectionList
 //		bonds.get(selectedBond.getKey()).setSelected(true);
 //	}
 	
-	
 	/**
-	 * Clears the selected ElementImproved and also removes it from map the ElementImproveds.
+	 * Clears the selected Element and also removes it from map the Elements.
 	 */
 	public void removeSelected()
 	{
@@ -301,7 +303,7 @@ public class ConnectionList
 	
 	public String toString()
 	{
-		return "ElementImproved List: " + element.toString();
+		return "Element List: " + element.toString();
 	}
 	
 	public Element getElementAt(int i, int j) {
@@ -327,12 +329,20 @@ public class ConnectionList
 		return new ArrayList<Bond>(bonds.values());
 	}
 
-	public void setBonds(HashMap<String, Bond> BondImproveds) {
-		this.bonds = BondImproveds;
+	public void setBonds(HashMap<String, Bond> Bonds) {
+		this.bonds = Bonds;
+	}
+	
+	public void setArrows(HashMap<String, Arrow> arrows) {
+		this.arrows = arrows;
 	}
 
 	public HashMap<String, Element> getMap() {
 		return element;
+	}
+	
+	public HashMap<String, Arrow> getArrowHash() {
+		return arrows;
 	}
 
 	public HashMap<String, Bond> getBondHash() {
