@@ -134,17 +134,17 @@ public class XML_Problem
 				//check to see if they are null or something.
 				org.w3c.dom.Element loc1 = doc.createElement("LocationA");
 					Attr x1 = doc.createAttribute("x");
-					x1.setValue(""+b.getBonder().getX());
+					x1.setValue(""+b.getConnector().getX());
 					Attr y1 = doc.createAttribute("y");
-					y1.setValue(""+b.getBonder().getY());
+					y1.setValue(""+b.getConnector().getY());
 					loc1.setAttributeNode(x1);
 					loc1.setAttributeNode(y1);
 				bond.appendChild(loc1);
 				org.w3c.dom.Element loc2 = doc.createElement("LocationB");
 					Attr x2 = doc.createAttribute("x");
-					x2.setValue(""+b.getBonder().getX());
+					x2.setValue(""+b.getConnector().getX());
 					Attr y2 = doc.createAttribute("y");
-					y2.setValue(""+b.getBonder().getY());
+					y2.setValue(""+b.getConnector().getY());
 					loc1.setAttributeNode(x2);
 					loc1.setAttributeNode(y2);
 				bond.appendChild(loc2);

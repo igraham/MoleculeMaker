@@ -1,6 +1,7 @@
 package moleculeMaker;
 import javax.swing.JOptionPane;
 
+
 /*
  * Version 0.1
  * 		- Draw graph
@@ -22,10 +23,20 @@ import javax.swing.JOptionPane;
  * Version 0.6
  * 		- Menu Bar now functions
  * 		- Added two molecules, side by side.
+ * Version 0.7
+ * 		- Limit grid lines
+ * 		- Grid scaling according to window size
+ * Version 0.8
+ * 		- Massive code restructuring
+ *				- Eliminated lots of repeated code
+ *				- Elements, bonds, and arrows now inherit from the same
+ *				  base classes (MoleculeComponent and MoleculeConnectorComponent) 
+ * 		- Added arrows
  * 
  * TODO:
- * 		- Arrows
- * 		- Limit grid size
+ * 		- Fix up arrow drawing
+ * 		- Allow selection of bonds and arrows
+ * 		- Add attributes for bonds and arrows
  * 		- Electrophile and nucleophile attributes for element attributes
  * 		- XML Export
  * 		- Detailed code comments
@@ -46,19 +57,10 @@ public class MMController
 		System.out.println("Received Click");
 	}
 	
-//	public void displayElementAttributes(Element e)
-//	{	
-//		view.south.removeAll();
-//		view.south.add(new ElementAttributesModifier(e));
-//		
-//		view.validate();
-//		view.repaint();
-//	}
-	
-	public void displayElementAttributes(Element e)
+	public void displayAttributes(MoleculeComponent e)
 	{	
 		view.south.removeAll();
-		view.south.add(new ElementAttributesModifier(e));
+		view.south.add(new AttributesModifier(e));
 		
 		view.validate();
 		view.repaint();

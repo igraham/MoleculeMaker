@@ -15,10 +15,10 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
-public class ElementAttributesModifier extends JPanel implements ActionListener
+public class AttributesModifier extends JPanel implements ActionListener
 {
 	
-	Element element;
+	MoleculeComponent element;
 	JTextField name;
 	JButton save;
 	JComboBox electronCount;
@@ -27,16 +27,27 @@ public class ElementAttributesModifier extends JPanel implements ActionListener
 	// TODO Load an elements attributes from ElementList.getSelected()
 	// TODO Save an elements new attributes
 	
-	public ElementAttributesModifier(Element element)
+	public AttributesModifier(MoleculeComponent e)
 	{
-		if (element != null)
+		if (e != null)
 		{
-			System.out.println("Passing in " + element + " to ElementAttributesModifier");
-			this.element = element;
+			if (e.getClass() == Element.class) {
+				System.out.println("Passing in " + e + " to ElementAttributesModifier");
+				this.element = (Element) e;
+				
+				drawElementAttributes();
+				
+				save.addActionListener(this);
+			}
+			else if (e.getClass() == Bond.class) {
+				JLabel unselected = new JLabel("You've selected a bond... Bond options coming soon!");
+				this.add(unselected);
+			}
+			else if (e.getClass() == Arrow.class) {
+				JLabel unselected = new JLabel("You've selected an arrow... Arrow options coming soon!");
+				this.add(unselected);
+			}
 			
-			draw();
-			
-			save.addActionListener(this);
 		}
 		else
 		{
@@ -46,14 +57,14 @@ public class ElementAttributesModifier extends JPanel implements ActionListener
 		
 	}
 
-	private void draw()
+	private void drawElementAttributes()
 	{
 		setLayout(new GridLayout(4,1));
 		
 		JPanel namePanel = new JPanel();
 		namePanel.setLayout(new FlowLayout());
 		JLabel nameLabel = new JLabel("Element symbol: ");
-		name = new JTextField(element.getName());
+		name = new JTextField(((Element) element).getName());
 		name.setPreferredSize(new Dimension(100, 30));
 		namePanel.add(nameLabel);
 		namePanel.add(name);
@@ -74,7 +85,7 @@ public class ElementAttributesModifier extends JPanel implements ActionListener
 		chargePanel.add(neg);
 		
 		// Yuck, a switch? Really Derek!?!
-		switch(element.getCharge())
+		switch(((Element) element).getCharge())
 		{
 		case 0:
 			pos.setSelected(true);
@@ -100,7 +111,7 @@ public class ElementAttributesModifier extends JPanel implements ActionListener
 		electronCount.addItem("5");
 		electronCount.addItem("6");
 //		System.out.println("The electron count is " + element.getElectrons());
-		electronCount.setSelectedIndex(element.getElectrons());
+		electronCount.setSelectedIndex(((Element) element).getElectrons());
 		
 		save = new JButton("Save");
 		
@@ -133,8 +144,8 @@ public class ElementAttributesModifier extends JPanel implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent arg0)
 	{
-		element.setName(name.getText());
-		element.setElectrons(electronCount.getSelectedIndex());
-		element.setCharge(selectedIndex(charge));
+		((Element) element).setName(name.getText());
+		((Element) element).setElectrons(electronCount.getSelectedIndex());
+		((Element) element).setCharge(selectedIndex(charge));
 	}
 }

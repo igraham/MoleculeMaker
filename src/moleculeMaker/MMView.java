@@ -12,6 +12,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 
+
 @SuppressWarnings("serial")
 public class MMView extends JFrame implements ComponentListener
 {
@@ -24,7 +25,7 @@ public class MMView extends JFrame implements ComponentListener
 	MoleculeGrid gridA;
 	MoleculeGrid gridB;
 	JMenuBar menuBar;
-	ElementAttributesModifier mod;
+	AttributesModifier mod;
 	JPanel center = new JPanel();
 	JPanel south = new JPanel();
 	
@@ -48,13 +49,13 @@ public class MMView extends JFrame implements ComponentListener
 		
 		// Graph panel
 		gridA = new MoleculeGrid(mmc);
-		gridB = new MoleculeGrid(mmc);
-		mod = new ElementAttributesModifier(null);
+//		gridB = new MoleculeGrid(mmc);
+		mod = new AttributesModifier(null);
 
 		// Grid's grid layout
 		JPanel gridLayout = new JPanel(new GridLayout(1,2));
 		gridLayout.add(gridA);
-		gridLayout.add(gridB);
+//		gridLayout.add(gridB);
 		
 		add(gridLayout, BorderLayout.CENTER);
 		
@@ -126,9 +127,9 @@ public class MMView extends JFrame implements ComponentListener
 //		mmc.displayElementAttributes(e); // logic for this belongs in controller
 //	}
 
-	public void displayElementAttributes(Element e)
+	public void displayAttributes(MoleculeComponent e)
 	{	
-		mmc.displayElementAttributes(e); // logic for this belongs in controller
+		mmc.displayAttributes(e); // logic for this belongs in controller
 	}
 
 	

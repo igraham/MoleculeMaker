@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 
+
 @SuppressWarnings("serial")
 public class MoleculeGrid extends JButton implements MouseListener, MouseMotionListener, KeyListener {
 
@@ -31,23 +32,24 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 	public static int OBJECT_OFFSET_X = GRID_SPACING / 4;
 	public static int OBJECT_OFFSET_Y = GRID_SPACING / 4;
 
-	final int LEFT_CLICK = 1;
-	final int RIGHT_CLICK = 3;
+	private final int LEFT_CLICK = 1;
+	private final int RIGHT_CLICK = 3;
 
-	int highlightRow = -1;
-	int highlightColumn = -1;
+	private int highlightRow = -1;
+	private int highlightColumn = -1;
 
-	int mouseX = -1;
-	int mouseY = -1;
+	private int mouseX = -1;
+	private int mouseY = -1;
 
-	int roundX;
-	int roundY;
+	private int roundX;
+	private int roundY;
 
-	boolean leftPressed = false;
-	boolean rightPressed = false;
+	private boolean leftPressed = false;
+	private boolean rightPressed = false;
 
-	boolean drawBondLine = false; // whether a moving arrow should be drawn (for right-click bond link formation)
-	boolean drawCurvedArrow = false;
+	private boolean drawBondLine = false; // whether a moving arrow should be drawn (for right-click bond link formation)
+//	private boolean drawCurvedArrow = false;
+	private boolean drawArrowLine = false;
 
 	//		boolean movingElement;
 
@@ -59,6 +61,7 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 		this.addMouseMotionListener(this);
 		this.addMouseListener(this);
 
+		// View should set focus, remove this later on:
 		this.isFocusable();
 		this.requestFocusInWindow();
 		this.setFocusTraversalKeysEnabled(false);
@@ -70,9 +73,23 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 		clearScreen(g);
 		drawGrid(g);
 		drawElements(g);
-		drawBondDrag(g);
+		
+		if (drawBondLine == true) {
+//			drawBondDrag(g);
+			Bond.drawDrag(g, elist.getSelected(), roundX, roundY);
+		}
+		if (drawArrowLine  == true) {
+			Arrow.drawDrag(g, elist.getSelected(), roundX, roundY);
+//			drawArrowDrag(g);
+		}
+		
 		drawBonds(g);
-		drawArrow(g);
+		drawArrows(g);
+	}
+
+	private void drawArrows(Graphics g) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	public static void setGridSpacing(int width, int height)
@@ -137,67 +154,65 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 		}
 	}
 
-	private void drawBondDrag(Graphics g)
-	{	
-		if (drawBondLine == true)
-		{	
-			g.setColor(Color.MAGENTA);
-
-			Graphics2D g2d = (Graphics2D)g;
-			g2d.setStroke(new BasicStroke(3));
-
-
-
-			g2d.drawLine(elist.getSelected().getX() * GRID_SPACING + OBJECT_OFFSET,
-					elist.getSelected().getY() * GRID_SPACING_Y + OBJECT_OFFSET_Y,
-					roundX * GRID_SPACING + OBJECT_OFFSET, 
-					roundY * GRID_SPACING_Y + OBJECT_OFFSET_Y);
-		}
-	}
+//	private void drawBondDrag(Graphics g)
+//	{	
+//			
+//		g.setColor(Color.MAGENTA);
+//
+//		Graphics2D g2d = (Graphics2D)g;
+//		g2d.setStroke(new BasicStroke(3));
+//
+//
+//
+//		g2d.drawLine(elist.getSelected().getX() * GRID_SPACING + OBJECT_OFFSET,
+//				elist.getSelected().getY() * GRID_SPACING_Y + OBJECT_OFFSET_Y,
+//				roundX * GRID_SPACING + OBJECT_OFFSET, 
+//				roundY * GRID_SPACING_Y + OBJECT_OFFSET_Y);
+//	}
 	
-	private void drawArrow(Graphics g)
-	{
-		if(drawCurvedArrow)
-		{
-			g.setColor(Color.MAGENTA);
-			
-			Graphics2D g2d = (Graphics2D)g;
-			g2d.setStroke(new BasicStroke(3));
-
-			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
-					RenderingHints.VALUE_ANTIALIAS_ON);
-			int x1 = elist.getSelected().getX() * GRID_SPACING + OBJECT_OFFSET;
-			int y1 = elist.getSelected().getY() * GRID_SPACING_Y + OBJECT_OFFSET_Y;
-			int x2 = roundX * GRID_SPACING + OBJECT_OFFSET;
-			int y2 = roundY * GRID_SPACING_Y + OBJECT_OFFSET_Y;
-			Point p1 = new Point(x1, y1);
-			Point p3 = new Point(x2, y2);
-			
-			g2d.drawLine(x1, y1, x2, y2);
-			drawBarbs(g2d, p3, p1);
-		}
-	}
+//	private void drawArrow(Graphics g)
+//	{
+//		if(drawCurvedArrow)
+//		{
+//			g.setColor(Color.MAGENTA);
+//			
+//			Graphics2D g2d = (Graphics2D)g;
+//			g2d.setStroke(new BasicStroke(3));
+//
+//			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
+//					RenderingHints.VALUE_ANTIALIAS_ON);
+//			int x1 = elist.getSelected().getX() * GRID_SPACING + OBJECT_OFFSET;
+//			int y1 = elist.getSelected().getY() * GRID_SPACING_Y + OBJECT_OFFSET_Y;
+//			int x2 = roundX * GRID_SPACING + OBJECT_OFFSET;
+//			int y2 = roundY * GRID_SPACING_Y + OBJECT_OFFSET_Y;
+//			Point p1 = new Point(x1, y1);
+//			Point p3 = new Point(x2, y2);
+//			
+//			g2d.drawLine(x1, y1, x2, y2);
+////			drawBarbs(g2d, p3, p1);
+//		}
+//	}
 	
-	private void drawBarbs(Graphics2D g2, Point tip, Point tail)
-	{
-		double barbLength = 10;
-		double angle = Math.toRadians(35);
-		double dy = tip.y - tail.y;
-		double dx = tip.x - tail.x;
-		System.out.println("Change in Y: "+dy);
-		System.out.println("Change in X: "+dx);
-		double theta = Math.atan2(dy, dx);
-		System.out.println("Angle of Theta: "+theta);
-		double x, y, rho = theta + angle;
-		for(int i = 0; i < 2; i++)
-		{
-			System.out.println("Value of angle Rho: "+Math.toDegrees(rho));
-			x = tip.x - barbLength * Math.cos(rho);
-			y = tip.y - barbLength * Math.sin(rho);
-			g2.draw(new Line2D.Double(tip.x, tip.y, x, y));
-			rho = theta - angle;
-		}
-	}
+//	private void drawBarbs(Graphics2D g2, Point tip, Point tail)
+//	{
+//		double barbLength = 10;
+//		double angle = Math.toRadians(35);
+//		double dy = tip.y - tail.y;
+//		double dx = tip.x - tail.x;
+//		System.out.println("Change in Y: "+dy);
+//		System.out.println("Change in X: "+dx);
+//		double theta = Math.atan2(dy, dx);
+//		System.out.println("Angle of Theta: "+theta);
+//		double x, y, rho = theta + angle;
+//		for(int i = 0; i < 2; i++)
+//		{
+//			System.out.println("Value of angle Rho: "+Math.toDegrees(rho));
+//			x = tip.x - barbLength * Math.cos(rho);
+//			y = tip.y - barbLength * Math.sin(rho);
+//			g2.draw(new Line2D.Double(tip.x, tip.y, x, y));
+//			rho = theta - angle;
+//		}
+//	}
 
 	// Probably doesn't work!
 	private void drawBonds(Graphics g)
@@ -269,11 +284,12 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 					System.out.println("NO :(");
 				}
 			}
-			Object bondee = elist.getElementAt(roundX, roundY);
-			Object bonder = elist.getSelected();
+			
+			MoleculeComponent bondee = elist.getElementAt(roundX, roundY);
+			MoleculeComponent bonder = elist.getSelected();
 			if(bonder == null || bondee == null)
 			{
-				drawCurvedArrow = false;
+				drawArrowLine = false;
 			}
 			else
 			{
@@ -286,7 +302,7 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 				//		1. Clicked unselected element -> selected that element
 				//		2. Clicked selected element -> unselect it
 
-				Element ePreviouslySelected = elist.getSelected(); // get selected element
+				MoleculeComponent ePreviouslySelected = elist.getSelected(); // get selected element
 
 				System.out.println("You clicked an existing element!");
 
@@ -303,7 +319,7 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 					System.out.println("That element has been selected!");
 				}
 
-				mmc.view.displayElementAttributes(eJustClicked);
+				mmc.view.displayAttributes(eJustClicked);
 
 
 			}
@@ -319,10 +335,10 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 				{
 					System.out.println("nothing is currently selected, so adding a new element.");
 
-					Element newElement = new Element(roundX, roundY); // Create new element
+					MoleculeComponent newElement = new Element(roundX, roundY); // Create new element
 
-					elist.addElement(newElement); // add it to the list
-					mmc.view.displayElementAttributes(newElement);
+					elist.add(newElement); // add it to the list
+					mmc.view.displayAttributes(newElement);
 
 					elist.setSelected(elist.getElementAt(newElement.getKey())); // set it as selected
 				}
@@ -332,10 +348,10 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 					//elist.setSelected(null); // remove selection
 
 					// duplicate code from above if-statement (remove soon):
-					Element newElement = new Element(roundX, roundY); // Create new element
-					elist.addElement(newElement); // add it to the list
+					MoleculeComponent newElement = new Element(roundX, roundY); // Create new element
+					elist.add(newElement); // add it to the list
 					elist.setSelected(elist.getElementAt(newElement.getKey())); // set it as selected
-					mmc.view.displayElementAttributes(newElement);
+					mmc.view.displayAttributes(newElement);
 				}
 			}
 
@@ -350,7 +366,7 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 				roundX = getGraphCoordinateX(e.getX());
 				roundY = getGraphCoordinateY(e.getY());
 
-				Element bondee = elist.getElementAt(roundX, roundY);
+				MoleculeComponent bondee = elist.getElementAt(roundX, roundY);
 
 				if (bondee == null) // user didn't let go on element
 				{
@@ -371,7 +387,7 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 
 					System.out.println("Bonding " + elist.getSelected() + " to " + bondee + ".");
 
-					elist.addBond(elist.getSelected(), bondee);
+					elist.add(new Bond(elist.getSelected(), bondee));
 
 					System.out.println("Current bonds are " + elist.getBonds());
 
@@ -472,11 +488,22 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 
 		if(leftPressed && !rightPressed)
 		{
+			
+			/* If left click and drag:
+			 * 		1. If clicked on nothing, don't draw anything
+			 * 		2. If clicked on bond, draw line from bond (bond checked first because its
+			 * 				points aren't on the grid system)
+			 * 		2. If clicked on element, draw line from element		
+			 */
+			
+			
 			drawBondLine = false;
+			
+			
 			roundX = getGraphCoordinateX(e.getX());
 			roundY = getGraphCoordinateY(e.getY());
 
-			if(drawCurvedArrow)
+			if(drawArrowLine)
 			{
 				repaint();
 				return;
@@ -503,20 +530,20 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 				{
 					System.out.println("Did it reach here?");
 					elist.setSelected(bArrowStart);
-					drawCurvedArrow = true;
+					drawArrowLine = true;
 				}
 			}
 			else
 			{
 				elist.setSelected(elist.getElementAt(eArrowStart.getKey()));//Start the arrow here
-				drawCurvedArrow = true;
+				drawArrowLine = true;
 			}
 
 		}
 
 		if (rightPressed && !leftPressed) // Right click is for bonding
 		{
-			drawCurvedArrow = false;
+			drawArrowLine = false;
 			/* Cases to consider:
 			 * 1. If user is already dragging (this should come first!)
 			 * 1. Clicked on element
@@ -559,11 +586,11 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 		// TODO Auto-generated method stub
 		if (e.getKeyCode() == 8)
 		{
-			Element currentElement = elist.getSelected();
+			MoleculeComponent currentElement = elist.getSelected();
 			if (currentElement != null)
 			{
 				drawBondLine = false;
-				elist.removeSelectedElement();
+				elist.removeSelected();
 				//mmc.view.displayElementAttributes(null);
 
 				repaint();
