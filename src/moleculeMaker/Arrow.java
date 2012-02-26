@@ -107,6 +107,61 @@ public class Arrow extends MoleculeConnectorComponent
 		{
 			return null;
 		}
+<<<<<<< HEAD
+=======
+	}
+	
+	public void getDirection(Object reactor, Object reactee, Element e, Bond b)
+	{
+		if(e.getX() == startPoint.getX() && e.getY() == startPoint.getY())
+		{
+			reactor = e;
+		}
+		else if(e.getX() == endPoint.getX() && e.getY() == endPoint.getY())
+		{
+			reactee = e;
+		}
+		else
+		{
+			System.out.println("Element is neither end nor start point. Wha?");
+			return;
+		}
+		if(b.getX() == startPoint.getX() && b.getY() == startPoint.getY())
+		{
+			reactor = b;
+		}
+		else if(b.getX() == startPoint.getX() && b.getY() == startPoint.getY())
+		{
+			reactee = b;
+		}
+		else
+		{
+			System.out.println("Bond is neither end nor start point. WHAT!?");
+		}
+	}
+	
+	public String toString()
+	{
+		Object reactor = null;
+		Object reactee = null;
+		getDirection(reactor, reactee, e, b);
+		if(reactor.getClass() == Element.class)
+		{
+			return "(" + ((Element) reactor).getX() + ", " + ((Element) reactor).getY() + ") --> ("
+					+ ((Bond) reactor).getX() + ", " + ((Bond) reactor).getY() + ")";
+		}
+		else if(reactor.getClass() == Bond.class)
+		{
+			return "(" + ((Bond) reactor).getX() + ", " + ((Bond) reactor).getY() + ") --> ("
+					+ ((Element) reactor).getX() + ", " + ((Element) reactor).getY() + ")";
+		}
+		return "";
+	}
+	
+	@Override
+	protected String getKey() {
+		return e.getKey()+";"+b.getKey();
+>>>>>>> 98a5899f2f1d4eb0edcdf2afc3d59f67cbfb8bb4
 	}
 	
 	public void getDirection(Object reactor, Object reactee, Element e, Bond b)
