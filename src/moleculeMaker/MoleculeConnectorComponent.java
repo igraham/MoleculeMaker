@@ -133,9 +133,11 @@ public class MoleculeConnectorComponent extends MoleculeComponent {
 	{
 		//recalculateMiddleXY();
 
+		
 
-		g.setColor(getColor());
+//		g.setColor(getColor());
 		Graphics2D g2d = (Graphics2D)g;
+		g2d.setColor(getColor());
 		g2d.setStroke(new BasicStroke(3));
 
 		// Draw a line
@@ -143,16 +145,6 @@ public class MoleculeConnectorComponent extends MoleculeComponent {
 				connector.getY() * MoleculeGrid.GRID_SPACING_Y + offset_y,
 				connectee.getX() * MoleculeGrid.GRID_SPACING + offset,
 				connectee.getY() * MoleculeGrid.GRID_SPACING_Y + offset_y);
-		
-//		System.out.println("Absolute coordinates are: (" + absBonderX + "," + absBonderY + ")");
-//		System.out.println("Absolute coordinates are: (" + absBondeeX + "," + absBondeeY + ")");
-//		
-//		System.out.println("X Midpoint is: " + getX());
-//		System.out.println("Y midpoint is: " + getY());
-//		System.out.println("bonder x,y is: "+ bonder.getX() + ", " + bonder.getX());
-//		System.out.println("bondee x,y is: " + bondee.getX() + ", " + bondee.getY());
-//		System.out.println("grid_spacing_x: " + MoleculeGridImproved.GRID_SPACING);
-//		System.out.println("grid_spacing_y: " + MoleculeGridImproved.GRID_SPACING_Y);
 		
 		// Make sure circles don't "ovalize".
 		int smallestSize = MoleculeGrid.GRID_SPACING;

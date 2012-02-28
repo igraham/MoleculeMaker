@@ -46,10 +46,10 @@ public class Arrow extends MoleculeConnectorComponent
 
 	}
 	
-	@Override
-	protected String getKey() {
-		return e.getKey()+";"+b.getKey();
-	}
+//	@Override
+//	protected String getKey() {
+//		return e.getKey()+";"+b.getKey();
+//	}
 	
 	public static void drawBarbs(Graphics g2, MoleculeComponent tip, MoleculeComponent tail)
 	{

@@ -19,8 +19,8 @@ public abstract class MoleculeComponent {
 	}
 	
 	public Color getColor() {
-		if (bonding)
-			return Color.GREEN;
+//		if (bonding)
+//			return Color.GREEN;
 		if (selected)
 			return Color.RED;
 		if (dragging)

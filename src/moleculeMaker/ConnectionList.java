@@ -1,5 +1,6 @@
 package moleculeMaker;
-import java.awt.Point;
+
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -7,22 +8,16 @@ import java.util.Iterator;
 
 public class ConnectionList 
 {
-	private HashMap<String, Element> element;
+	private HashMap<String, Element> elements;
 	private HashMap<String, Bond> bonds;
 	private HashMap<String, Arrow> arrows;
-	
-//	private Element selectedElement;
-//	private Bond selectedBond;
+
 	private MoleculeComponent selected;
-//	private Element dragging;
-//	private Element moving;
 
 	public ConnectionList()
 	{
-		element = new HashMap<String, Element>();
+		elements = new HashMap<String, Element>();
 		bonds = new HashMap<String, Bond>();
-//		selectedElement = null;
-//		selectedBond = null;
 		selected = null;
 
 		arrows = new HashMap<String, Arrow>();
@@ -31,24 +26,50 @@ public class ConnectionList
 	
 	public void clearBonds()
 	{
-//		selectedElement = null;
-//		selectedBond = null;
 		selected = null;
-//		dragging = null;
-//		moving = null;
 		bonds = new HashMap<String, Bond>();
 	}
 	
 	public void clearElements()
 	{
-//		selectedElement = null;
-//		selectedBond = null;
 		selected = null;
-//		dragging = null;
-//		moving = null;
 		bonds = new HashMap<String, Bond>();
-		element = new HashMap<String, Element>();
+		elements = new HashMap<String, Element>();
 	}
+	
+	/**
+	 * Accepts a location, and returns a MoleculeComponent if one exists
+	 * at the specified location
+	 * @param x The absolute X coordinate clicked
+	 * @param y The absolute Y coordinate clicked
+	 * @return The MoleculeComponent at the specified location, or null
+	 */
+	public Bond clickedBond(int x, int y)
+	{
+		for(Bond b : getBonds())
+		{
+			if (b.contains(x, y))
+			{
+				return b;
+			}
+		}
+		
+		return null;
+	}
+	
+	public Arrow clickedArrow(int x, int y)
+	{
+		for(Arrow a : getArrows())
+		{
+			if (a.contains(x, y))
+			{
+				return a;
+			}
+		}
+		
+		return null;
+	}
+
 	
 	private void removeBonds(MoleculeComponent selected2)
 	{
@@ -77,7 +98,7 @@ public class ConnectionList
 	public void add(MoleculeComponent e)
 	{
 		if (e.getClass() == Element.class) {
-			element.put(e.getKey(), (Element) e);
+			elements.put(e.getKey(), (Element) e);
 		}
 		else if (e.getClass() == Bond.class) {
 			bonds.put(e.getKey(), (Bond) e);
@@ -120,7 +141,7 @@ public class ConnectionList
 		if (e == null) { return; }
 		
 		if (e.getClass() == Element.class) {
-			element.remove(e.getKey());
+			elements.remove(e.getKey());
 		}
 		else if (e.getClass() == Bond.class) {
 			bonds.remove(e.getKey());
@@ -132,43 +153,15 @@ public class ConnectionList
 //		element.remove(e.getKey());
 	}
 
-//	public void addBond(Element e1, Element e2)
-//	{
-//		if (e1 == null || e2 == null) {
-//			System.out.println("*** BondImproveding failed. Null is not allowed!");
-//			return;
-//		}
-//		
-//		if (e1.getKey().equals(e2.getKey())) {
-//			System.out.println("*** Cannot BondImproved with the same point!");
-//			return;
-//		}
-//		
-//		
-//		String BondImprovedKey = Bond.getKey(e1, e2);
-//		
-//		if(!bonds.containsKey(BondImprovedKey)) {
-//			Bond temp = new Bond(e1, e2);
-//			System.out.println("Temp BondImproved is: " + temp);
-//			System.out.println("\tTemp BondImproved's BondImproveder is: " + temp.getConnector());
-//			System.out.println("\tTemp BondImproved's BondImprovedee is: " + temp.getConnectee());
-//			bonds.put(BondImprovedKey, temp);
-//		}
-//		else {
-//			System.out.println("This BondImproved already exists!");
-//		}
-//		
-//	}
-
 	public Element[] getCoordinates()
 	{
 		// Return null if there are no Elements in map
-		if (element.keySet().size() == 0) { return null; }
+		if (elements.keySet().size() == 0) { return null; }
 		
-		Element[] temp = new Element[element.keySet().size()];
+		Element[] temp = new Element[elements.keySet().size()];
 		
 		int i = 0;
-		for (Element e : element.values())
+		for (Element e : elements.values())
 		{
 			temp[i] = e;
 			i++;
@@ -179,7 +172,42 @@ public class ConnectionList
 
 	public boolean hasElements()
 	{
-		return element.keySet().size() > 0;
+		return elements.keySet().size() > 0;
+	}
+	
+	/**
+	 * Returns the element, bond, or arrow that was clicked on
+	 * @return
+	 */
+	public MoleculeComponent getClickedComponent(int x, int y)
+	{
+		// Check for element
+		int roundX = MoleculeGrid.getGraphCoordinateX(x);
+		int roundY = MoleculeGrid.getGraphCoordinateY(y);
+		
+		MoleculeComponent component = getElementAt(roundX, roundY);
+		if (component != null)
+		{
+			return component;
+		}
+		
+		for(Bond b : getBonds())
+		{
+			if (b.contains(x, y))
+			{
+				return b;
+			}
+		}
+		
+		for(Arrow a : getArrows())
+		{
+			if (a.contains(x, y))
+			{
+				return a;
+			}
+		}
+		
+		return null;
 	}
 	
 //	/**
@@ -196,27 +224,60 @@ public class ConnectionList
 
 	public void setSelected(MoleculeComponent e)
 	{
-		if (e == null) // If the incoming Element doesn't exist...
+		if (e == null) // If null, clear selection
 		{
+			if (selected != null) {
+				if (selected.getClass() == Element.class) {
+				elements.get(selected.getKey()).setSelected(false); // set the internal selection flag to true
+				}
+				else if (selected.getClass() == Bond.class) {
+					bonds.get(selected.getKey()).setSelected(false); // set the internal selection flag to true
+				}
+				else if (selected.getClass() == Arrow.class) {
+					arrows.get(selected.getKey()).setSelected(false);
+				}
+			}
+			
+			selected = null;
 			return;
 		}
 		
-		selected = element.get(e.getKey()); // set selected to the newest Element selected
-		element.get(selected.getKey()).setSelected(true); // set the internal selection flag to true
+		if (e.getClass() == Element.class) {
+			selected = elements.get(e.getKey()); // set selected to the newest Element selected
+			elements.get(selected.getKey()).setSelected(true); // set the internal selection flag to true
+		}
+		else if (e.getClass() == Bond.class) {
+			selected = bonds.get(e.getKey());
+			bonds.get(selected.getKey()).setSelected(true);
+		}
+		else if (e.getClass() == Arrow.class) {
+			selected = arrows.get(e.getKey());
+			arrows.get(selected.getKey()).setSelected(true);
+		}
+		
 	}
 	
 
 	/**
-	 * Clears the selected Element and also removes it from map the Elements.
+	 * Clears the selected element, bond, or arrow and also removes it from its
+	 * appropriate HashMap.
 	 */
 	public void removeSelected()
 	{
 		if (selected == null) { return; }
 		
-		removeBonds(selected);
-		element.remove(selected.getKey());
+		if (selected.getClass() == Element.class) {
+			removeBonds(selected); // if an element is deleted, attached bonds need to go too!
+			elements.remove(selected.getKey());	
+		}
+		else if (selected.getClass() == Bond.class) {
+			bonds.remove(selected.getKey());
+		}
+		else if (selected.getClass() == Arrow.class) {
+			arrows.remove(selected.getKey());
+		}
+		 
 		selected = null;
-		
 	}
 	
 	public MoleculeComponent getSelected()
@@ -247,7 +308,7 @@ public class ConnectionList
 	
 	public String toString()
 	{
-		return "Element List: " + element.toString();
+		return "Element List: " + elements.toString();
 	}
 	
 	public Element getElementAt(int i, int j) {
@@ -257,7 +318,7 @@ public class ConnectionList
 	
 	public Element getElementAt(String key)
 	{
-		return element.get(key);
+		return elements.get(key);
 	}
 	
 //	public Element getMoving() {
@@ -272,6 +333,11 @@ public class ConnectionList
 	{
 		return new ArrayList<Bond>(bonds.values());
 	}
+	
+	public ArrayList<Arrow> getArrows()
+	{
+		return new ArrayList<Arrow>(arrows.values());
+	}
 
 	public void setBonds(HashMap<String, Bond> Bonds) {
 		this.bonds = Bonds;
@@ -282,7 +348,7 @@ public class ConnectionList
 	}
 
 	public HashMap<String, Element> getMap() {
-		return element;
+		return elements;
 	}
 	
 	public HashMap<String, Arrow> getArrowHash() {
