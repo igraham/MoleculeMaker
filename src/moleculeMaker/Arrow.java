@@ -24,10 +24,10 @@ public class Arrow extends MoleculeConnectorComponent
 	{
 		super();
 
-		System.out.println("Bond being created using: " + c1 + " and " + c2);
+		System.out.println("Arrow being created using: " + c1 + " and " + c2);
 
 		if (c1 == null || c2 == null) {
-			System.out.println("Bonder or bondee is null");
+			System.out.println("Arrower or Arrowee is null");
 			return;
 		}
 
@@ -44,6 +44,17 @@ public class Arrow extends MoleculeConnectorComponent
 		// Now draw the arrow's head
 		Arrow.drawBarbs(g, connector, connectee);
 
+	}
+	
+	public Color getColor() {
+		if (bonding)
+			return Color.BLUE; // Never called, I don't think.
+		if (selected)
+			return Color.GREEN;
+		if (dragging)
+			return Color.LIGHT_GRAY;
+		
+		return Color.BLUE;
 	}
 	
 //	@Override

@@ -133,9 +133,7 @@ public class MoleculeConnectorComponent extends MoleculeComponent {
 	{
 		//recalculateMiddleXY();
 
-		
-
-//		g.setColor(getColor());
+		g.setColor(getColor());
 		Graphics2D g2d = (Graphics2D)g;
 		g2d.setColor(getColor());
 		g2d.setStroke(new BasicStroke(3));
@@ -173,13 +171,14 @@ public class MoleculeConnectorComponent extends MoleculeComponent {
 		return radius >= distance;
 	}
 	
-	public static void drawDrag(Graphics g, MoleculeComponent e, int roundX, int roundY) {
+	// Remember kids, color needs to be specified by the extending class (ie bond or arrow)
+	public static void drawDrag(Graphics g, Color c, MoleculeComponent e, int roundX, int roundY) {
 		int spacingX = MoleculeGrid.GRID_SPACING;
 		int spacingY = MoleculeGrid.GRID_SPACING_Y;
 		int offsetX = MoleculeGrid.OBJECT_OFFSET;
 		int offsetY = MoleculeGrid.OBJECT_OFFSET_Y;
 		
-		g.setColor(Color.MAGENTA);
+		g.setColor(c);
 		
 		Graphics2D g2d = (Graphics2D)g;
 		g2d.setStroke(new BasicStroke(3));

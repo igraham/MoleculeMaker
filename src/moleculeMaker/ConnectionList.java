@@ -1,6 +1,5 @@
 package moleculeMaker;
 
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -69,6 +68,10 @@ public class ConnectionList
 		
 		return null;
 	}
+	
+//	public MoleculeConnectorComponent containsConnector() {
+//		MoleculeConnectorComponent c = new 
+//	}
 
 	
 	private void removeBonds(MoleculeComponent selected2)
@@ -108,33 +111,16 @@ public class ConnectionList
 		}
 		
 	}
-	
-//	public void add(MoleculeComponent e)
-//	{
-//		if (e.getClass() == Element.class) {
-//			element.put(e.getKey(), (Element) e);
-//		}
-//		else if (e.getClass() == Bond.class) {
-//			// Kudos to: http://joecode.blogspot.com/2004/10/hash-map-iteration.html
-//			// for the nifty iteration technique, and thanks to:
-//	    	// http://stackoverflow.com/questions/1110404/remove-ElementImproveds-from-a-hashset-while-iterating
-//	    	// for pointing out, I needed to use i.remove() instead of BondImproved.remove(key);
-//			bonds.put(e.getKey(), (Bond) e);
-////			String tempKey = e.getKey().replace(" ", "");
-////			
-////			for (Iterator<String> i = bonds.keySet().iterator(); i.hasNext();) {
-////				String key = i.next();
-////				
-////			    if (key.contains(tempKey)) {
-////			    	i.remove(); 
-////			    }
-////			}
-//		}
-//		else if (e.getClass() == Arrow.class) {
-//			arrows.put(e.getKey(), (Arrow) e);
-//		}
-//		
-//	}
+
+	public ArrayList<MoleculeConnectorComponent> getBondsAndArrows()
+	{
+		ArrayList<MoleculeConnectorComponent> temp = new ArrayList<MoleculeConnectorComponent>();
+		
+		temp.addAll(getBondComponents());
+		temp.addAll(getArrowComponents());
+		
+		return temp;
+	}
 	
 	public void remove(MoleculeComponent e)
 	{
@@ -224,6 +210,8 @@ public class ConnectionList
 
 	public void setSelected(MoleculeComponent e)
 	{
+		
+		System.out.println(">>>>>>>>> Set selected called for " + e);
 		if (e == null) // If null, clear selection
 		{
 			if (selected != null) {
@@ -334,9 +322,19 @@ public class ConnectionList
 		return new ArrayList<Bond>(bonds.values());
 	}
 	
+	public ArrayList<MoleculeConnectorComponent> getBondComponents()
+	{
+		return new ArrayList<MoleculeConnectorComponent>(bonds.values());
+	}
+	
 	public ArrayList<Arrow> getArrows()
 	{
 		return new ArrayList<Arrow>(arrows.values());
+	}
+	
+	public ArrayList<MoleculeConnectorComponent> getArrowComponents()
+	{
+		return new ArrayList<MoleculeConnectorComponent>(arrows.values());
 	}
 
 	public void setBonds(HashMap<String, Bond> Bonds) {
