@@ -15,23 +15,27 @@ import org.w3c.dom.Element;
 /**
  * <Problem>
  *  <Molecule name="molecule name">
- *      <org.w3c.dom.Element>
- *          <Location x="0" y="0" />
- *          <Label></Label>
- *          <Charge></Charge>
- *          <Electrons></Electrons>
- *          <Type></Type>
- *      </org.w3c.dom.Element>
- *      <Bond>
- *          <LocationA x="0" y="0" />
- *          <LocationB x="0" y="0" />
- *          <BondOrder></BondOrder>
+ *      <Element>
+ *          <Location x="0" y="0" /> (valid input: 0-240)
+ *          <Label></Label> (valid input: text or empty)
+ *          <Charge></Charge> (valid input: 0-2 ~ 0-None, 1-Negative, 2-Positive)
+ *          <Electrons></Electrons> (valid input: 0-6)
+ *          <Type></Type> (valid input: 0-2 ~ 0-None, 1-Ep, 2-Np)
+ *      </Element>
+ *      <Bond> (location A & B match locations on elements)
+ *          <LocationA x="0" y="0" /> (valid input: 0-240)
+ *          <LocationB x="0" y="0" /> (valid input: 0-240)
+ *          <BondOrder></BondOrder> (valid input: 1-3 ~ lines)
  *      </Bond>
  *  </Molecule>
- *  <Arrow>
- *      <LocationA x="0" y="0" name="molecule name" />
- *      <LocationB x="0" y="0" name="molecule name" />
- *      <Order></Order>
+ *  <Arrow> (arrow travels A to B. locationsA/B match locations on elements 
+ *  and middle location [locationB-locationA] of bonds)
+ *      <LocationA x="0" y="0" /> (valid input: 0-240 ~ if location is a bond, 
+ *      use it's middle point -- x:(bond.locationA.x+bond.locationB.x)/2, 
+ *      y:(bond.locationA.y+bond.locationB.y)/2)
+ *      <LocationB x="0" y="0" /> (valid input: 0-240 ~ see line above)
+ *      <Order></Order> (valid input: 2-3 ~ order the problem is solved via arrows -- 
+ *      order 1 is interpreted by the app)
  *  </Arrow>
  * </Problem>
 
@@ -142,16 +146,17 @@ public class XML_Problem
 				bond.appendChild(loc1);
 				org.w3c.dom.Element loc2 = doc.createElement("LocationB");
 					Attr x2 = doc.createAttribute("x");
-					x2.setValue(""+b.getConnector().getX());
+					x2.setValue(""+b.getConnectee().getX());
 					Attr y2 = doc.createAttribute("y");
-					y2.setValue(""+b.getConnector().getY());
+					y2.setValue(""+b.getConnectee().getY());
 					loc1.setAttributeNode(x2);
 					loc1.setAttributeNode(y2);
 				bond.appendChild(loc2);
 				org.w3c.dom.Element bOrder = doc.createElement("BondOrder");
-					//Not implemented in the Bond class just yet.
+					bOrder.appendChild(doc.createTextNode(""+b.getBondOrder()));
 				bond.appendChild(bOrder);
 		}
+		
 	}
 
 }

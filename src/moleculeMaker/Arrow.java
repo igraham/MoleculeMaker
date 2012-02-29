@@ -5,20 +5,15 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 
+/**
+ * To heck with arclines!
+ * @author Ian Graham
+ *
+ */
 public class Arrow extends MoleculeConnectorComponent
 {
-	/**
-	 * The element connection of this arrow class. It can be either the starting or ending point.
-	 */
-	private MoleculeComponent e;
-	/**
-	 * The bond connection of this arrow class. It can be either the starting or the ending point;
-	 */
-	private MoleculeComponent b;
-	/**
-	 * The radius of the arcline to be generated. This is found using two measured points and one
-	 * arbitrarily created one.
-	 */
+	
+	private int order;
 	
 	public Arrow(MoleculeComponent c1, MoleculeComponent c2)
 	{
@@ -34,6 +29,24 @@ public class Arrow extends MoleculeConnectorComponent
 		dragColor = Color.BLUE; // set the drag color for arrow lines
 		setConnectionAttributes(c1, c2);
 		recalculateMiddleXY();
+		order = 2; //Default value of 2.
+	}
+	
+	public Arrow(MoleculeComponent c1, MoleculeComponent c2, int order)
+	{
+		super();
+
+		System.out.println("Arrow being created using: " + c1 + " and " + c2);
+
+		if (c1 == null || c2 == null) {
+			System.out.println("Arrower or Arrowee is null");
+			return;
+		}
+
+		dragColor = Color.BLUE; // set the drag color for arrow lines
+		setConnectionAttributes(c1, c2);
+		recalculateMiddleXY();
+		setOrder(order);
 	}
 	
 	public void draw(Graphics g, int offset, int offset_y)
@@ -42,7 +55,7 @@ public class Arrow extends MoleculeConnectorComponent
 		super.draw(g, offset, offset_y);
 
 		// Now draw the arrow's head
-		Arrow.drawBarbs(g, connector, connectee);
+		Arrow.drawBarbs(g, connectee, connector);
 
 	}
 	
@@ -56,11 +69,6 @@ public class Arrow extends MoleculeConnectorComponent
 		
 		return Color.BLUE;
 	}
-	
-//	@Override
-//	protected String getKey() {
-//		return e.getKey()+";"+b.getKey();
-//	}
 	
 	public static void drawBarbs(Graphics g2, MoleculeComponent tip, MoleculeComponent tail)
 	{
@@ -83,4 +91,18 @@ public class Arrow extends MoleculeConnectorComponent
 			rho = theta - angle;
 		}
 	}
+
+	public int getOrder() {
+		return order;
+	}
+
+	public void setOrder(int order) {
+		if(order >= 2 && order <= 3)//If the specified order is 2 or 3
+		{
+			this.order = order; //Set the order.
+			return;
+		}System.out.println("So, someone tried to create the wrong number of arrows.");
+		//Don't do anything else if it's not one of these values.
+	}
+	
 }
