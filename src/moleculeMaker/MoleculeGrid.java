@@ -32,8 +32,8 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 	private int highlightRow = -1;
 	private int highlightColumn = -1;
 
-	private int currentX;
-	private int currentY;
+	private double currentX;
+	private double currentY;
 
 	private boolean leftPressed = false;
 	private boolean rightPressed = false;
@@ -153,21 +153,21 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 			{
 
 				g.setColor(e.getColor());
-				g.fillOval(e.getX() * GRID_SPACING + OBJECT_OFFSET/4, e.getY() * GRID_SPACING_Y + OBJECT_OFFSET_Y/4, smallestSize / 2, smallestSize / 2);
+				g.fillOval((int)(e.getX() * GRID_SPACING + OBJECT_OFFSET/4), (int)(e.getY() * GRID_SPACING_Y + OBJECT_OFFSET_Y/4), smallestSize / 2, smallestSize / 2);
 			}
 		}
 	}
 
-	public static int getGraphCoordinateX(int xPixelCoordinate)
+	public static double getGraphCoordinateX(double xPixelCoordinate)
 	{
 		// Round to the nearest X grid space
-		return (int) (float)(Math.round(xPixelCoordinate / GRID_SPACING));
+		return (double) (float)(Math.round(xPixelCoordinate / GRID_SPACING));
 	}
 
-	public static int getGraphCoordinateY(int yPixelCoordinate)
+	public static double getGraphCoordinateY(double yPixelCoordinate)
 	{
 		// Round to the nearest Y grid space
-		return (int) (float)(Math.round(yPixelCoordinate / GRID_SPACING_Y));
+		return (double) (float)(Math.round(yPixelCoordinate / GRID_SPACING_Y));
 	}
 	
 	
@@ -304,7 +304,7 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		// Redraw highlighted row and column if mouse moves to a new set of coordinates:
-		setHighlightedCoordinates(getGraphCoordinateX(e.getX()), getGraphCoordinateY(e.getY()));
+		//setHighlightedCoordinates(getGraphCoordinateX(e.getX()), getGraphCoordinateY(e.getY()));
 
 	}
 

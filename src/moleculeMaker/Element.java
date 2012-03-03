@@ -7,7 +7,7 @@ public class Element extends MoleculeComponent {
 	private int electrons;
 	private int charge;
 	
-	public Element(int x, int y)
+	public Element(double x, double y)
 	{
 		super();
 		
@@ -33,12 +33,12 @@ public class Element extends MoleculeComponent {
 	}
 
 	@Override
-	public int getX() {
+	public double getX() {
 		return x;
 	}
 	
 	@Override
-	public int getY() {
+	public double getY() {
 		return y;
 	}
 

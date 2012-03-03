@@ -85,9 +85,15 @@ public class MMController
 //		view.gridB.elist.clearBonds();
 		view.repaint();
 	}
+	public void clearArrows()
+	{
+		view.gridA.elist.clearArrows();
+		//view.gridB.elist.clearArrows();
+		view.repaint();
+	}
 	
 	public void exportToXML()
 	{
-		JOptionPane.showMessageDialog(null, "Did you think I would do your job for you, Ian!?");
+		//Coming soon since this is almost done.
 	}
 }

@@ -9,8 +9,8 @@ public abstract class MoleculeComponent {
 	protected boolean dragging;
 	protected boolean bonding;
 	
-	protected int x;
-	protected int y;
+	protected double x;
+	protected double y;
 	
 	public MoleculeComponent() {
 		selected = false;
@@ -31,8 +31,8 @@ public abstract class MoleculeComponent {
 	
 	// Abstract Methods (Abstract?! Aww yeah, son!!!)
 	protected abstract String getKey();
-	protected abstract int getX(); // X for element is point; for bond it's center point X
-	protected abstract int getY(); // Y for element is point; for bond it's center point Y
+	protected abstract double getX(); // X for element is point; for bond it's center point X
+	protected abstract double getY(); // Y for element is point; for bond it's center point Y
 	// protected abstract void recalculateOnRedraw();
 	
 	// ================ Getters and Setters Below ================

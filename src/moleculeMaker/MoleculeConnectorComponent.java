@@ -99,17 +99,17 @@ public class MoleculeConnectorComponent extends MoleculeComponent {
 		return bonder.getKey() + ";" + bondee.getKey();
 	}
 	
-	protected int calculateMiddleX()
+	protected double calculateMiddleX()
 	{
 		return calculateMiddle(connector.getX(), connectee.getX(), MoleculeGrid.GRID_SPACING);
 	}
 	
-	protected int calculateMiddleY()
+	protected double calculateMiddleY()
 	{
 		return calculateMiddle(connector.getY(), connectee.getY(), MoleculeGrid.GRID_SPACING_Y);
 	}
 	
-	protected int calculateMiddle(int bonderInt, int bondeeInt, int spacing)
+	protected double calculateMiddle(double bonderInt, double bondeeInt, int spacing)
 	{
 		return Math.abs(bonderInt * spacing + bondeeInt * spacing) / 2;
 	}
@@ -139,10 +139,10 @@ public class MoleculeConnectorComponent extends MoleculeComponent {
 		g2d.setStroke(new BasicStroke(3));
 
 		// Draw a line
-		g2d.drawLine(connector.getX() * MoleculeGrid.GRID_SPACING + offset,
-				connector.getY() * MoleculeGrid.GRID_SPACING_Y + offset_y,
-				connectee.getX() * MoleculeGrid.GRID_SPACING + offset,
-				connectee.getY() * MoleculeGrid.GRID_SPACING_Y + offset_y);
+		g2d.drawLine((int)(connector.getX() * MoleculeGrid.GRID_SPACING + offset),
+				(int)(connector.getY() * MoleculeGrid.GRID_SPACING_Y + offset_y),
+				(int)(connectee.getX() * MoleculeGrid.GRID_SPACING + offset),
+				(int)(connectee.getY() * MoleculeGrid.GRID_SPACING_Y + offset_y));
 		
 		// Make sure circles don't "ovalize".
 		int smallestSize = MoleculeGrid.GRID_SPACING;
@@ -151,19 +151,19 @@ public class MoleculeConnectorComponent extends MoleculeComponent {
 		}
 
 		// Draw the center selector point
-		g.drawOval(getX(), getY(), smallestSize/2, smallestSize/2);
+		g.drawOval((int)getX(), (int)getY(), smallestSize/2, smallestSize/2);
 
 	}
 	
 	public boolean contains(double x2, double y2)
 	{
-		int absBonderX = connector.getX() * MoleculeGrid.GRID_SPACING+MoleculeGrid.GRID_SPACING/4;
-		int absBonderY = connector.getY() * MoleculeGrid.GRID_SPACING_Y+MoleculeGrid.GRID_SPACING/4;
-		int absBondeeX = connectee.getX() * MoleculeGrid.GRID_SPACING +MoleculeGrid.GRID_SPACING/4;
-		int absBondeeY = connectee.getY() * MoleculeGrid.GRID_SPACING_Y+MoleculeGrid.GRID_SPACING/4;
+		double absBonderX = connector.getX() * MoleculeGrid.GRID_SPACING+MoleculeGrid.GRID_SPACING/4;
+		double absBonderY = connector.getY() * MoleculeGrid.GRID_SPACING_Y+MoleculeGrid.GRID_SPACING/4;
+		double absBondeeX = connectee.getX() * MoleculeGrid.GRID_SPACING +MoleculeGrid.GRID_SPACING/4;
+		double absBondeeY = connectee.getY() * MoleculeGrid.GRID_SPACING_Y+MoleculeGrid.GRID_SPACING/4;
 
-		int midX = (absBonderX + absBondeeX) /2;
-		int midY = (absBonderY + absBondeeY) /2;
+		double midX = (absBonderX + absBondeeX) /2;
+		double midY = (absBonderY + absBondeeY) /2;
 		double dx = Math.abs(x2-(midX));
 		double dy = Math.abs(y2-(midY));
 		double distance = Math.sqrt(Math.pow(dx,2)+Math.pow(dy,2));
@@ -172,7 +172,7 @@ public class MoleculeConnectorComponent extends MoleculeComponent {
 	}
 	
 	// Remember kids, color needs to be specified by the extending class (ie bond or arrow)
-	public static void drawDrag(Graphics g, Color c, MoleculeComponent e, int roundX, int roundY) {
+	public static void drawDrag(Graphics g, Color c, MoleculeComponent e, double roundX, double roundY) {
 		int spacingX = MoleculeGrid.GRID_SPACING;
 		int spacingY = MoleculeGrid.GRID_SPACING_Y;
 		int offsetX = MoleculeGrid.OBJECT_OFFSET;
@@ -183,8 +183,8 @@ public class MoleculeConnectorComponent extends MoleculeComponent {
 		Graphics2D g2d = (Graphics2D)g;
 		g2d.setStroke(new BasicStroke(3));
 
-		g2d.drawLine(e.getX() * spacingX + offsetX, e.getY() * spacingY + offsetY,
-				roundX * spacingX + offsetX, roundY * spacingY + offsetY);
+		g2d.drawLine((int)(e.getX() * spacingX + offsetX), (int)(e.getY() * spacingY + offsetY),
+				(int)(roundX * spacingX + offsetX), (int)(roundY * spacingY + offsetY));
 	}
 	
 	
@@ -201,18 +201,16 @@ public class MoleculeConnectorComponent extends MoleculeComponent {
 	}
 
 	@Override
-	protected int getX() {
+	protected double getX() {
 		return calculateMiddleX();
 	}
 
 	@Override
-	protected int getY() {
-		// TODO Auto-generated method stub
+	protected double getY() {
 		return calculateMiddleY();
 	}
 	
 	public static String getKey(Element e1, Element e2) {
-		// TODO Auto-generated method stub
 		return e1.getKey() + ";" + e2.getKey();
 	}
 

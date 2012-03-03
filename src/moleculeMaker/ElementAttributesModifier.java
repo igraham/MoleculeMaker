@@ -13,45 +13,33 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 
 @SuppressWarnings("serial")
-public class AttributesModifier extends JPanel
+public class ElementAttributesModifier extends JPanel implements ActionListener
 {
 	
-	MoleculeComponent component;
+	Element element;
 	JTextField name;
 	JButton save;
 	JComboBox electronCount;
-	JComboBox bondOrderBox;
-	JComboBox arrowOrderBox;
 	ButtonGroup charge;
 	
 	// TODO Load an elements attributes from ElementList.getSelected()
 	// TODO Save an elements new attributes
 	
-	public AttributesModifier(MoleculeComponent e)
+	public ElementAttributesModifier(Element element)
 	{
-		if (e != null)
+		if (element != null)
 		{
-			if (e.getClass() == Element.class) {
-				System.out.println("Passing in " + e + " to ElementAttributesModifier");
-				this.component = (Element) e;
-				
-				drawElementAttributes();
-			}
-			else if (e.getClass() == Bond.class) {
-				System.out.println("Passing in " + e + " to ElementAttributesModifier");
-				this.component = (Bond) e;
-				
-				drawBondAttributes();
-			}
-			else if (e.getClass() == Arrow.class) {
-				System.out.println("Passing in " + e + " to ElementAttributesModifier");
-				this.component = (Arrow) e;
-				
-				drawArrowAttributes();
-			}
+			System.out.println("Passing in " + element + " to ElementAttributesModifier");
+			this.element = element;
 			
+			draw();
+			
+			save.addActionListener(this);
 		}
 		else
 		{
@@ -61,14 +49,14 @@ public class AttributesModifier extends JPanel
 		
 	}
 
-	private void drawElementAttributes()
+	private void draw()
 	{
 		setLayout(new GridLayout(4,1));
 		
 		JPanel namePanel = new JPanel();
 		namePanel.setLayout(new FlowLayout());
 		JLabel nameLabel = new JLabel("Element symbol: ");
-		name = new JTextField(((Element) component).getName());
+		name = new JTextField(element.getName());
 		name.setPreferredSize(new Dimension(100, 30));
 		namePanel.add(nameLabel);
 		namePanel.add(name);
@@ -89,7 +77,7 @@ public class AttributesModifier extends JPanel
 		chargePanel.add(neg);
 		
 		// Yuck, a switch? Really Derek!?!
-		switch(((Element) component).getCharge())
+		switch(element.getCharge())
 		{
 		case 0:
 			pos.setSelected(true);
@@ -115,18 +103,9 @@ public class AttributesModifier extends JPanel
 		electronCount.addItem("5");
 		electronCount.addItem("6");
 //		System.out.println("The electron count is " + element.getElectrons());
-		electronCount.setSelectedIndex(((Element) component).getElectrons());
+		electronCount.setSelectedIndex(element.getElectrons());
 		
 		save = new JButton("Save");
-		save.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				((Element) component).setName(name.getText());
-				((Element) component).setElectrons(electronCount.getSelectedIndex());
-				((Element) component).setCharge(selectedIndex(charge));
-			}
-		});
 		
 		electronCountPanel.add(electronCountLabel);
 		electronCountPanel.add(electronCount);
@@ -134,55 +113,6 @@ public class AttributesModifier extends JPanel
 		add(namePanel);
 		add(chargePanel);
 		add(electronCountPanel);
-		add(save);
-	}
-	
-	private void drawBondAttributes()
-	{
-		setLayout(new GridLayout(2,1));
-		JPanel bondOrderPanel = new JPanel();
-		JLabel bondOrder = new JLabel("Bond Order: ");
-		bondOrderBox = new JComboBox();
-		bondOrderBox.addItem("1");
-		bondOrderBox.addItem("2");
-		bondOrderBox.addItem("3");
-		bondOrderBox.setSelectedIndex(((Bond)component).getBondOrder());
-		
-		bondOrderPanel.add(bondOrder);
-		bondOrderPanel.add(bondOrderBox);
-		save = new JButton("Save");
-		save.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				((Bond) component).setBondOrder(bondOrderBox.getSelectedIndex());
-			}
-		});
-		add(bondOrderPanel);
-		add(save);
-	}
-	
-	private void drawArrowAttributes()
-	{
-		setLayout(new GridLayout(2,1));
-		JPanel arrowOrderPanel = new JPanel();
-		JLabel arrowOrder = new JLabel("Arrow Order: ");
-		arrowOrderBox = new JComboBox();
-		arrowOrderBox.addItem("2");
-		arrowOrderBox.addItem("3");
-		arrowOrderBox.setSelectedIndex(((Arrow)component).getOrder()-1);
-		
-		arrowOrderPanel.add(arrowOrder);
-		arrowOrderPanel.add(arrowOrderBox);
-		save = new JButton("Save");
-		save.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				((Arrow) component).setOrder(arrowOrderBox.getSelectedIndex()+1);
-			}
-		});
-		add(arrowOrderPanel);
 		add(save);
 	}
 	
@@ -201,5 +131,13 @@ public class AttributesModifier extends JPanel
 			i++;
 		}
 		return -1;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0)
+	{
+		element.setName(name.getText());
+		element.setElectrons(electronCount.getSelectedIndex());
+		element.setCharge(selectedIndex(charge));
 	}
 }

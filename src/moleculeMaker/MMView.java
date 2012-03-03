@@ -87,8 +87,10 @@ public class MMView extends JFrame implements ComponentListener
 		menuBar.add(graphMenu);
 		JMenuItem clearElementsAction = new JMenuItem("Clear Element");
 		JMenuItem clearBondsAction = new JMenuItem("Clear Bonds");
+		JMenuItem clearArrowsAction = new JMenuItem("Clear Arrows");
 		graphMenu.add(clearElementsAction);
 		graphMenu.add(clearBondsAction);
+		graphMenu.add(clearArrowsAction);
 		
 		// ActionListeners:
 		exportAction.addActionListener(new ActionListener() {
@@ -114,6 +116,13 @@ public class MMView extends JFrame implements ComponentListener
 			}
 		});
 		clearBondsAction.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mmc.clearBonds();
+			}
+		});
+		clearArrowsAction.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {

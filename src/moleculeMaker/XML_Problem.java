@@ -156,6 +156,33 @@ public class XML_Problem
 					bOrder.appendChild(doc.createTextNode(""+b.getBondOrder()));
 				bond.appendChild(bOrder);
 		}
+		for(Arrow a : molecule.getArrowHash().values())
+		{
+			org.w3c.dom.Element arrow = doc.createElement("Arrow");
+			mol.appendChild(arrow);
+				//X and Y values for the locations of the Arrow are set here. Since an Arrow
+				//cannot be created without two valid Elements then there is no need to 
+				//check to see if they are null or something.
+				org.w3c.dom.Element loc1 = doc.createElement("LocationA");
+					Attr x1 = doc.createAttribute("x");
+					x1.setValue(""+a.getConnector().getX());
+					Attr y1 = doc.createAttribute("y");
+					y1.setValue(""+a.getConnector().getY());
+					loc1.setAttributeNode(x1);
+					loc1.setAttributeNode(y1);
+				arrow.appendChild(loc1);
+				org.w3c.dom.Element loc2 = doc.createElement("LocationB");
+					Attr x2 = doc.createAttribute("x");
+					x2.setValue(""+a.getConnectee().getX());
+					Attr y2 = doc.createAttribute("y");
+					y2.setValue(""+a.getConnectee().getY());
+					loc1.setAttributeNode(x2);
+					loc1.setAttributeNode(y2);
+				arrow.appendChild(loc2);
+				org.w3c.dom.Element bOrder = doc.createElement("Order");
+					bOrder.appendChild(doc.createTextNode(""+a.getOrder()));
+				arrow.appendChild(bOrder);
+		}
 		
 	}
 

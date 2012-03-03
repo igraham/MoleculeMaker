@@ -27,13 +27,20 @@ public class ConnectionList
 	{
 		selected = null;
 		bonds = new HashMap<String, Bond>();
+		arrows = new HashMap<String, Arrow>();
 	}
 	
 	public void clearElements()
 	{
 		selected = null;
 		bonds = new HashMap<String, Bond>();
+		arrows = new HashMap<String, Arrow>();
 		elements = new HashMap<String, Element>();
+	}
+	public void clearArrows()
+	{
+		selected = null;
+		arrows = new HashMap<String, Arrow>();
 	}
 	
 	/**
@@ -165,11 +172,11 @@ public class ConnectionList
 	 * Returns the element, bond, or arrow that was clicked on
 	 * @return
 	 */
-	public MoleculeComponent getClickedComponent(int x, int y)
+	public MoleculeComponent getClickedComponent(double x, double y)
 	{
 		// Check for element
-		int roundX = MoleculeGrid.getGraphCoordinateX(x);
-		int roundY = MoleculeGrid.getGraphCoordinateY(y);
+		double roundX = MoleculeGrid.getGraphCoordinateX(x);
+		double roundY = MoleculeGrid.getGraphCoordinateY(y);
 		
 		MoleculeComponent component = getElementAt(roundX, roundY);
 		if (component != null)
@@ -299,7 +306,7 @@ public class ConnectionList
 		return "Element List: " + elements.toString();
 	}
 	
-	public Element getElementAt(int i, int j) {
+	public Element getElementAt(double i, double j) {
 		String key = "" + i + "," + j;
 		return getElementAt(key);
 	}
