@@ -28,7 +28,7 @@ public class Arrow extends MoleculeConnectorComponent
 
 		dragColor = Color.BLUE; // set the drag color for arrow lines
 		setConnectionAttributes(c1, c2);
-		recalculateMiddleXY();
+//		recalculateMiddleXY();
 		order = 2; //Default value of 2.
 	}
 	
@@ -45,7 +45,7 @@ public class Arrow extends MoleculeConnectorComponent
 
 		dragColor = Color.BLUE; // set the drag color for arrow lines
 		setConnectionAttributes(c1, c2);
-		recalculateMiddleXY();
+//		recalculateMiddleXY();
 		setOrder(order);
 	}
 	
@@ -104,11 +104,4 @@ public class Arrow extends MoleculeConnectorComponent
 		}System.out.println("So, someone tried to create the wrong number of arrows.");
 		//Don't do anything else if it's not one of these values.
 	}
-	
-	@Override
-	protected int setX(int a, int b) {
-		// TODO Auto-generated method stub
-		return (a + b) / 2;
-	}
-	
 }

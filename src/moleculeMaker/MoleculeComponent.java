@@ -43,6 +43,15 @@ public abstract class MoleculeComponent {
 		y = yValue;
 	}
 	
+	protected void setX(double a, double b) {
+		x = (a+b)/2;
+	}
+	
+	protected void setY(double a, double b) {
+		y = (a+b)/2;
+	}
+	
+	
 	public double getX()
 	{
 		return x;

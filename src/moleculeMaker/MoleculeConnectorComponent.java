@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-public abstract class MoleculeConnectorComponent extends MoleculeComponent {
+public class MoleculeConnectorComponent extends MoleculeComponent {
 
 	protected MoleculeComponent connector;
 	protected MoleculeComponent connectee;
@@ -15,12 +15,13 @@ public abstract class MoleculeConnectorComponent extends MoleculeComponent {
 	protected int slopeDirection;
 	protected Color dragColor = Color.BLACK; // default drag color
 	
-	protected abstract int setX(int a, int b);
+//	protected abstract int setX(int a, int b);
 	
 	/**
 	 * Takes in two MoleculeComponents and sets whichever is closer to
 	 * the coordinates (0,0) as the connector. The farther away MoleculeComponent
-	 * is set as the connectee. The direction of the slope is also set.
+	 * is set as the connectee. The direction of the slope, key value, and (X, Y)
+	 * coordinates of the midpoint are also set.
 	 * 
 	 * @param c1
 	 * @param c2
@@ -82,8 +83,10 @@ public abstract class MoleculeConnectorComponent extends MoleculeComponent {
 
 		}
 
+		// Set instance variables after the calculation
 		connectionKey = getConnectionKey(c1, c2);
-		x = setX(a, b);
+		setX(connector.getX(), connectee.getX());
+		setY(connector.getY(), connectee.getY());
 
 	}
 	
