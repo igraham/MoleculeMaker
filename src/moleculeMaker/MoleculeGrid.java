@@ -158,58 +158,56 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 		}
 	}
 
-	public static double getRelativePositionX(double xPixelCoordinate)
+	public static int getGraphCoordinateX(double xPixelCoordinate)
 	{
 		// Round to the nearest X grid space
-		return (double) (float)(Math.round(xPixelCoordinate / GRID_SPACING));
+		return (int) (float)(Math.round(xPixelCoordinate / GRID_SPACING));
 	}
 
-	public static double getRelativePositionY(double yPixelCoordinate)
+	public static int getGraphCoordinateY(double yPixelCoordinate)
 	{
 		// Round to the nearest Y grid space
-		return (double) (float)(Math.round(yPixelCoordinate / GRID_SPACING_Y));
+		return (int) (float)(Math.round(yPixelCoordinate / GRID_SPACING_Y));
 	}
 	
 	
 	// ***************** MouseListener *****************
 	public void mouseReleased(MouseEvent e)
 	{
-		currentX = getRelativePositionX(e.getX());
-		currentY = getRelativePositionY(e.getY());
+		currentX = getGraphCoordinateX(e.getX());
+		currentY = getGraphCoordinateY(e.getY());
 		
-		MoleculeComponent releasedUponComponent = elist.getClickedComponent(e.getX(), e.getY());
+		MoleculeComponent clickedOn = elist.getClickedComponent(e.getX(), e.getY());
+		
+		//System.out.println("Drawing an Arrow: "+drawArrowLine);
 		
 		if (drawArrowLine || drawBondLine) // if connection is being made
 		{
-			if (releasedUponComponent != null && elist.getSelected() != null) // if released on valid component
+			if (clickedOn != null && elist.getSelected() != null) // if released on valid component
 			{
-//				if (releasedUponComponent.getClass() == Element.class && (rightPressed && !leftPressed)) { // if it's a bond
-//					elist.add(new Bond(elist.getSelected(), releasedUponComponent));
-//				}
-//				else if ((releasedUponComponent.getClass() == Arrow.class || releasedUponComponent.getClass() == Bond.class)
-//						&& (leftPressed && !rightPressed)) {
-//					elist.add(new Arrow(elist.getSelected(), releasedUponComponent));
-//				}
-				
-				if(rightPressed && !leftPressed)
-				{
-//					Class<?> someClass = releasedUponComponent.getClass(); // the class of releasedUponComponent
-							
-//					elist.add(new (someClass)MoleculeConnectorComponent)
-//					elist.add(new (releasedUponComponent.getClass())MoleculeConnectorComponent(elist.getSelected(), releasedUponComponent)));
+				//System.out.println(clickedOn.x);
+				//System.out.println(clickedOn.y);
+				//System.out.println(elist.getSelected().x);
+				//System.out.println(elist.getSelected().y);
+				if (clickedOn.getClass() == Element.class && (rightPressed && !leftPressed)) { // if it's a bond
+					elist.add(new Bond(elist.getSelected(), clickedOn));
+				}
+				else if ((elist.getSelected().getClass() == Element.class && clickedOn.getClass() == Bond.class)
+						|| (elist.getSelected().getClass() == Bond.class && clickedOn.getClass() == Element.class) 
+						&& (leftPressed && !(rightPressed))) {
+					elist.add(new Arrow(elist.getSelected(), clickedOn));
 				}
 				
-//			}
+			}
 			
 			drawArrowLine = false;
 			drawBondLine = false;
 			
 			repaint();
-			}
 		}
 		else // connection is not being made
 		{	
-			if (releasedUponComponent != null) // if released on valid component
+			if (clickedOn != null) // if released on valid component
 			{
 				
 			}
@@ -321,8 +319,8 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		
-		currentX = getRelativePositionX(e.getX());
-		currentY = getRelativePositionY(e.getY());
+		currentX = getGraphCoordinateX(e.getX());
+		currentY = getGraphCoordinateY(e.getY());
 
 		if(leftPressed && !rightPressed) // Left click is for arrows
 		{
@@ -397,8 +395,8 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 				return; // No need for further steps.
 			}
 			
-			currentX = getRelativePositionX(e.getX());
-			currentY = getRelativePositionY(e.getY());
+			currentX = getGraphCoordinateX(e.getX());
+			currentY = getGraphCoordinateY(e.getY());
 
 			Element bondStart = elist.getElementAt(currentX, currentY);
 

@@ -31,37 +31,9 @@ public abstract class MoleculeComponent {
 	
 	// Abstract Methods (Abstract?! Aww yeah, son!!!)
 	protected abstract String getKey();
-//	protected abstract double getX(); // X for element is point; for bond it's center point X
-//	protected abstract double getY(); // Y for element is point; for bond it's center point Y
+	protected abstract double getX(); // X for element is point; for bond it's center point X
+	protected abstract double getY(); // Y for element is point; for bond it's center point Y
 	// protected abstract void recalculateOnRedraw();
-	
-	protected void setX(double xValue) {
-		x = xValue;
-	}
-	
-	protected void setY(double yValue) {
-		y = yValue;
-	}
-	
-	protected void setX(double a, double b) {
-		x = (a+b)/2;
-	}
-	
-	protected void setY(double a, double b) {
-		y = (a+b)/2;
-	}
-	
-	
-	public double getX()
-	{
-		return x;
-	}
-	
-	public double getY()
-	{
-		return y;
-	}
-	
 	
 	// ================ Getters and Setters Below ================
 	public boolean isSelected() {

@@ -15,7 +15,7 @@ public class Bond extends MoleculeConnectorComponent {
 	{
 		super();
 
-//		System.out.println("Bond being created using: " + c1 + " and " + c2);
+		System.out.println("Bond being created using: " + c1 + " and " + c2);
 
 		if (c1 == null || c2 == null) {
 			System.out.println("Bonder or bondee is null");
@@ -24,8 +24,7 @@ public class Bond extends MoleculeConnectorComponent {
 
 		dragColor = Color.MAGENTA; // set the drag color for bonds
 		setConnectionAttributes(c1, c2);
-//		recalculateMiddleXY();
-		
+		recalculateMiddleXY();
 		bondOrder = 1; //Default to 1. If it exists, it has at least one electron shared.
 	}
 	
@@ -33,7 +32,7 @@ public class Bond extends MoleculeConnectorComponent {
 	{
 		super();
 
-//		System.out.println("Bond being created using: " + c1 + " and " + c2);
+		System.out.println("Bond being created using: " + c1 + " and " + c2);
 
 		if (c1 == null || c2 == null) {
 			System.out.println("Bonder or bondee is null");
@@ -42,8 +41,7 @@ public class Bond extends MoleculeConnectorComponent {
 
 		dragColor = Color.MAGENTA; // set the drag color for bonds
 		setConnectionAttributes(c1, c2);
-		
-//		recalculateMiddleXY();
+		recalculateMiddleXY();
 		setBondOrder(bondOrder);
 	}
 
@@ -72,6 +70,5 @@ public class Bond extends MoleculeConnectorComponent {
 			this.bondOrder = 1; //Default to 1.
 		}
 	}
-
 	
 }

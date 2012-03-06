@@ -28,7 +28,7 @@ public class Arrow extends MoleculeConnectorComponent
 
 		dragColor = Color.BLUE; // set the drag color for arrow lines
 		setConnectionAttributes(c1, c2);
-//		recalculateMiddleXY();
+		recalculateMiddleXY();
 		order = 2; //Default value of 2.
 	}
 	
@@ -45,7 +45,7 @@ public class Arrow extends MoleculeConnectorComponent
 
 		dragColor = Color.BLUE; // set the drag color for arrow lines
 		setConnectionAttributes(c1, c2);
-//		recalculateMiddleXY();
+		recalculateMiddleXY();
 		setOrder(order);
 	}
 	
@@ -81,13 +81,20 @@ public class Arrow extends MoleculeConnectorComponent
 		double theta = Math.atan2(dy, dx);
 //		System.out.println("Angle of Theta: "+theta);
 		double x, y, rho = theta + angle;
+		int spacingX = MoleculeGrid.GRID_SPACING;
+		int spacingY = MoleculeGrid.GRID_SPACING_Y;
+		int offsetX = MoleculeGrid.OBJECT_OFFSET;
+		int offsetY = MoleculeGrid.OBJECT_OFFSET_Y;
+		double realTipX, realTipY;
+		realTipX = tip.x*spacingX+offsetX;
+		realTipY = tip.y*spacingY+offsetY;
 		
 		for(int i = 0; i < 2; i++)
 		{
 //			System.out.println("Value of angle Rho: "+Math.toDegrees(rho));
-			x = tip.x - barbLength * Math.cos(rho);
-			y = tip.y - barbLength * Math.sin(rho);
-			((Graphics2D) g2).draw(new Line2D.Double(tip.x, tip.y, x, y));
+			x = realTipX - barbLength * Math.cos(rho);
+			y = realTipY - barbLength * Math.sin(rho);
+			((Graphics2D) g2).draw(new Line2D.Double(realTipX, realTipY, x, y));
 			rho = theta - angle;
 		}
 	}
@@ -104,4 +111,5 @@ public class Arrow extends MoleculeConnectorComponent
 		}System.out.println("So, someone tried to create the wrong number of arrows.");
 		//Don't do anything else if it's not one of these values.
 	}
+	
 }
