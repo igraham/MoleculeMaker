@@ -4,6 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.Line2D;
 
 public class MoleculeConnectorComponent extends MoleculeComponent {
 
@@ -101,6 +102,9 @@ public class MoleculeConnectorComponent extends MoleculeComponent {
 	
 	protected double calculateMiddleX()
 	{
+		System.out.println(connector.getX());
+		System.out.println(connectee.getX());
+		System.out.println(MoleculeGrid.GRID_SPACING);
 		return calculateMiddle(connector.getX(), connectee.getX(), MoleculeGrid.GRID_SPACING);
 	}
 	
@@ -111,7 +115,8 @@ public class MoleculeConnectorComponent extends MoleculeComponent {
 	
 	protected double calculateMiddle(double bonderInt, double bondeeInt, int spacing)
 	{
-		return Math.abs(bonderInt * spacing + bondeeInt * spacing) / 2;
+		System.out.println(Math.abs(bonderInt * spacing + bondeeInt * spacing) / 2);
+		return Math.abs(bonderInt + bondeeInt) / 2;
 	}
 	
 	/**
@@ -137,21 +142,27 @@ public class MoleculeConnectorComponent extends MoleculeComponent {
 		Graphics2D g2d = (Graphics2D)g;
 		g2d.setColor(getColor());
 		g2d.setStroke(new BasicStroke(3));
+		System.out.println("Connector X: "+connector.getX());
+		System.out.println("Connector Y: "+connector.getY());
+		System.out.println("Connectee X: "+connectee.getX());
+		System.out.println("Connectee Y: "+connectee.getY());
+		System.out.println("An X: "+x);
+		System.out.println("A Y: "+y);
 
 		// Draw a line
-		g2d.drawLine((int)(connector.getX() * MoleculeGrid.GRID_SPACING + offset),
-				(int)(connector.getY() * MoleculeGrid.GRID_SPACING_Y + offset_y),
-				(int)(connectee.getX() * MoleculeGrid.GRID_SPACING + offset),
-				(int)(connectee.getY() * MoleculeGrid.GRID_SPACING_Y + offset_y));
+		g2d.draw(new Line2D.Double((connector.getX() * MoleculeGrid.GRID_SPACING + offset),
+					(connector.getY() * MoleculeGrid.GRID_SPACING_Y + offset_y),
+					(connectee.getX() * MoleculeGrid.GRID_SPACING + offset),
+					(connectee.getY() * MoleculeGrid.GRID_SPACING_Y + offset_y)));
 		
 		// Make sure circles don't "ovalize".
 		int smallestSize = MoleculeGrid.GRID_SPACING;
 		if (MoleculeGrid.GRID_SPACING > MoleculeGrid.GRID_SPACING_Y) {
 			smallestSize = MoleculeGrid.GRID_SPACING_Y;
 		}
-
+		
 		// Draw the center selector point
-		g.drawOval((int)getX(), (int)getY(), smallestSize/2, smallestSize/2);
+		g.drawOval((int)(getX()* MoleculeGrid.GRID_SPACING), (int)(getY() * MoleculeGrid.GRID_SPACING_Y), smallestSize/2, smallestSize/2);
 
 	}
 	
@@ -183,8 +194,8 @@ public class MoleculeConnectorComponent extends MoleculeComponent {
 		Graphics2D g2d = (Graphics2D)g;
 		g2d.setStroke(new BasicStroke(3));
 
-		g2d.drawLine((int)(e.getX() * spacingX + offsetX), (int)(e.getY() * spacingY + offsetY),
-				(int)(roundX * spacingX + offsetX), (int)(roundY * spacingY + offsetY));
+		g2d.draw(new Line2D.Double((e.getX() * spacingX + offsetX), (e.getY() * spacingY + offsetY),
+				(roundX * spacingX + offsetX), (roundY * spacingY + offsetY)));
 	}
 	
 	
@@ -202,12 +213,12 @@ public class MoleculeConnectorComponent extends MoleculeComponent {
 
 	@Override
 	protected double getX() {
-		return calculateMiddleX();
+		return x;
 	}
 
 	@Override
 	protected double getY() {
-		return calculateMiddleY();
+		return y;
 	}
 	
 	public static String getKey(Element e1, Element e2) {
