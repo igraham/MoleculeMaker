@@ -158,13 +158,13 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 		}
 	}
 
-	public static double getGraphCoordinateX(double xPixelCoordinate)
+	public static double getRelativePositionX(double xPixelCoordinate)
 	{
 		// Round to the nearest X grid space
 		return (double) (float)(Math.round(xPixelCoordinate / GRID_SPACING));
 	}
 
-	public static double getGraphCoordinateY(double yPixelCoordinate)
+	public static double getRelativePositionY(double yPixelCoordinate)
 	{
 		// Round to the nearest Y grid space
 		return (double) (float)(Math.round(yPixelCoordinate / GRID_SPACING_Y));
@@ -174,32 +174,42 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 	// ***************** MouseListener *****************
 	public void mouseReleased(MouseEvent e)
 	{
-		currentX = getGraphCoordinateX(e.getX());
-		currentY = getGraphCoordinateY(e.getY());
+		currentX = getRelativePositionX(e.getX());
+		currentY = getRelativePositionY(e.getY());
 		
-		MoleculeComponent clickedOn = elist.getClickedComponent(e.getX(), e.getY());
+		MoleculeComponent releasedUponComponent = elist.getClickedComponent(e.getX(), e.getY());
 		
 		if (drawArrowLine || drawBondLine) // if connection is being made
 		{
-			if (clickedOn != null && elist.getSelected() != null) // if released on valid component
+			if (releasedUponComponent != null && elist.getSelected() != null) // if released on valid component
 			{
-				if (clickedOn.getClass() == Element.class && (rightPressed && !leftPressed)) { // if it's a bond
-					elist.add(new Bond(elist.getSelected(), clickedOn));
-				}
-				else if (clickedOn.getClass() == Element.class && (leftPressed && !rightPressed)) {
-					elist.add(new Arrow(elist.getSelected(), clickedOn));
+//				if (releasedUponComponent.getClass() == Element.class && (rightPressed && !leftPressed)) { // if it's a bond
+//					elist.add(new Bond(elist.getSelected(), releasedUponComponent));
+//				}
+//				else if ((releasedUponComponent.getClass() == Arrow.class || releasedUponComponent.getClass() == Bond.class)
+//						&& (leftPressed && !rightPressed)) {
+//					elist.add(new Arrow(elist.getSelected(), releasedUponComponent));
+//				}
+				
+				if(rightPressed && !leftPressed)
+				{
+//					Class<?> someClass = releasedUponComponent.getClass(); // the class of releasedUponComponent
+							
+//					elist.add(new (someClass)MoleculeConnectorComponent)
+//					elist.add(new (releasedUponComponent.getClass())MoleculeConnectorComponent(elist.getSelected(), releasedUponComponent)));
 				}
 				
-			}
+//			}
 			
 			drawArrowLine = false;
 			drawBondLine = false;
 			
 			repaint();
+			}
 		}
 		else // connection is not being made
 		{	
-			if (clickedOn != null) // if released on valid component
+			if (releasedUponComponent != null) // if released on valid component
 			{
 				
 			}
@@ -311,8 +321,8 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		
-		currentX = getGraphCoordinateX(e.getX());
-		currentY = getGraphCoordinateY(e.getY());
+		currentX = getRelativePositionX(e.getX());
+		currentY = getRelativePositionY(e.getY());
 
 		if(leftPressed && !rightPressed) // Left click is for arrows
 		{
@@ -387,8 +397,8 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 				return; // No need for further steps.
 			}
 			
-			currentX = getGraphCoordinateX(e.getX());
-			currentY = getGraphCoordinateY(e.getY());
+			currentX = getRelativePositionX(e.getX());
+			currentY = getRelativePositionY(e.getY());
 
 			Element bondStart = elist.getElementAt(currentX, currentY);
 

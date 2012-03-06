@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-public class MoleculeConnectorComponent extends MoleculeComponent {
+public abstract class MoleculeConnectorComponent extends MoleculeComponent {
 
 	protected MoleculeComponent connector;
 	protected MoleculeComponent connectee;
@@ -14,6 +14,8 @@ public class MoleculeConnectorComponent extends MoleculeComponent {
 	// When slope is -1, middlepoint's y is subtracted from connector's y value, instead of added
 	protected int slopeDirection;
 	protected Color dragColor = Color.BLACK; // default drag color
+	
+	protected abstract int setX(int a, int b);
 	
 	/**
 	 * Takes in two MoleculeComponents and sets whichever is closer to
@@ -81,6 +83,7 @@ public class MoleculeConnectorComponent extends MoleculeComponent {
 		}
 
 		connectionKey = getConnectionKey(c1, c2);
+		x = setX(a, b);
 
 	}
 	
@@ -99,16 +102,16 @@ public class MoleculeConnectorComponent extends MoleculeComponent {
 		return bonder.getKey() + ";" + bondee.getKey();
 	}
 	
-	protected double calculateMiddleX()
-	{
-		return calculateMiddle(connector.getX(), connectee.getX(), MoleculeGrid.GRID_SPACING);
-	}
-	
-	protected double calculateMiddleY()
-	{
-		return calculateMiddle(connector.getY(), connectee.getY(), MoleculeGrid.GRID_SPACING_Y);
-	}
-	
+//	protected double calculateMiddleX()
+//	{
+//		return calculateMiddle(connector.getX(), connectee.getX(), MoleculeGrid.GRID_SPACING);
+//	}
+//	
+//	protected double calculateMiddleY()
+//	{
+//		return calculateMiddle(connector.getY(), connectee.getY(), MoleculeGrid.GRID_SPACING_Y);
+//	}
+//	
 	protected double calculateMiddle(double bonderInt, double bondeeInt, int spacing)
 	{
 		return Math.abs(bonderInt * spacing + bondeeInt * spacing) / 2;
@@ -119,8 +122,8 @@ public class MoleculeConnectorComponent extends MoleculeComponent {
 	 */
 	protected void recalculateMiddleXY()
 	{
-		x = calculateMiddleX();
-		y = calculateMiddleY();
+		x = calculateMiddle(connector.getX(), connectee.getX(), MoleculeGrid.GRID_SPACING);;
+		y = calculateMiddle(connector.getY(), connectee.getY(), MoleculeGrid.GRID_SPACING_Y);
 	}
 	
 	public void draw(Graphics g)
@@ -139,7 +142,7 @@ public class MoleculeConnectorComponent extends MoleculeComponent {
 		g2d.setStroke(new BasicStroke(3));
 
 		// Draw a line
-		g2d.drawLine((int)(connector.getX() * MoleculeGrid.GRID_SPACING + offset),
+		g2d.drawLine((int)(connector.getX() ),
 				(int)(connector.getY() * MoleculeGrid.GRID_SPACING_Y + offset_y),
 				(int)(connectee.getX() * MoleculeGrid.GRID_SPACING + offset),
 				(int)(connectee.getY() * MoleculeGrid.GRID_SPACING_Y + offset_y));
@@ -199,19 +202,17 @@ public class MoleculeConnectorComponent extends MoleculeComponent {
 	protected String getKey() {
 		return connectionKey;
 	}
-
-	@Override
-	protected double getX() {
-		return calculateMiddleX();
-	}
-
-	@Override
-	protected double getY() {
-		return calculateMiddleY();
-	}
 	
 	public static String getKey(Element e1, Element e2) {
 		return e1.getKey() + ";" + e2.getKey();
+	}
+	
+	protected void setX(double xValue) {
+		x = xValue;
+	}
+	
+	protected void setY(double yValue) {
+		y = yValue;
 	}
 
 }

@@ -175,8 +175,8 @@ public class ConnectionList
 	public MoleculeComponent getClickedComponent(double x, double y)
 	{
 		// Check for element
-		double roundX = MoleculeGrid.getGraphCoordinateX(x);
-		double roundY = MoleculeGrid.getGraphCoordinateY(y);
+		double roundX = MoleculeGrid.getRelativePositionX(x);
+		double roundY = MoleculeGrid.getRelativePositionY(y);
 		
 		MoleculeComponent component = getElementAt(roundX, roundY);
 		if (component != null)

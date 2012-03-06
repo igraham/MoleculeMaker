@@ -105,4 +105,10 @@ public class Arrow extends MoleculeConnectorComponent
 		//Don't do anything else if it's not one of these values.
 	}
 	
+	@Override
+	protected int setX(int a, int b) {
+		// TODO Auto-generated method stub
+		return (a + b) / 2;
+	}
+	
 }
