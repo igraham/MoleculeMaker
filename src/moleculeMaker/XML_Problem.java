@@ -1,10 +1,13 @@
 package moleculeMaker;
 
+import java.io.File;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -64,13 +67,15 @@ public class XML_Problem
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(doc);
-			//StreamResult result = new StreamResult(new File("C:\\file.xml"));
-			StreamResult result = new StreamResult(System.out);
+			StreamResult result = new StreamResult(new File("problem.xml"));
+			//StreamResult result = new StreamResult(System.out);
 
-			/*transformer.transform(source, result);
-			 
-			System.out.println("File saved!");*/
-
+			try {
+				transformer.transform(source, result);
+				System.out.println("File saved!");
+			} catch (TransformerException e) {
+				e.printStackTrace();
+			}
 			
 		}
 		catch(ParserConfigurationException pce) 

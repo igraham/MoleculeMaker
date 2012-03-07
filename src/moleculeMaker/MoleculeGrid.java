@@ -8,6 +8,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
+
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 
 
@@ -47,6 +49,7 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 		elist = new ConnectionList();
 		this.addMouseMotionListener(this);
 		this.addMouseListener(this);
+		setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY,3));
 
 		// View should set focus, remove this later on:
 		this.isFocusable();

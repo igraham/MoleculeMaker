@@ -20,8 +20,6 @@ public class MMView extends JFrame implements ComponentListener
 	final int WINDOW_HEIGHT = 600;
 	
 	MMController mmc;
-//	MoleculeGrid gridA;
-//	MoleculeGrid gridB;
 	MoleculeGrid gridA;
 	MoleculeGrid gridB;
 	JMenuBar menuBar;
@@ -49,13 +47,16 @@ public class MMView extends JFrame implements ComponentListener
 		
 		// Graph panel
 		gridA = new MoleculeGrid(mmc);
-//		gridB = new MoleculeGrid(mmc);
+		gridB = new MoleculeGrid(mmc);
 		mod = new AttributesModifier(null);
 
 		// Grid's grid layout
-		JPanel gridLayout = new JPanel(new GridLayout(1,2));
+		GridLayout layout = new GridLayout(1,2);
+		layout.setHgap(10);
+		JPanel gridLayout = new JPanel();
+		gridLayout.setLayout(layout);
 		gridLayout.add(gridA);
-//		gridLayout.add(gridB);
+		gridLayout.add(gridB);
 		
 		add(gridLayout, BorderLayout.CENTER);
 		

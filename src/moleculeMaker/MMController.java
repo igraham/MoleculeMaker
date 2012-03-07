@@ -47,6 +47,7 @@ public class MMController
 {
 	
 	public MMView view;
+	private XML_Problem xmlGen;
 	
 	public MMController()
 	{
@@ -75,25 +76,25 @@ public class MMController
 	public void clearElements()
 	{
 		view.gridA.elist.clearElements();
-//		view.gridB.elist.clearElements();
+		view.gridB.elist.clearElements();
 		view.repaint();
 	}
 	
 	public void clearBonds()
 	{
 		view.gridA.elist.clearBonds();
-//		view.gridB.elist.clearBonds();
+		view.gridB.elist.clearBonds();
 		view.repaint();
 	}
 	public void clearArrows()
 	{
 		view.gridA.elist.clearArrows();
-		//view.gridB.elist.clearArrows();
+		view.gridB.elist.clearArrows();
 		view.repaint();
 	}
 	
 	public void exportToXML()
 	{
-		//Coming soon since this is almost done.
+		xmlGen = new XML_Problem(view.gridA.elist, view.gridB.elist);
 	}
 }
