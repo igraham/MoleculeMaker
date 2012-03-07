@@ -23,23 +23,28 @@ public class ConnectionList
 
 	}
 	
-	public void clearBonds()
+	private void clearSelected()
 	{
 		selected = null;
+	}
+	
+	public void clearBonds()
+	{
+		clearSelected();
 		bonds = new HashMap<String, Bond>();
-		arrows = new HashMap<String, Arrow>();
+		clearArrows();
 	}
 	
 	public void clearElements()
 	{
-		selected = null;
+		clearSelected();
 		bonds = new HashMap<String, Bond>();
 		arrows = new HashMap<String, Arrow>();
 		elements = new HashMap<String, Element>();
 	}
 	public void clearArrows()
 	{
-		selected = null;
+		clearSelected();
 		arrows = new HashMap<String, Arrow>();
 	}
 	

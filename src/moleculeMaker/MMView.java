@@ -11,8 +11,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
-
-
 @SuppressWarnings("serial")
 public class MMView extends JFrame implements ComponentListener
 {
@@ -127,7 +125,7 @@ public class MMView extends JFrame implements ComponentListener
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				mmc.clearBonds();
+				mmc.clearArrows();
 			}
 		});
 	}
