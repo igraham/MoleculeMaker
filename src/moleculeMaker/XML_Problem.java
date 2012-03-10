@@ -13,7 +13,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * <Problem>
@@ -131,6 +130,9 @@ public class XML_Problem
 				org.w3c.dom.Element type = doc.createElement("Type");
 				//Here we set the type, but like I said I don't think this is implemented in the interface
 				//yet, so I will leave this alone.
+					int eType = 0;
+					if(a.getType()>=0 && a.getType()<=2){eType = a.getType();}
+					type.appendChild(doc.createTextNode(""+eType));
 				Element.appendChild(type);
 		}
 		

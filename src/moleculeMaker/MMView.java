@@ -85,11 +85,9 @@ public class MMView extends JFrame implements ComponentListener
 		
 		menuBar.add(graphMenu);
 		JMenuItem clearElementsAction = new JMenuItem("Clear Element");
-		JMenuItem clearBondsAction = new JMenuItem("Clear Bonds");
-		JMenuItem clearArrowsAction = new JMenuItem("Clear Arrows");
+		JMenuItem clearConnectorsAction = new JMenuItem("Clear Connectors");
 		graphMenu.add(clearElementsAction);
-		graphMenu.add(clearBondsAction);
-		graphMenu.add(clearArrowsAction);
+		graphMenu.add(clearConnectorsAction);
 		
 		// ActionListeners:
 		exportAction.addActionListener(new ActionListener() {
@@ -114,18 +112,11 @@ public class MMView extends JFrame implements ComponentListener
 				mmc.clearElements();
 			}
 		});
-		clearBondsAction.addActionListener(new ActionListener() {
+		clearConnectorsAction.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				mmc.clearBonds();
-			}
-		});
-		clearArrowsAction.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mmc.clearArrows();
+				mmc.clearConnectors();
 			}
 		});
 	}
@@ -155,7 +146,6 @@ public class MMView extends JFrame implements ComponentListener
 
 	@Override
 	public void componentResized(ComponentEvent e) {
-		// TODO Auto-generated method stub
 		System.out.println("GridA size: " + gridA.getSize());
 		MoleculeGrid.setGridSpacing(gridA.getSize().width, gridA.getSize().height);
 		repaint();

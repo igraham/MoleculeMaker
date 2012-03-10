@@ -34,11 +34,6 @@ import javax.swing.JOptionPane;
  * 		- Added arrows
  * 
  * TODO:
- * 		- Fix up arrow drawing
- * 		- Fix being able to bond to self
- * 		- Allow selection of bonds and arrows
- * 		- Add attributes for bonds and arrows
- * 		- Electrophile and nucleophile attributes for element attributes
  * 		- XML Export
  * 		- Detailed code comments
  */
@@ -80,16 +75,10 @@ public class MMController
 		view.repaint();
 	}
 	
-	public void clearBonds()
+	public void clearConnectors()
 	{
-		view.gridA.elist.clearBonds();
-		view.gridB.elist.clearBonds();
-		view.repaint();
-	}
-	public void clearArrows()
-	{
-		view.gridA.elist.clearArrows();
-		view.gridB.elist.clearArrows();
+		view.gridA.elist.clearConnectors();
+		view.gridB.elist.clearConnectors();
 		view.repaint();
 	}
 	

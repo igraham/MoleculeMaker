@@ -6,6 +6,7 @@ public class Element extends MoleculeComponent {
 	private String name;
 	private int electrons;
 	private int charge;
+	private int type;
 	
 	public Element(double x, double y)
 	{
@@ -18,6 +19,7 @@ public class Element extends MoleculeComponent {
 		name = "C";
 		electrons = 3;
 		charge = 4;
+		type = 0;
 	}
 	
 	// ================ Getters and Setters Below ================
@@ -64,6 +66,14 @@ public class Element extends MoleculeComponent {
 
 	public void setElectrons(int electrons) {
 		this.electrons = electrons;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
 	}
 	
 	// ===========================================================

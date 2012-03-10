@@ -182,22 +182,18 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 		
 		MoleculeComponent clickedOn = elist.getClickedComponent(e.getX(), e.getY());
 		
-		//System.out.println("Drawing an Arrow: "+drawArrowLine);
-		
 		if (drawArrowLine || drawBondLine) // if connection is being made
 		{
 			if (clickedOn != null && elist.getSelected() != null) // if released on valid component
 			{
-				//System.out.println(clickedOn.x);
-				//System.out.println(clickedOn.y);
-				//System.out.println(elist.getSelected().x);
-				//System.out.println(elist.getSelected().y);
 				if (clickedOn.getClass() == Element.class && (rightPressed && !leftPressed)) { // if it's a bond
 					elist.add(new Bond(elist.getSelected(), clickedOn));
 				}
 				else if ((elist.getSelected().getClass() == Element.class && clickedOn.getClass() == Bond.class)
 						|| (elist.getSelected().getClass() == Bond.class && clickedOn.getClass() == Element.class) 
 						&& (leftPressed && !(rightPressed))) {
+					System.out.println(elist.getSelected().getKey());
+					System.out.println(clickedOn.getKey());
 					elist.add(new Arrow(elist.getSelected(), clickedOn));
 				}
 				

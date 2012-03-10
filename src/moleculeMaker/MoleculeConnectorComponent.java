@@ -12,8 +12,6 @@ public class MoleculeConnectorComponent extends MoleculeComponent {
 	protected MoleculeComponent connectee;
 	protected String connectionKey;
 
-	// When slope is -1, middlepoint's y is subtracted from connector's y value, instead of added
-	protected int slopeDirection;
 	protected Color dragColor = Color.BLACK; // default drag color
 	
 	/**
@@ -26,63 +24,10 @@ public class MoleculeConnectorComponent extends MoleculeComponent {
 	 */
 	protected void setConnectionAttributes(MoleculeComponent c1, MoleculeComponent c2)
 	{
-		slopeDirection = 1;
-
-		// Bonder is the point closer to (0,0); the left-most/top-most ElementImproved
-		// The priority of ElementImproveds starts with the closest X value, THEN the Y value
-
-		/*
-		 * Cases to consider:
-		 * 		1. Bond is vertical |
-		 * 		2. Bond is horizontal --
-		 * 		3. Bond has positive slope /
-		 * 		4. Bond has negative slope \
-		 */
-		if(c1.getY() == c2.getY()) // If bond is horizontal --
-		{
-			// ...the lesser X value becomes
-			if (c1.getX() < c2.getX()) {
-				this.connector = c1;
-				this.connectee = c2;
-			} else {
-				this.connector = c2;
-				this.connectee = c1;
-			}
-		}
-		else if(c1.getX() == c2.getX()) // If bond is vertical | 
-		{
-			// ...the lesser Y value becomes the main ElementImproved.
-			if (c1.getY() < c2.getY()) {
-				this.connector = c1;
-				this.connectee = c2;
-			} else {
-				this.connector = c2;
-				this.connectee = c1;
-			}
-		} 
-		// If bond is not horizontal or vertical, then it is diagonal: \ or /
-		// X at this point is either less than or greater than:
-		else {
-			if(c1.getX() < c2.getX()) {
-				this.connector = c1;
-				this.connectee = c2;
-			}
-			else {
-				this.connector = c2;
-				this.connectee = c1;
-			}
-
-			if(this.connector.getY() < this.connectee.getY()) { // bond looks like this: \
-				//					yDirection = 1;
-			}
-			else {
-				slopeDirection = -1;
-			}
-
-		}
+		this.connector = c1;
+		this.connectee = c2;
 
 		connectionKey = getConnectionKey(c1, c2);
-
 	}
 	
 	public MoleculeComponent getConnector()
@@ -97,14 +42,18 @@ public class MoleculeConnectorComponent extends MoleculeComponent {
 	
 	public static String getConnectionKey(MoleculeComponent bonder, MoleculeComponent bondee)
 	{		
-		return bonder.getKey() + ";" + bondee.getKey();
+		if(bonder.getClass() == Bond.class && bondee.getClass() == Element.class
+				|| bonder.getClass() == Element.class && bondee.getClass() == Bond.class)
+		{
+			return bonder.getKey() + ":" + bondee.getKey();
+		}else
+		{
+			return bonder.getKey() + ";" + bondee.getKey();
+		}
 	}
 	
 	protected double calculateMiddleX()
 	{
-		System.out.println(connector.getX());
-		System.out.println(connectee.getX());
-		System.out.println(MoleculeGrid.GRID_SPACING);
 		return calculateMiddle(connector.getX(), connectee.getX(), MoleculeGrid.GRID_SPACING);
 	}
 	
@@ -142,12 +91,6 @@ public class MoleculeConnectorComponent extends MoleculeComponent {
 		Graphics2D g2d = (Graphics2D)g;
 		g2d.setColor(getColor());
 		g2d.setStroke(new BasicStroke(3));
-		System.out.println("Connector X: "+connector.getX());
-		System.out.println("Connector Y: "+connector.getY());
-		System.out.println("Connectee X: "+connectee.getX());
-		System.out.println("Connectee Y: "+connectee.getY());
-		System.out.println("An X: "+x);
-		System.out.println("A Y: "+y);
 
 		// Draw a line
 		g2d.draw(new Line2D.Double((connector.getX() * MoleculeGrid.GRID_SPACING + offset),
@@ -221,7 +164,8 @@ public class MoleculeConnectorComponent extends MoleculeComponent {
 		return y;
 	}
 	
-	public static String getKey(Element e1, Element e2) {
+	public static String getKey(MoleculeComponent e1, MoleculeComponent e2) {
+		System.out.println(e1.getKey() + ";"+e2.getKey());
 		return e1.getKey() + ";" + e2.getKey();
 	}
 
