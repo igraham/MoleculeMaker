@@ -5,6 +5,7 @@ import java.io.File;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -65,12 +66,15 @@ public class XML_Problem
 			
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			
 			DOMSource source = new DOMSource(doc);
 			StreamResult result = new StreamResult(new File("problem.xml"));
-			//StreamResult result = new StreamResult(System.out);
+			StreamResult result2 = new StreamResult(System.out);
 
 			try {
 				transformer.transform(source, result);
+				transformer.transform(source, result2);
 				System.out.println("File saved!");
 			} catch (TransformerException e) {
 				e.printStackTrace();
@@ -125,7 +129,7 @@ public class XML_Problem
 					//the numbers 0 and 6.
 					int elecs = 0;
 					if(a.getElectrons()>=0 && a.getElectrons()<=6){elecs = a.getElectrons();}
-					charge.appendChild(doc.createTextNode(""+elecs));
+					elec.appendChild(doc.createTextNode(""+elecs));
 				Element.appendChild(elec);
 				org.w3c.dom.Element type = doc.createElement("Type");
 				//Here we set the type, but like I said I don't think this is implemented in the interface

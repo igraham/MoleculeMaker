@@ -125,6 +125,7 @@ public class ConnectionList
 	{
 		if (e.getClass() == Bond.class) {
 			String[] key = e.getKey().split(";");
+			if(key[0].equals(key[1])){return false;}
 			for(String sB : bonds.keySet())
 			{
 				String[] otherKey = sB.split(";");
