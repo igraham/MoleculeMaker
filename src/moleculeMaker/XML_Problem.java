@@ -51,7 +51,7 @@ import org.w3c.dom.Document;
 public class XML_Problem
 {
 	
-	public XML_Problem(MoleculeGrid molecule1, MoleculeGrid molecule2, MMController superView)
+	public XML_Problem(MoleculeGrid molecule1, MoleculeGrid molecule2)
 	{
 		try {
 			 
@@ -71,7 +71,7 @@ public class XML_Problem
 			Transformer transformer = transformerFactory.newTransformer();
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			
-			XML_FileSaver saver = new XML_FileSaver(superView.view);
+			XML_FileSaver saver = new XML_FileSaver();
 			
 			DOMSource source = new DOMSource(doc);
 			StreamResult result = new StreamResult(new File(saver.getDestination()));

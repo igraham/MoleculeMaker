@@ -11,13 +11,11 @@ public class XML_FileSaver implements ActionListener{
 	private JFileChooser saver = new JFileChooser(new File(new File(".").getAbsolutePath()));
 	private File destination;
 	private int returnVal;
-	MMView storage;
 	
-	public XML_FileSaver(MMView view)
+	public XML_FileSaver()
 	{
 		saver.addActionListener(this);
 		returnVal = saver.showSaveDialog(null);
-		storage = view;
 	}
 
 	public void actionPerformed(ActionEvent e)
