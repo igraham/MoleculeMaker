@@ -146,7 +146,11 @@ public class MMView extends JFrame implements ComponentListener
 
 	@Override
 	public void componentResized(ComponentEvent e) {
-		System.out.println("GridA size: " + gridA.getSize());
+		System.out.println(gridA.getSize());
+		gridA.setXMLConversion(gridA.getSize().width, gridA.getSize().height);
+		System.out.println(gridA.getXConversion());
+		gridB.setXMLConversion(gridB.getSize().width, gridB.getSize().height);
+		System.out.println(gridA.getYConversion());
 		MoleculeGrid.setGridSpacing(gridA.getSize().width, gridA.getSize().height);
 		repaint();
 	}

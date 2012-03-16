@@ -84,6 +84,6 @@ public class MMController
 	
 	public void exportToXML()
 	{
-		xmlGen = new XML_Problem(view.gridA.elist, view.gridB.elist);
+		xmlGen = new XML_Problem(view.gridA, view.gridB,this);
 	}
 }
