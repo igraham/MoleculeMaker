@@ -28,11 +28,11 @@ public class ConnectionList
 		selected = null;
 	}
 	
-	public void clearBonds()
+	public void clearConnectors()
 	{
 		clearSelected();
 		bonds = new HashMap<String, Bond>();
-		clearArrows();
+		arrows = new HashMap<String, Arrow>();
 	}
 	
 	public void clearElements()
@@ -41,11 +41,6 @@ public class ConnectionList
 		bonds = new HashMap<String, Bond>();
 		arrows = new HashMap<String, Arrow>();
 		elements = new HashMap<String, Element>();
-	}
-	public void clearArrows()
-	{
-		clearSelected();
-		arrows = new HashMap<String, Arrow>();
 	}
 	
 	/**
@@ -115,13 +110,49 @@ public class ConnectionList
 		if (e.getClass() == Element.class) {
 			elements.put(e.getKey(), (Element) e);
 		}
-		else if (e.getClass() == Bond.class) {
+		else if (e.getClass() == Bond.class && notDuplicate(e)) {
 			bonds.put(e.getKey(), (Bond) e);
+			System.out.println("Bonds has "+bonds.size()+" bonds in it.");
 		}
-		else if (e.getClass() == Arrow.class) {
+		else if (e.getClass() == Arrow.class && notDuplicate(e)) {
 			arrows.put(e.getKey(), (Arrow) e);
+			System.out.println("Arrows has "+arrows.size()+" arrows in it.");
 		}
 		
+	}
+	
+	private boolean notDuplicate(MoleculeComponent e)
+	{
+		if (e.getClass() == Bond.class) {
+			String[] key = e.getKey().split(";");
+			if(key[0].equals(key[1])){return false;}
+			for(String sB : bonds.keySet())
+			{
+				String[] otherKey = sB.split(";");
+				if(e.getKey().equals(sB) 
+						|| key[0].equals(otherKey[1]) && key[1].equals(otherKey[0]))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+		else if (e.getClass() == Arrow.class) {
+			String[] key = e.getKey().split(":");
+			for(String sA : arrows.keySet())
+			{
+				System.out.println(sA);
+				System.out.println(e.getKey());
+				String[] otherKey = sA.split(":");
+				if(e.getKey().equals(sA)
+						|| key[0].equals(otherKey[1]) && key[1].equals(otherKey[0]))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 
 	public ArrayList<MoleculeConnectorComponent> getBondsAndArrows()

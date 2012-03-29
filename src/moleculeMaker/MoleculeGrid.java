@@ -42,6 +42,9 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 
 	private boolean drawBondLine = false; // whether a moving arrow should be drawn (for right-click bond link formation)
 	private boolean drawArrowLine = false;
+	//These values will be used in the XML problem to get the right coordinates for a 240 scale application.
+	private double yConversion = 240.0 / getSize().getHeight();
+	private double xConversion = 240.0 / getSize().getWidth();
 
 	public MoleculeGrid(MMController mmc)
 	{
@@ -107,7 +110,20 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 		OBJECT_OFFSET = GRID_SPACING / 4;
 		OBJECT_OFFSET_Y = GRID_SPACING_Y / 4;
 	}
+	
+	public void setXMLConversion(double width, double height)
+	{
+		yConversion = 240.0 / height;
+		xConversion = 240.0 / width;
+	}
 
+	public double getYConversion() {
+		return yConversion;
+	}
+
+	public double getXConversion() {
+		return xConversion;
+	}
 
 	// Clear screen
 	private void clearScreen(Graphics g)
@@ -182,22 +198,18 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 		
 		MoleculeComponent clickedOn = elist.getClickedComponent(e.getX(), e.getY());
 		
-		//System.out.println("Drawing an Arrow: "+drawArrowLine);
-		
 		if (drawArrowLine || drawBondLine) // if connection is being made
 		{
 			if (clickedOn != null && elist.getSelected() != null) // if released on valid component
 			{
-				//System.out.println(clickedOn.x);
-				//System.out.println(clickedOn.y);
-				//System.out.println(elist.getSelected().x);
-				//System.out.println(elist.getSelected().y);
 				if (clickedOn.getClass() == Element.class && (rightPressed && !leftPressed)) { // if it's a bond
 					elist.add(new Bond(elist.getSelected(), clickedOn));
 				}
 				else if ((elist.getSelected().getClass() == Element.class && clickedOn.getClass() == Bond.class)
 						|| (elist.getSelected().getClass() == Bond.class && clickedOn.getClass() == Element.class) 
 						&& (leftPressed && !(rightPressed))) {
+					System.out.println(elist.getSelected().getKey());
+					System.out.println(clickedOn.getKey());
 					elist.add(new Arrow(elist.getSelected(), clickedOn));
 				}
 				

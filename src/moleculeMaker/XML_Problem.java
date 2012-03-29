@@ -1,10 +1,14 @@
 package moleculeMaker;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 
+import javax.swing.JFileChooser;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -13,7 +17,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * <Problem>
@@ -48,7 +51,7 @@ import org.w3c.dom.Element;
 public class XML_Problem
 {
 	
-	public XML_Problem(ConnectionList molecule1, ConnectionList molecule2)
+	public XML_Problem(MoleculeGrid molecule1, MoleculeGrid molecule2)
 	{
 		try {
 			 
@@ -66,12 +69,17 @@ public class XML_Problem
 			
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			
+			XML_FileSaver saver = new XML_FileSaver();
+			
 			DOMSource source = new DOMSource(doc);
-			StreamResult result = new StreamResult(new File("problem.xml"));
-			//StreamResult result = new StreamResult(System.out);
+			StreamResult result = new StreamResult(new File(saver.getDestination()));
+			StreamResult result2 = new StreamResult(System.out);
 
 			try {
 				transformer.transform(source, result);
+				//transformer.transform(source, result2);
 				System.out.println("File saved!");
 			} catch (TransformerException e) {
 				e.printStackTrace();
@@ -87,11 +95,11 @@ public class XML_Problem
 		}
 	}
 	
-	private void setUpXML(ConnectionList molecule, Document doc, org.w3c.dom.Element root)
+	private void setUpXML(MoleculeGrid molecule, Document doc, org.w3c.dom.Element root)
 	{
 		org.w3c.dom.Element mol = doc.createElement("Molecule");
 		root.appendChild(mol);
-		for(moleculeMaker.Element a : molecule.getMap().values())
+		for(moleculeMaker.Element a : molecule.elist.getMap().values())
 		{
 			org.w3c.dom.Element Element = doc.createElement("Element");
 			mol.appendChild(Element);
@@ -100,9 +108,13 @@ public class XML_Problem
 					//cannot be created without an x and a y value then there is no need to 
 					//check to see if they are null or something.
 					Attr x = doc.createAttribute("x");
-					x.setValue(""+a.getX());
+					System.out.println(molecule.getXConversion());
+					System.out.println(molecule.getYConversion());
+					x.setValue(""+(int)(((a.getX()*MoleculeGrid.GRID_SPACING_X)+
+							MoleculeGrid.OBJECT_OFFSET_X)*molecule.getXConversion()));
 					Attr y = doc.createAttribute("y");
-					y.setValue(""+a.getY());
+					y.setValue(""+(int)(((a.getY()*MoleculeGrid.GRID_SPACING_Y)+
+							MoleculeGrid.OBJECT_OFFSET_Y)*molecule.getYConversion()));
 					loc.setAttributeNode(x);
 					loc.setAttributeNode(y);
 				Element.appendChild(loc);
@@ -126,15 +138,18 @@ public class XML_Problem
 					//the numbers 0 and 6.
 					int elecs = 0;
 					if(a.getElectrons()>=0 && a.getElectrons()<=6){elecs = a.getElectrons();}
-					charge.appendChild(doc.createTextNode(""+elecs));
+					elec.appendChild(doc.createTextNode(""+elecs));
 				Element.appendChild(elec);
 				org.w3c.dom.Element type = doc.createElement("Type");
 				//Here we set the type, but like I said I don't think this is implemented in the interface
 				//yet, so I will leave this alone.
+					int eType = 0;
+					if(a.getType()>=0 && a.getType()<=2){eType = a.getType();}
+					type.appendChild(doc.createTextNode(""+eType));
 				Element.appendChild(type);
 		}
 		
-		for(Bond b : molecule.getBondHash().values())
+		for(Bond b : molecule.elist.getBondHash().values())
 		{
 			org.w3c.dom.Element bond = doc.createElement("Bond");
 			mol.appendChild(bond);
@@ -143,25 +158,29 @@ public class XML_Problem
 				//check to see if they are null or something.
 				org.w3c.dom.Element loc1 = doc.createElement("LocationA");
 					Attr x1 = doc.createAttribute("x");
-					x1.setValue(""+b.getConnector().getX());
+					x1.setValue(""+(int)(((b.getConnector().getX()*MoleculeGrid.GRID_SPACING_X)+
+							MoleculeGrid.OBJECT_OFFSET_X)*molecule.getXConversion()));
 					Attr y1 = doc.createAttribute("y");
-					y1.setValue(""+b.getConnector().getY());
+					y1.setValue(""+(int)(((b.getConnector().getY()*MoleculeGrid.GRID_SPACING_Y)+
+							MoleculeGrid.OBJECT_OFFSET_Y)*molecule.getYConversion()));
 					loc1.setAttributeNode(x1);
 					loc1.setAttributeNode(y1);
 				bond.appendChild(loc1);
 				org.w3c.dom.Element loc2 = doc.createElement("LocationB");
 					Attr x2 = doc.createAttribute("x");
-					x2.setValue(""+b.getConnectee().getX());
+					x2.setValue(""+(int)(((b.getConnectee().getX()*MoleculeGrid.GRID_SPACING_X)+
+							MoleculeGrid.OBJECT_OFFSET_X)*molecule.getXConversion()));
 					Attr y2 = doc.createAttribute("y");
-					y2.setValue(""+b.getConnectee().getY());
-					loc1.setAttributeNode(x2);
-					loc1.setAttributeNode(y2);
+					y2.setValue(""+(int)(((b.getConnectee().getY()*MoleculeGrid.GRID_SPACING_Y)+
+							MoleculeGrid.OBJECT_OFFSET_Y)*molecule.getYConversion()));
+					loc2.setAttributeNode(x2);
+					loc2.setAttributeNode(y2);
 				bond.appendChild(loc2);
 				org.w3c.dom.Element bOrder = doc.createElement("BondOrder");
 					bOrder.appendChild(doc.createTextNode(""+b.getBondOrder()));
 				bond.appendChild(bOrder);
 		}
-		for(Arrow a : molecule.getArrowHash().values())
+		for(Arrow a : molecule.elist.getArrowHash().values())
 		{
 			org.w3c.dom.Element arrow = doc.createElement("Arrow");
 			mol.appendChild(arrow);
@@ -170,19 +189,23 @@ public class XML_Problem
 				//check to see if they are null or something.
 				org.w3c.dom.Element loc1 = doc.createElement("LocationA");
 					Attr x1 = doc.createAttribute("x");
-					x1.setValue(""+a.getConnector().getX());
+					x1.setValue(""+(int)(((a.getConnector().getX()*MoleculeGrid.GRID_SPACING_X)+
+							MoleculeGrid.OBJECT_OFFSET_X)*molecule.getXConversion()));
 					Attr y1 = doc.createAttribute("y");
-					y1.setValue(""+a.getConnector().getY());
+					y1.setValue(""+(int)(((a.getConnector().getY()*MoleculeGrid.GRID_SPACING_Y)+
+							MoleculeGrid.OBJECT_OFFSET_Y)*molecule.getYConversion()));
 					loc1.setAttributeNode(x1);
 					loc1.setAttributeNode(y1);
 				arrow.appendChild(loc1);
 				org.w3c.dom.Element loc2 = doc.createElement("LocationB");
 					Attr x2 = doc.createAttribute("x");
-					x2.setValue(""+a.getConnectee().getX());
+					x2.setValue(""+(int)(((a.getConnectee().getX()*MoleculeGrid.GRID_SPACING_X)+
+							MoleculeGrid.OBJECT_OFFSET_X)*molecule.getXConversion()));
 					Attr y2 = doc.createAttribute("y");
-					y2.setValue(""+a.getConnectee().getY());
-					loc1.setAttributeNode(x2);
-					loc1.setAttributeNode(y2);
+					y2.setValue(""+(int)(((a.getConnectee().getY()*MoleculeGrid.GRID_SPACING_Y)+
+							MoleculeGrid.OBJECT_OFFSET_Y)*molecule.getYConversion()));
+					loc2.setAttributeNode(x2);
+					loc2.setAttributeNode(y2);
 				arrow.appendChild(loc2);
 				org.w3c.dom.Element bOrder = doc.createElement("Order");
 					bOrder.appendChild(doc.createTextNode(""+a.getOrder()));

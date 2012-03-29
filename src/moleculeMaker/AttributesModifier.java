@@ -22,12 +22,10 @@ public class AttributesModifier extends JPanel
 	JTextField name;
 	JButton save;
 	JComboBox electronCount;
+	JComboBox elementType;
 	JComboBox bondOrderBox;
 	JComboBox arrowOrderBox;
 	ButtonGroup charge;
-	
-	// TODO Load an elements attributes from ElementList.getSelected()
-	// TODO Save an elements new attributes
 	
 	public AttributesModifier(MoleculeComponent e)
 	{
@@ -117,6 +115,16 @@ public class AttributesModifier extends JPanel
 //		System.out.println("The electron count is " + element.getElectrons());
 		electronCount.setSelectedIndex(((Element) component).getElectrons());
 		
+		JPanel elementTypePanel = new JPanel();
+		elementTypePanel.setLayout(new FlowLayout());
+		JLabel elementTypeLabel = new JLabel("Element Type: ");
+		
+		elementType = new JComboBox();
+		elementType.addItem("No Type");
+		elementType.addItem("Electrophile");
+		elementType.addItem("Nucleophile");
+		elementType.setSelectedIndex(((Element) component).getType());
+		
 		save = new JButton("Save");
 		save.addActionListener(new ActionListener() {
 			
@@ -125,15 +133,20 @@ public class AttributesModifier extends JPanel
 				((Element) component).setName(name.getText());
 				((Element) component).setElectrons(electronCount.getSelectedIndex());
 				((Element) component).setCharge(selectedIndex(charge));
+				((Element) component).setType(elementType.getSelectedIndex());
 			}
 		});
 		
 		electronCountPanel.add(electronCountLabel);
 		electronCountPanel.add(electronCount);
 		
+		elementTypePanel.add(elementTypeLabel);
+		elementTypePanel.add(elementType);
+		
 		add(namePanel);
 		add(chargePanel);
 		add(electronCountPanel);
+		add(elementTypePanel);
 		add(save);
 	}
 	
@@ -146,7 +159,7 @@ public class AttributesModifier extends JPanel
 		bondOrderBox.addItem("1");
 		bondOrderBox.addItem("2");
 		bondOrderBox.addItem("3");
-		bondOrderBox.setSelectedIndex(((Bond)component).getBondOrder());
+		bondOrderBox.setSelectedIndex(((Bond)component).getBondOrder()-1);
 		
 		bondOrderPanel.add(bondOrder);
 		bondOrderPanel.add(bondOrderBox);
@@ -155,7 +168,8 @@ public class AttributesModifier extends JPanel
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				((Bond) component).setBondOrder(bondOrderBox.getSelectedIndex());
+				System.out.println("Setting the bond order.");
+				((Bond) component).setBondOrder(bondOrderBox.getSelectedIndex()+1);
 			}
 		});
 		add(bondOrderPanel);
@@ -179,6 +193,7 @@ public class AttributesModifier extends JPanel
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("Setting the arrow order.");
 				((Arrow) component).setOrder(arrowOrderBox.getSelectedIndex()+1);
 			}
 		});

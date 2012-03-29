@@ -72,14 +72,11 @@ public class Arrow extends MoleculeConnectorComponent
 	
 	public static void drawBarbs(Graphics g2, MoleculeComponent tip, MoleculeComponent tail)
 	{
-		double barbLength = 10;
+		double barbLength = 13;
 		double angle = Math.toRadians(35);
 		double dy = tip.y - tail.y;
 		double dx = tip.x - tail.x;
-//		System.out.println("Change in Y: "+dy);
-//		System.out.println("Change in X: "+dx);
 		double theta = Math.atan2(dy, dx);
-//		System.out.println("Angle of Theta: "+theta);
 		double x, y, rho = theta + angle;
 		int spacingX = MoleculeGrid.GRID_SPACING;
 		int spacingY = MoleculeGrid.GRID_SPACING_Y;
@@ -91,7 +88,6 @@ public class Arrow extends MoleculeConnectorComponent
 		
 		for(int i = 0; i < 2; i++)
 		{
-//			System.out.println("Value of angle Rho: "+Math.toDegrees(rho));
 			x = realTipX - barbLength * Math.cos(rho);
 			y = realTipY - barbLength * Math.sin(rho);
 			((Graphics2D) g2).draw(new Line2D.Double(realTipX, realTipY, x, y));
@@ -104,12 +100,7 @@ public class Arrow extends MoleculeConnectorComponent
 	}
 
 	public void setOrder(int order) {
-		if(order >= 2 && order <= 3)//If the specified order is 2 or 3
-		{
-			this.order = order; //Set the order.
-			return;
-		}System.out.println("So, someone tried to create the wrong number of arrows.");
-		//Don't do anything else if it's not one of these values.
+		this.order = order;
 	}
 	
 }
