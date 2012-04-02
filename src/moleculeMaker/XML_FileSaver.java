@@ -29,7 +29,7 @@ public class XML_FileSaver implements ActionListener{
 	
 	public String getDestination()
 	{
-		return destination.getAbsolutePath();
+		return destination.getAbsolutePath(); 
 	}
 
 }
