@@ -1,6 +1,6 @@
 package moleculeMaker;
 
-public class Element extends MoleculeComponent {
+public class Element extends MoleculeComponent{
 	
 	// Element-only attributes
 	private String name;
@@ -17,8 +17,8 @@ public class Element extends MoleculeComponent {
 		selected = false;
 		dragging = false;
 		name = "C";
-		electrons = 3;
-		charge = 4;
+		electrons = 0;
+		charge = 1;
 		type = 0;
 	}
 	
@@ -75,7 +75,6 @@ public class Element extends MoleculeComponent {
 	public void setType(int type) {
 		this.type = type;
 	}
-	
 	// ===========================================================
 	
 }

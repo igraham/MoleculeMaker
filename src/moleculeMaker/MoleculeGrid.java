@@ -206,7 +206,8 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 					elist.add(new Bond(elist.getSelected(), clickedOn));
 				}
 				else if ((elist.getSelected().getClass() == Element.class && clickedOn.getClass() == Bond.class)
-						|| (elist.getSelected().getClass() == Bond.class && clickedOn.getClass() == Element.class) 
+						|| (elist.getSelected().getClass() == Bond.class && clickedOn.getClass() == Element.class)
+						|| ((elist.getSelected().getClass() == Bond.class && clickedOn.getClass() == Bond.class) && !(elist.getSelected().equals(clickedOn)))
 						&& (leftPressed && !(rightPressed))) {
 					System.out.println(elist.getSelected().getKey());
 					System.out.println(clickedOn.getKey());
@@ -433,8 +434,8 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 
 	// ***************** KeyListener ****************
 	@Override
-	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
+	public void keyPressed(KeyEvent e)
+	{
 		if (e.getKeyCode() == 8) // if delete key is pressed
 		{
 			MoleculeComponent currentElement = elist.getSelected();

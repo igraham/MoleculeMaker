@@ -2,7 +2,7 @@ package moleculeMaker;
 
 import java.awt.Color;
 
-public abstract class MoleculeComponent {
+public abstract class MoleculeComponent{
 	
 	// Basic structure for elements and bonds!
 	protected boolean selected;

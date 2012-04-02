@@ -6,7 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 
-public class MoleculeConnectorComponent extends MoleculeComponent {
+public class MoleculeConnectorComponent extends MoleculeComponent{
 
 	protected MoleculeComponent connector;
 	protected MoleculeComponent connectee;
@@ -167,6 +167,32 @@ public class MoleculeConnectorComponent extends MoleculeComponent {
 	public static String getKey(MoleculeComponent e1, MoleculeComponent e2) {
 		System.out.println(e1.getKey() + ";"+e2.getKey());
 		return e1.getKey() + ";" + e2.getKey();
+	}
+
+	public boolean equals(MoleculeConnectorComponent e)
+	{
+		if (e.getClass() == Bond.class) {
+			String[] key = e.getKey().split(";");
+			if(key[0].equals(key[1])){return true;}
+			String[] otherKey = getKey().split(";");
+			if(e.getKey().equals(getKey()) 
+					|| key[0].equals(otherKey[1]) && key[1].equals(otherKey[0]))
+			{
+				return true;
+			}
+			return false;
+		}
+		else if (e.getClass() == Arrow.class) {
+			String[] key = e.getKey().split(":");
+			String[] otherKey = getKey().split(":");
+			if(e.getKey().equals(getKey())
+					|| key[0].equals(otherKey[1]) && key[1].equals(otherKey[0]))
+			{
+				return true;
+			}
+			return false;
+		}
+		return false;
 	}
 
 }
