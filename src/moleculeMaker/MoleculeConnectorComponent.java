@@ -42,13 +42,12 @@ public class MoleculeConnectorComponent extends MoleculeComponent{
 	
 	public static String getConnectionKey(MoleculeComponent bonder, MoleculeComponent bondee)
 	{		
-		if(bonder.getClass() == Bond.class && bondee.getClass() == Element.class
-				|| bonder.getClass() == Element.class && bondee.getClass() == Bond.class)
-		{
-			return bonder.getKey() + ":" + bondee.getKey();
-		}else
+		if(bonder.getClass() == Element.class && bondee.getClass() == Element.class)
 		{
 			return bonder.getKey() + ";" + bondee.getKey();
+		}else
+		{
+			return bonder.getKey() + ":" + bondee.getKey();
 		}
 	}
 	
