@@ -205,8 +205,8 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 				if (clickedOn.getClass() == Element.class && (rightPressed && !leftPressed)) { // if it's a bond
 					elist.add(new Bond(elist.getSelected(), clickedOn));
 				}
-				else if ((elist.getSelected().getClass() == Element.class && clickedOn.getClass() == Bond.class)
-						|| (elist.getSelected().getClass() == Bond.class && clickedOn.getClass() == Element.class) 
+				else if (((elist.getSelected().getClass() == Element.class && clickedOn.getClass() == Bond.class)
+						|| (elist.getSelected().getClass() == Bond.class && clickedOn.getClass() == Element.class)) 
 						&& (leftPressed && !(rightPressed))) {
 					System.out.println(elist.getSelected().getKey());
 					System.out.println(clickedOn.getKey());
@@ -220,21 +220,6 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 			
 			repaint();
 		}
-		else // connection is not being made
-		{	
-			if (clickedOn != null) // if released on valid component
-			{
-				
-			}
-			else // Didn't click on valid component
-			{
-				if (leftPressed && !rightPressed) // If mouse button clicked was left
-				{
-					elist.add(new Element(currentX, currentY));
-				}
-			}
-		}
-		
 	}
 	
 
@@ -277,8 +262,7 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -297,12 +281,15 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 	public void mousePressed(MouseEvent e) {
 		elist.setSelected(null);
 		
+		currentX = getGraphCoordinateX(e.getX());
+		currentY = getGraphCoordinateY(e.getY());
+		
+		MoleculeComponent clickedOn = elist.getClickedComponent(e.getX(), e.getY());
+		
 		if(e.getButton() == 1)
 		{
 			leftPressed = true;
 			rightPressed = false;
-			
-			MoleculeComponent clickedOn = elist.getClickedComponent(e.getX(), e.getY());
 			
 			if (clickedOn != null)
 			{
@@ -315,6 +302,22 @@ public class MoleculeGrid extends JButton implements MouseListener, MouseMotionL
 		{
 			rightPressed = true;
 			leftPressed = false;
+		}
+		
+		
+		if(!(drawBondLine) && !(drawArrowLine)) // connection is not being made
+		{	
+			if (clickedOn != null) // if released on valid component
+			{
+				
+			}
+			else // Didn't click on valid component
+			{
+				if (leftPressed && !rightPressed) // If mouse button clicked was left
+				{
+					elist.add(new Element(currentX, currentY));
+				}
+			}
 		}
 	}
 	

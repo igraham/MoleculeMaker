@@ -1,6 +1,6 @@
 package moleculeMaker;
 
-public class Element extends MoleculeComponent {
+public class Element extends MoleculeComponent{
 	
 	// Element-only attributes
 	private String name;
@@ -17,8 +17,8 @@ public class Element extends MoleculeComponent {
 		selected = false;
 		dragging = false;
 		name = "C";
-		electrons = 3;
-		charge = 4;
+		electrons = 0;
+		charge = 1;
 		type = 0;
 	}
 	
@@ -48,7 +48,46 @@ public class Element extends MoleculeComponent {
 		return name;
 	}
 
+	private String toUTF8Subscript(String str)
+	{
+		int num = Integer.parseInt(str);
+		switch(num)
+		{
+		case 0:
+			return "\u2080";
+		case 1:
+			return "\u2081";
+		case 2:
+			return "\u2082";
+		case 3:
+			return "\u2083";
+		case 4:
+			return "\u2084";
+		case 5:
+			return "\u2085";
+		case 6:
+			return "\u2086";
+		case 7:
+			return "\u2087";
+		case 8:
+			return "\u2088";
+		case 9:
+			return "\u2089";
+		}
+		return "";
+	}
+	
 	public void setName(String name) {
+		
+		for(int i = 0; i < name.length();i++)
+		{
+			if(Character.isDigit(name.charAt(i)))
+			{
+				name = name.substring(0, i) 
+						+ toUTF8Subscript(name.substring(i,i+1))
+						+name.substring(i+1, name.length());
+			}
+		}
 		this.name = name;
 	}
 
@@ -75,7 +114,6 @@ public class Element extends MoleculeComponent {
 	public void setType(int type) {
 		this.type = type;
 	}
-	
 	// ===========================================================
 	
 }

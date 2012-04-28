@@ -59,8 +59,8 @@ public class MMController
 		view.south.removeAll();
 		view.south.add(new AttributesModifier(e));
 		
-		view.validate();
-		view.repaint();
+		view.setSize(view.getWidth()+1,view.getHeight());
+		view.setSize(view.getWidth()-1,view.getHeight());
 	}
 	
 	public void quit()
