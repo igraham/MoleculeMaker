@@ -110,11 +110,11 @@ public class XML_Problem
 					Attr x = doc.createAttribute("x");
 					System.out.println(molecule.getXConversion());
 					System.out.println(molecule.getYConversion());
-					x.setValue(""+((a.getX()*MoleculeGrid.GRID_SPACING_X)+
-							MoleculeGrid.OBJECT_OFFSET_X)*molecule.getXConversion());
+					x.setValue(""+(int)(((a.getX()*MoleculeGrid.GRID_SPACING_X)+
+							MoleculeGrid.OBJECT_OFFSET_X)*molecule.getXConversion()));
 					Attr y = doc.createAttribute("y");
-					y.setValue(""+((a.getY()*MoleculeGrid.GRID_SPACING_Y)+
-							MoleculeGrid.OBJECT_OFFSET_Y)*molecule.getYConversion());
+					y.setValue(""+(int)(((a.getY()*MoleculeGrid.GRID_SPACING_Y)+
+							MoleculeGrid.OBJECT_OFFSET_Y)*molecule.getYConversion()));
 					loc.setAttributeNode(x);
 					loc.setAttributeNode(y);
 				Element.appendChild(loc);
@@ -158,21 +158,21 @@ public class XML_Problem
 				//check to see if they are null or something.
 				org.w3c.dom.Element loc1 = doc.createElement("LocationA");
 					Attr x1 = doc.createAttribute("x");
-					x1.setValue(""+((b.getConnector().getX()*MoleculeGrid.GRID_SPACING_X)+
-							MoleculeGrid.OBJECT_OFFSET_X)*molecule.getXConversion());
+					x1.setValue(""+(int)(((b.getConnector().getX()*MoleculeGrid.GRID_SPACING_X)+
+							MoleculeGrid.OBJECT_OFFSET_X)*molecule.getXConversion()));
 					Attr y1 = doc.createAttribute("y");
-					y1.setValue(""+((b.getConnector().getY()*MoleculeGrid.GRID_SPACING_Y)+
-							MoleculeGrid.OBJECT_OFFSET_Y)*molecule.getYConversion());
+					y1.setValue(""+(int)(((b.getConnector().getY()*MoleculeGrid.GRID_SPACING_Y)+
+							MoleculeGrid.OBJECT_OFFSET_Y)*molecule.getYConversion()));
 					loc1.setAttributeNode(x1);
 					loc1.setAttributeNode(y1);
 				bond.appendChild(loc1);
 				org.w3c.dom.Element loc2 = doc.createElement("LocationB");
 					Attr x2 = doc.createAttribute("x");
-					x2.setValue(""+((b.getConnectee().getX()*MoleculeGrid.GRID_SPACING_X)+
-							MoleculeGrid.OBJECT_OFFSET_X)*molecule.getXConversion());
+					x2.setValue(""+(int)(((b.getConnectee().getX()*MoleculeGrid.GRID_SPACING_X)+
+							MoleculeGrid.OBJECT_OFFSET_X)*molecule.getXConversion()));
 					Attr y2 = doc.createAttribute("y");
-					y2.setValue(""+((b.getConnectee().getY()*MoleculeGrid.GRID_SPACING_Y)+
-							MoleculeGrid.OBJECT_OFFSET_Y)*molecule.getYConversion());
+					y2.setValue(""+(int)(((b.getConnectee().getY()*MoleculeGrid.GRID_SPACING_Y)+
+							MoleculeGrid.OBJECT_OFFSET_Y)*molecule.getYConversion()));
 					loc2.setAttributeNode(x2);
 					loc2.setAttributeNode(y2);
 				bond.appendChild(loc2);
@@ -189,21 +189,21 @@ public class XML_Problem
 				//check to see if they are null or something.
 				org.w3c.dom.Element loc1 = doc.createElement("LocationA");
 					Attr x1 = doc.createAttribute("x");
-					x1.setValue(""+((a.getConnector().getX()*MoleculeGrid.GRID_SPACING_X)+
-							MoleculeGrid.OBJECT_OFFSET_X)*molecule.getXConversion());
+					x1.setValue(""+(int)(((a.getConnector().getX()*MoleculeGrid.GRID_SPACING_X)+
+							MoleculeGrid.OBJECT_OFFSET_X)*molecule.getXConversion()));
 					Attr y1 = doc.createAttribute("y");
-					y1.setValue(""+((a.getConnector().getY()*MoleculeGrid.GRID_SPACING_Y)+
-							MoleculeGrid.OBJECT_OFFSET_Y)*molecule.getYConversion());
+					y1.setValue(""+(int)(((a.getConnector().getY()*MoleculeGrid.GRID_SPACING_Y)+
+							MoleculeGrid.OBJECT_OFFSET_Y)*molecule.getYConversion()));
 					loc1.setAttributeNode(x1);
 					loc1.setAttributeNode(y1);
 				arrow.appendChild(loc1);
 				org.w3c.dom.Element loc2 = doc.createElement("LocationB");
 					Attr x2 = doc.createAttribute("x");
-					x2.setValue(""+((a.getConnectee().getX()*MoleculeGrid.GRID_SPACING_X)+
-							MoleculeGrid.OBJECT_OFFSET_X)*molecule.getXConversion());
+					x2.setValue(""+(int)(((a.getConnectee().getX()*MoleculeGrid.GRID_SPACING_X)+
+							MoleculeGrid.OBJECT_OFFSET_X)*molecule.getXConversion()));
 					Attr y2 = doc.createAttribute("y");
-					y2.setValue(""+((a.getConnectee().getY()*MoleculeGrid.GRID_SPACING_Y)+
-							MoleculeGrid.OBJECT_OFFSET_Y)*molecule.getYConversion());
+					y2.setValue(""+(int)(((a.getConnectee().getY()*MoleculeGrid.GRID_SPACING_Y)+
+							MoleculeGrid.OBJECT_OFFSET_Y)*molecule.getYConversion()));
 					loc2.setAttributeNode(x2);
 					loc2.setAttributeNode(y2);
 				arrow.appendChild(loc2);

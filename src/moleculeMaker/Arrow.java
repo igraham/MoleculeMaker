@@ -29,7 +29,7 @@ public class Arrow extends MoleculeConnectorComponent
 		dragColor = Color.BLUE; // set the drag color for arrow lines
 		setConnectionAttributes(c1, c2);
 		recalculateMiddleXY();
-		order = 2; //Default value of 2.
+		order = 1; //Default value of 2.
 	}
 	
 	public Arrow(MoleculeComponent c1, MoleculeComponent c2, int order)
